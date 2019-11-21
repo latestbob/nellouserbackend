@@ -15,7 +15,7 @@ trait GuzzleClient
     private function getVendorToken(Vendor $vendor)
     {
         $today = Carbon::today()->toDateString();
-        $key = $today . '_vendor_token_' . $vendor->id;
+        $key = $today . '_vendor_token_' . $vendor->api_key;
         if (!Cache::has($key)) {
             $token = $vendor->api_key . $vendor->api_secret . $today;
             $token = bcrypt($token);
