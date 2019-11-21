@@ -23,15 +23,15 @@ Route::prefix('/auth')->group(function (){
     Route::post('/register', 'Api/AuthController@registerCustomer');
 });
 
-Route::prefix('/profile')->group(function() {
+Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::put('/update', 'Api/ProfileController@updateCustomer');
     Route::put('/picture', 'Api/ProfileController@uploadPicture');
     Route::get('health-history', 'Api/ProfileController@fetchHealthHistory');
     Route::get('medical-reports', 'Api/ProfileController@fetchMedicalReports');
 });
 
-Route::get('/doctors', 'Api/DoctorController@fetchDoctors');
-Route::get('/medical-centers', 'Api/MedicalCenterController@fetchCenters');
+Route::get('/doctors', 'Api/DoctorController@fetchDoctors')->middleware('jwt.auth');
+Route::get('/medical-centers', 'Api/MedicalCenterController@fetchCenters')->middleware('jwt.auth');
 
-Route::post('/appointments/book', 'Api/AppointmentController@bookAppointment');
+Route::post('/appointments/book', 'Api/AppointmentController@bookAppointment')->middleware('jwt.auth');
 
