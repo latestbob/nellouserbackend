@@ -18,6 +18,7 @@ trait GuzzleClient
         $key = $today . '_vendor_token_' . $vendor->id;
         if (!Cache::has($key)) {
             $token = $vendor->api_key . $vendor->api_secret . $today;
+            $token = bcrypt($token);
             Cache::put($key, $token, 60 * 60 * 24);
         }
         return Cache::get($key);

@@ -3,40 +3,46 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\GuzzleClient;
 
 class AuthController extends Controller
 {
+
+    use GuzzleClient;
+
+
     public function loginCustomer(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        if (!$token = JWTAuth::attempt($credentials)) {
+        $user = User::With(['vendor'])->where('email', $request->email)->first();
+        if (!$user) {
             return response([
-                //'status' => 'error',
-                //'error' => 'invalid.credentials',
-                'msg' => ['Invalid Credentials.']
+                'msg' => 'Invalid Credentials.'
             ], 400);
         }
 
-        $user = Auth::user();
+        $credentials = $request->only('email', 'password');
 
-        $data = [
-            'token'  => $token,
-            'user'   => $user
-        ];
+        $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials->toArray());
 
-        if ($user->user_type == 'collector') {
-            $collector = Collector::where('user_id', $user->id)->first();
-            $collector->smsBalance = $collector->getSmsBalance();
-            $data['collector'] = $collector;  
-        } else if ($user->user_type == 'contributor') {
-            $contributor = Contributor::where('user_id', $user->id)->first();
-            $contributor->totalDeposit = $contributor->getTotalDeposit();
-            $contributor->totalWithdrawal = $contributor->getTotalWithdrawal();
-            $data['contributor'] = $contributor;
+        if ($response->getReasonPhrase() === 'OK') {
+            if (!$token = JWTAuth::attempt($request->only(['email']))) {
+                return response([
+                    'msg' => 'Invalid Credentials.'
+                ], 400);
+            }
+
+            $user = Auth::user();
+
+            return [
+                'token'  => $token,
+                'user'   => $user
+            ];
         }
 
-        return $data;
-    } 
+        return response([
+            'msg' => 'Invalid Credentials.'
+        ], 400);
+    }
 }
