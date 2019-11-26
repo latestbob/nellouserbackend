@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -16,8 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname','middlename','email','phone',
-        'picture','dob', 'height','weight','gender','address','state','city','religion','sponsor'];
+        'firstname','lastname','middlename','email','phone', 'user_type','aos','cwork','password','picture','dob','hwg','is_seen','ufield','height','weight','gender','source','session_id','address','state','city','day','month','year','eclinic_patient_id','eclinic_upi','religion','sponsor', 'uuid'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -37,11 +37,50 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function setUuidAttribute($value)
+    {
+        if (empty($value))
+        $this->attributes['uuid'] = Str::uuid()->string;
+    }
+
     public function vendor()
     {
         return $this->belongsTo('App\Models\Vendor');
     }
 
+    public function encounters()
+    {
+        return $this->hasMany('App\Models\Encounter', 'uuid', 'user_uuid');
+    }
+
+    public function medications()
+    {
+        return $this->hasMany('App\Models\Medication', 'uuid', 'user_uuid');
+    }
+
+    public function vitals()
+    {
+        return $this->hasMany('App\Models\Vital', 'uuid', 'user_uuid');
+    }
+
+    public function procedures()
+    {
+        return $this->hasMany('App\Models\Procedure', 'uuid', 'user_uuid');
+    }
+
+    public function investigations()
+    {
+        return $this->hasMany('App\Models\Investigation', 'uuid', 'user_uuid');
+    }
+
+    public function invoices() {
+        //return $this->hasMany('App\Models\Invoice');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany('App\Models\PaystackPayment', 'uuid', 'user_uuid');
+    }
     
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
