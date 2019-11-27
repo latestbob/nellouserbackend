@@ -89,9 +89,11 @@ class AuthController extends Controller
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
-                echo Psr7\str($e->getResponse());
+                return response(Psr7\str($e->getResponse()), 400);
             } else {
                 print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
             }
         }
 
