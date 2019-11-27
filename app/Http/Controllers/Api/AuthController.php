@@ -86,6 +86,7 @@ class AuthController extends Controller
             if ($response->getReasonPhrase() === 'OK') {
                 return $response->getBody();
             }
+            return $response->getBody();
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
