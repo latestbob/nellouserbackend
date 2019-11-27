@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials->toArray());
+        $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
 
         if ($response->getReasonPhrase() === 'OK') {
             if (!$token = JWTAuth::attempt($request->only(['email']))) {
