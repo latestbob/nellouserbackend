@@ -16,9 +16,7 @@ class CreateAppointmentsTable extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_uuid')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
+            $table->string('user_uuid');
             $table->string('status');
             $table->string('reason')->nullable();
             $table->date('date');

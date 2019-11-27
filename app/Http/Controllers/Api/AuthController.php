@@ -17,6 +17,11 @@ class AuthController extends Controller
 
     use GuzzleClient;
 
+    public function getToken(Request $request)
+    {
+        $vendor = Vendor::where('api_key', $request->api_key)->first();
+        return $this->getVendorToken($vendor);
+    }
 
     public function loginCustomer(Request $request)
     {
@@ -74,16 +79,20 @@ class AuthController extends Controller
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
 
-        $frags = explode('-', $userData['dob']);
-        $userData['year'] = $frags[0];
-        $userData['month'] = $frags[1];
-        $userData['year'] = $frags[2];
+        try {
 
+            $response = $this->httpPost($vendor, '/api/auth/register', $userData);
 
-        $response = $this->httpPost($vendor, '/api/auth/register', $userData);
-
-        if ($response->getReasonPhrase() === 'OK') {
-            return $response->getBody();
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+            }
         }
 
         return response([

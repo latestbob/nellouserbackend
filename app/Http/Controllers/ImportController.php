@@ -143,14 +143,15 @@ class ImportController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            User::create($data);
+            return User::create($data);
         } elseif ($request->isMethod('put')) {
             $object = User::where('uuid', $request->uuid)->first();
             $data = $request->all();
-            $object->update($data);
+            return $object->update($data);
         } elseif ($request->isMethod('delete')) {
             $object = User::where('uuid', $request->uuid)->first();
-            $object->delete();
+            return $object->delete();
         }
+        return ['nada'];
     }
 }

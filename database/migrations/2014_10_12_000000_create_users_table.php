@@ -25,8 +25,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->unsignedBigInteger('vendor_id');
-            $table->foreign('vendor_id')->references('id')->on('vendors')
-                ->onDelete('cascade')->onUpdate('cascade');
+            //$table->foreign('vendor_id')->references('id')->on('vendors')
+            //    ->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('user_type');
             $table->date('dob')->nullable();
@@ -44,6 +44,10 @@ class CreateUsersTable extends Migration
             $table->string('hwg')->nullable();
             $table->boolean('is_seen')->default(false);
             $table->string('ufield')->nullable();
+
+            $table->boolean('local_saved')->default(false);
+            $table->boolean('central_saved')->default(true);
+            $table->boolean('active')->default(true);
 
             $table->rememberToken();
             $table->timestamps();

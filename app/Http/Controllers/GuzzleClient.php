@@ -28,7 +28,7 @@ trait GuzzleClient
     {
         $client = new Client([
             'base_uri' => $vendor->server_url,
-            'timeout'  => '2.0'
+            'timeout'  => '10.0'
         ]);
         $options = [
             'headers' => [

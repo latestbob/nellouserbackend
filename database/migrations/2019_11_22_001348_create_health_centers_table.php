@@ -16,6 +16,9 @@ class CreateHealthCentersTable extends Migration
         Schema::create('health_centers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('uuid')->unique();
+            $table->unsignedBigInteger('vendor_id');
+            $table->foreign('vendor_id')->references('id')->on('vendors')
+                ->onDelete('cascade')->onUpdate('cascade');            
             $table->string('name');
             $table->string('address1')->nullable();
             $table->string('center_type')->nullable();
