@@ -46,7 +46,7 @@ class AuthController extends Controller
                 ], 400);
             }
 
-            $user = Auth::user();
+            //$user = Auth::user();
 
             return [
                 'token'  => $token,
