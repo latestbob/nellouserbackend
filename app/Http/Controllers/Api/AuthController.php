@@ -34,9 +34,12 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
 
-        if ($response->getReasonPhrase() === 'OK') {
+        try {
+
+            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
+
+            if ($response->getReasonPhrase() === 'OK') { }
             if (!$token = JWTAuth::attempt($request->only(['email']))) {
                 return response([
                     'msg' => 'Invalid Credentials.'
@@ -49,6 +52,16 @@ class AuthController extends Controller
                 'token'  => $token,
                 'user'   => $user
             ];
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                return response(Psr7\str($e->getResponse()), 400);
+            } else {
+                print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
+            }
         }
 
         return response([
