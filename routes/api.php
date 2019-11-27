@@ -35,6 +35,7 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('jwt.auth');
+Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
@@ -44,8 +45,6 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::put('/cancel', 'Api\AppointmentController@cancelAppointment');
 });
 
-
-Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
     Route::put('/profile/update', 'Api\ProfileController@updateCustomer');
