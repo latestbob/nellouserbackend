@@ -43,21 +43,24 @@ class ExportUser implements ShouldQueue
             
             if ($this->action == 'create') {
                 //echo 'sending post request';
-                $response = $this->httpPost('/api/import/users', $this->user->toArray());
+                $this->user->load('vendor');
+                $response = $this->httpPost($this->user->vendor, '/api/import/users', $this->user->toArray());
                 //echo $response->getBody();
                 $this->user->local_saved = true;
                 $this->user->save();
             }
             if ($this->action == 'update') {
                 //echo 'sending put request';
-                $response = $this->httpPut('/api/import/users', $this->user->toArray());
+                $this->user->load('vendor');
+                $response = $this->httpPut($this->user->vendor, '/api/import/users', $this->user->toArray());
                 //echo $response->getBody();
                 $this->user->local_saved = true;
                 $this->user->save();
             }
             if ($this->action == 'delete') {
                 //echo 'sending delete request';
-                $response = $this->httpDelete('/api/import/users', [
+                $this->user->load('vendor');
+                $response = $this->httpDelete($this->user->vendor, '/api/import/users', [
                     'uuid' => $this->user->uuid
                 ]);
                 //echo $response->getBody();
