@@ -25,7 +25,7 @@ Route::prefix('/auth')->group(function (){
 });
 
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
-    Route::put('/update', 'Api\ProfileController@updateCustomer');
+    Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::put('/picture', 'Api\ProfileController@uploadPicture');
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
     Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
