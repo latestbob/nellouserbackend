@@ -53,7 +53,7 @@ Route::prefix('/nello')->middleware('nello.auth')->group(function() {
 });
 
 Route::prefix('/import')->middleware('nello.auth')->group(function(){
-    Route::post('/users', 'ImportController@importUser');
+    Route::match(['post', 'put', 'delete'], '/users', 'ImportController@importUser');
     Route::post('/health-centers', 'ImportController@importHealthCenter');
     Route::post('/encounter', 'ImportController@importEncounter');
     Route::post('/health-tip', 'ImportController@importHealthTip');

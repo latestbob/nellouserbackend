@@ -41,21 +41,24 @@ class ProfileController extends Controller
         }
 
         $userData = $validator->validated();
-        $vendor = Vendor::find(Auth::user()->vendor_id);
-        $this->httpPost($vendor, '/api/profile/update', $userData);
+        //$user = Auth::user();
+        //$user->update($userData);
+        //$user->load('vendor');
+        //$this->httpPost($user->vendor, '/api/profile/update', $userData);
 
 
-        /*if (Auth::check()) {
+        if (Auth::check()) {
             //from end user
+            $userData['local_saved'] = false;
             $user = Auth::user();
         } else {
             //from vendor  
-            $user = User::where('email', $request->old_email)->first();
-        }*/
+            $user = User::where('uuid', $request->uuid)->first();
+        }
 
-        //$user->update($userData);
+        $user->update($userData);
         //UpdateCustomer::dispatch($userData);
-        //return $user;
+        return $user;
     }
 
     public function uploadPicture(Request $request)
