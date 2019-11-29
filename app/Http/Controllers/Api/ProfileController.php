@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GuzzleClient;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
