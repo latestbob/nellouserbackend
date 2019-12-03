@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 
 Route::prefix('/auth')->group(function (){
@@ -39,10 +39,10 @@ Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
-    Route::post('/book', 'Api\AppointmentController@bookAppointment');
-    Route::get('/view','Api\AppointmentController@viewAppointment');
-    Route::put('/update', 'Api\AppointmentController@updateAppointment');
-    Route::put('/cancel', 'Api\AppointmentController@cancelAppointment');
+    Route::post('/book', 'AppointmentController@bookAppointment');
+    Route::get('/view','AppointmentController@viewAppointment');
+    Route::put('/update', 'AppointmentController@updateAppointment');
+    Route::put('/cancel', 'AppointmentController@cancelAppointment');
 });
 
 
