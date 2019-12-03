@@ -36,7 +36,6 @@ class ProfileController extends Controller
             'weight' => 'string',
         ]);
 
-
         if ($validator->fails()) {
             return response($validator->errors(), 400);
         }
