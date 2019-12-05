@@ -11,7 +11,7 @@ class DoctorController extends Controller
     
     public function fetchDoctors(Request $request)
     {
-        $doctors = User::where('user_type', 'doctor')->paginate();
+        $doctors = User::with(['vendor'])->where('user_type', 'doctor')->paginate();
         return $doctors;
     }
 

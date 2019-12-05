@@ -26,12 +26,13 @@ Route::prefix('/auth')->group(function (){
 
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
-    Route::put('/picture', 'Api\ProfileController@uploadPicture');
+    Route::post('/picture', 'Api\ProfileController@uploadPicture');
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
     Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
     Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 });
 
+Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('jwt.auth');

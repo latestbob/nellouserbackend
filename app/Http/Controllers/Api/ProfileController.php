@@ -72,11 +72,11 @@ class ProfileController extends Controller
             $user = Auth::user();
             $user->picture = $imageUrl;
             $user->save();
-            UploadPicture::dispatch([
-                'uuid' => $user->uuid,
-                'vendor_id' => $user->vendor_id,
-                'picture' => $imageUrl
-            ]);
+            //UploadPicture::dispatch([
+            //    'uuid' => $user->uuid,
+            //    'vendor_id' => $user->vendor_id,
+            //    'picture' => $imageUrl
+            //]);
             return ['image_url' => $imageUrl];
         }
         
@@ -102,4 +102,40 @@ class ProfileController extends Controller
 
     public function reorderDrugs(Request $request)
     { }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password'     => 'required|string|confirmed'
+        ]);
+
+        $user = Auth::user();
+        $vendor = Vendor::find($user->vendor_id);
+
+        $userData = [
+            'current_password' => $request->current_password,
+            'password' => $request->new_password,
+            'uuid'     => $user->uuid
+        ];
+
+        try {
+
+            $response = $this->httpPost($vendor, '/api/password/change', $userData);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                return response(Psr7\str($e->getResponse()), 400);
+            } else {
+                print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
+            }
+        }
+    }
 }
