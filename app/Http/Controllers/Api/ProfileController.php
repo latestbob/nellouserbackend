@@ -18,6 +18,26 @@ class ProfileController extends Controller
 {
     use GuzzleClient;
 
+
+
+    /**
+     * Update customer profile
+     * 
+     * @bodyParam firstname string required
+     * @bodyParam lastname string required
+     * @bodyParam middlename string
+     * @bodyParam email string required
+     * @bodyParam phone string required
+     * @bodyParam password string required
+     * @bodyParam dob date optional format yyyy-mm-dd
+     * @bodyParam address string
+     * @bodyParam state string
+     * @bodyParam city string
+     * @bodyParam religion string
+     * @bodyParam gender string optional male or female
+     * @bodyParam height numeric
+     * @bodyParam weight numeric
+     */
     public function updateCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -32,8 +52,8 @@ class ProfileController extends Controller
             'city'  => 'string',
             'religion' => 'string',
             'gender' => 'string',
-            'height' => 'string',
-            'weight' => 'string',
+            'height' => 'numeric',
+            'weight' => 'numeric',
         ]);
 
         if ($validator->fails()) {
@@ -61,6 +81,14 @@ class ProfileController extends Controller
         return $user;
     }
 
+
+    /**
+     * Upload picture
+     * 
+     * Upload customer profile picture
+     * 
+     * @bodyParam picture file required image file
+     */
     public function uploadPicture(Request $request)
     {
 
@@ -83,6 +111,11 @@ class ProfileController extends Controller
         return response(['error' => 'Image not found'], 400);
     }
 
+    /**
+     * Health history
+     * 
+     * Fetch customer's health history data
+     */
     public function fetchHealthHistory(Request $request)
     {
         $data = User::with([
@@ -103,6 +136,14 @@ class ProfileController extends Controller
     public function reorderDrugs(Request $request)
     { }
 
+    /**
+     * Change password
+     * 
+     * Change customer password
+     * 
+     * @bodyParam current_password string required
+     * @bodyParam new_password string required
+     */
     public function changePassword(Request $request)
     {
         $request->validate([

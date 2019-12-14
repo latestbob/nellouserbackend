@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 
 
 Route::prefix('/auth')->group(function (){
-    Route::get('/', 'Api\AuthController@getToken');
+    Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
     Route::post('/login', 'Api\AuthController@loginCustomer');
     Route::post('/register', 'Api\AuthController@registerCustomer');
 });
@@ -28,8 +28,8 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
-    Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
-    Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
+    //Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
+    //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
@@ -50,7 +50,6 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
     Route::put('/profile/update', 'Api\ProfileController@updateCustomer');
     Route::post('/profile/picture', 'Api\ProfileController@uploadPicture');
-
 });
 
 Route::prefix('/import')->middleware('nello.auth')->group(function(){

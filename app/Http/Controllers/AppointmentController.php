@@ -21,6 +21,15 @@ class AppointmentController extends Controller
         return $appointment;
     }
 
+
+    /**
+     * Book appointment
+     * 
+     * @bodyParam medical_center uuid required a health center uuid
+     * @bodyParam reason string required the purpose of the appointment
+     * @bodyParam date date format yyyy-mm-dd
+     * @bodyParam time time format HH:mm
+     */
     public function bookAppointment(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -43,12 +52,30 @@ class AppointmentController extends Controller
     }
 
 
+    /**
+     * View Appointment
+     * 
+     * View details of an appointment
+     * 
+     * @urlParam uuid uuid required the uuid of the appointment
+     */
     public function viewAppointment(Request $request)
     {
         $appointment = $this->find($request->uuid);
         return $appointment;
     }
 
+    /**
+     * Update appointment
+     *
+     * Update the details of an appointment 
+     *  
+     * @bodyParam uuid uuid required the uuid of the appointment
+     * @bodyParam medical_center uuid required a health center uuid
+     * @bodyParam reason string required the purpose of the appointment
+     * @bodyParam date date format yyyy-mm-dd
+     * @bodyParam time time format HH:mm
+     */
     public function updateAppointment(Request $request)
     {
         $request->user_uuid = $request->user()->uuid;
@@ -74,6 +101,12 @@ class AppointmentController extends Controller
         return $appointment;
     }
 
+
+    /**
+     * Cancel appointment
+     * 
+     * @urlParam uuid uuid required the uuid of the appointment
+     */
     public function cancelAppointment(Request $request)
     {
         $appointment = $this->find($request->uuid);

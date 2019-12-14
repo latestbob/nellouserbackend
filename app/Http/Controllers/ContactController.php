@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    
+    /**
+     * Send customer message
+     * 
+     * @bodyParam message string required
+     */
     public function sendMessage(Request $request)
     {
         $request->validate([

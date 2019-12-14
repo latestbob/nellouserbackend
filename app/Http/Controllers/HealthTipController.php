@@ -8,6 +8,11 @@ use Carbon\Carbon;
 
 class HealthTipController extends Controller
 {
+
+    /**
+     * Health tips
+     * 
+     */
     public function index()
     {
         $today = Carbon::today();

@@ -23,6 +23,12 @@ class AuthController extends Controller
         return $this->getVendorToken($vendor);
     }
 
+    /**
+     * Customer login
+     * 
+     * @bodyParam email string required
+     * @bodyParam password string required
+     */
     public function loginCustomer(Request $request)
     {
         $user = User::With(['vendor'])->where('email', $request->email)->first();
@@ -70,6 +76,16 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Customer registration
+     * 
+     * @bodyParam firstname string required
+     * @bodyParam lastname string requird
+     * @bodyParam email string required
+     * @bodyParam phone string required
+     * @bodyParam password string required
+     * @bodyParam dob date optional format yyyy-mm-dd
+     */
     public function registerCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
