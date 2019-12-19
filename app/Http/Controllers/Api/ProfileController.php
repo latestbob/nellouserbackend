@@ -28,7 +28,6 @@ class ProfileController extends Controller
      * @bodyParam middlename string
      * @bodyParam email string required
      * @bodyParam phone string required
-     * @bodyParam password string required
      * @bodyParam dob date optional format yyyy-mm-dd
      * @bodyParam address string
      * @bodyParam state string
@@ -123,9 +122,9 @@ class ProfileController extends Controller
             'investigations',
             'medications',
             'payments',
-            'invoices',
+            //'invoices',
             'procedures'
-        ])->find(Auth::user()->id);
+        ])->find($request->user()->id);
         return $data;
     }
 

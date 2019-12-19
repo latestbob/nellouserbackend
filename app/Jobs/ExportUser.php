@@ -52,7 +52,7 @@ class ExportUser implements ShouldQueue
             if ($this->action == 'update') {
                 //echo 'sending put request';
                 $this->user->load('vendor');
-                $response = $this->httpPut($this->user->vendor, '/api/import/users', $this->user->toArray());
+                $response = $this->httpPost($this->user->vendor, '/api/import/users', $this->user->toArray());
                 //echo $response->getBody();
                 $this->user->local_saved = true;
                 $this->user->save();

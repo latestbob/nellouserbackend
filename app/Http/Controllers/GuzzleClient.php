@@ -41,6 +41,23 @@ trait GuzzleClient
         return $response;
     }
 
+    public function httpPut(Vendor $vendor, string $path, array $data): Response
+    {
+        $client = new Client([
+            'base_uri' => $vendor->server_url,
+            'timeout'  => '15.0'
+        ]);
+        $options = [
+            'headers' => [
+                'Authorization' => $this->getVendorToken($vendor)
+            ],
+            'json' => $data
+        ];
+
+        $response = $client->put($path, $options);
+        return $response;
+    }
+
     public function httpGet(Vendor $vendor, string $path, array $data): Response
     {
         $client = new Client([
@@ -55,6 +72,23 @@ trait GuzzleClient
         ];
 
         $response = $client->get($path, $options);
+        return $response;        
+    }
+
+    public function httpDelete(Vendor $vendor, string $path, array $data): Response
+    {
+        $client = new Client([
+            'base_uri' => $vendor->server_url,
+            'timeout'  => '2.0'
+        ]);
+        $options = [
+            'headers' => [
+                'Authorization' => $this->getVendorToken($vendor)
+            ],
+            'query' => $data
+        ];
+
+        $response = $client->delete($path, $options);
         return $response;        
     }
 }

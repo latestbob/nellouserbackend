@@ -61,6 +61,9 @@ class AppointmentController extends Controller
      */
     public function viewAppointment(Request $request)
     {
+        if (empty($request->uuid)) {
+            return response(['error' => 'Query parameter uuid is missing'], 400);
+        }
         $appointment = $this->find($request->uuid);
         return $appointment;
     }
