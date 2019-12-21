@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 
 Route::prefix('/auth')->group(function (){
     Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
+    Route::get('/user', 'Api\AuthController@getUser')->name('api.auth');
     Route::post('/login', 'Api\AuthController@loginCustomer');
     Route::post('/register', 'Api\AuthController@registerCustomer');
 });

@@ -135,4 +135,9 @@ class AuthController extends Controller
         //RegisterCustomer::dispatch($user);
         //return $user;
     }
+
+    public function getUser(Request $request)
+    {
+        return $request->user();
+    }
 }
