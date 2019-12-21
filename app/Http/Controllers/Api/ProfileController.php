@@ -53,6 +53,7 @@ class ProfileController extends Controller
             'gender' => 'string',
             'height' => 'numeric',
             'weight' => 'numeric',
+            'sponsor' => 'string'
         ]);
 
         if ($validator->fails()) {
