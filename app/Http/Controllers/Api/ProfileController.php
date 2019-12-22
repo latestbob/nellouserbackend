@@ -148,7 +148,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'current_password' => 'required|string',
-            'new_password'     => 'required|string|confirmed'
+            'new_password'     => 'required|string'
         ]);
 
         $user = Auth::user();
