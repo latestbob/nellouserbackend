@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\GuzzleClient;
 use App\Jobs\RegisterCustomer;
 use App\Models\Vendor;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Exception\ClientException;
 
@@ -112,6 +113,10 @@ class AuthController extends Controller
         $userData = $validator->validated();
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
+
+        if (!empty($userData['dob'])) {
+            $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
+        }
 
         try {
 
