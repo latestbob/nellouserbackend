@@ -11,6 +11,7 @@ use App\Http\Controllers\GuzzleClient;
 use App\Jobs\RegisterCustomer;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Exception\ClientException;
 
 class AuthController extends Controller
 {
@@ -68,6 +69,10 @@ class AuthController extends Controller
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
+        } catch(ClientException $e) {
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);    
         }
 
         return response([
