@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//Route::middleware('jwt.auth')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
 
@@ -22,10 +22,10 @@ Route::prefix('/auth')->group(function (){
     Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
     Route::post('/login', 'Api\AuthController@loginCustomer')->name('login');
     Route::post('/register', 'Api\AuthController@registerCustomer');
-    Route::get('/user', 'Api\AuthController@getUser')->middleware('auth:api');
+    Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
 });
 
-Route::prefix('/profile')->middleware('auth:api')->group(function() {
+Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
@@ -33,14 +33,14 @@ Route::prefix('/profile')->middleware('auth:api')->group(function() {
     //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 });
 
-Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('auth:api');
-Route::post('/contact/message', 'ContactController@sendMessage')->middleware('auth:api');
+Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
+Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
-Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('auth:api');
-Route::get('/health-tips', 'HealthTipController@index')->middleware('auth:api');
-Route::get('/health-centers', 'HealthCenterController@index')->middleware('auth:api');
+Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('jwt.auth');
+Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
+Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 
-Route::prefix('/appointments')->middleware('auth:api')->group(function() {
+Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/book', 'AppointmentController@bookAppointment');
     Route::get('/view','AppointmentController@viewAppointment');
     Route::put('/update', 'AppointmentController@updateAppointment');
