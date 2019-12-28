@@ -149,9 +149,10 @@ class AuthController extends Controller
     public function getUser(Request $request)
     {
         $token = $request->bearerToken();
+        return ['token' => $token];
         if (empty($token)) 
             return response(['error' => 'Missing token'], 401);
-            
+
         $user = JWTAuth::toUser($token);
         return ['user' => $user];
     }
