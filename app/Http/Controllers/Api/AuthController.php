@@ -148,6 +148,8 @@ class AuthController extends Controller
 
     public function getUser(Request $request)
     {
-        return ['user' => Auth::user()];
+        $token = $request->bearerToken();
+        $user = JWTAuth::toUser($token);
+        return ['user' => $user];
     }
 }

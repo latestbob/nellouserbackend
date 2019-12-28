@@ -11,6 +11,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    //protected $primaryKey = 'uuid';
+
     /**
      * The attributes that are mass assignable.
      *
