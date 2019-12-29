@@ -63,17 +63,17 @@ class User extends Authenticatable implements JWTSubject
 
     public function vitals()
     {
-        return $this->hasMany('App\Models\Vital', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\Vital', 'user_uuid', 'uuid');
     }
 
     public function procedures()
     {
-        return $this->hasMany('App\Models\Procedure', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\Procedure', 'user_uuid', 'uuid');
     }
 
     public function investigations()
     {
-        return $this->hasMany('App\Models\Investigation', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\Investigation', 'user_uuid', 'uuid');
     }
 
     public function invoices() {
@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function payments()
     {
-        return $this->hasMany('App\Models\PaystackPayment', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\PaystackPayment', 'user_uuid', 'uuid');
     }
     
     /**
