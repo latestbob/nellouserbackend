@@ -155,7 +155,7 @@ class ProfileController extends Controller
             'new_password'     => 'required|string'
         ]);
 
-        $user = Auth::user();
+        $user = $request->user();
         $vendor = Vendor::find($user->vendor_id);
 
         $userData = [
