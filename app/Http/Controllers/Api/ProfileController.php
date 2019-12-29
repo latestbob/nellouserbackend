@@ -50,14 +50,14 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255',
             'phone' => 'required|numeric',
             'dob' => 'nullable|date',
-            'address' => 'string',
-            'state' => 'string',
-            'city'  => 'string',
-            'religion' => 'string',
-            'gender' => 'string',
-            'height' => 'numeric',
-            'weight' => 'numeric',
-            'sponsor' => 'string'
+            'address' => 'nullable|string',
+            'state' => 'nullable|string',
+            'city'  => 'nullable|string',
+            'religion' => 'nullable|string',
+            'gender' => 'nullable|string',
+            'height' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
+            'sponsor' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
