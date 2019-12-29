@@ -53,12 +53,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function encounters()
     {
-        return $this->hasMany('App\Models\Encounter', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\Encounter', 'user_uuid', 'uuid');
     }
 
     public function medications()
     {
-        return $this->hasMany('App\Models\Medication', 'uuid', 'user_uuid');
+        return $this->hasMany('App\Models\Medication', 'user_uuid', 'uuid');
     }
 
     public function vitals()
