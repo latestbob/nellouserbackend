@@ -47,6 +47,7 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::get('/view','AppointmentController@viewAppointment');
     Route::put('/update', 'AppointmentController@updateAppointment');
     Route::put('/cancel', 'AppointmentController@cancelAppointment');
+    Route::get('/last', 'AppointmentController@lastAppointment');
 });
 
 

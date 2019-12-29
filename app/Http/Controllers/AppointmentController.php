@@ -118,4 +118,11 @@ class AppointmentController extends Controller
         $appointment->save();
         return $appointment;
     }
+
+    public function lastAppointment(Request $request)
+    {
+        $user = $request->user();
+        $appointment = Appointment::where('user_uuid', $user->uuid)->orderBy('created_at','desc')->first();
+        return $appointment;
+    }
 }
