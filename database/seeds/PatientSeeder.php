@@ -79,7 +79,7 @@ class PatientSeeder extends Seeder
             'height' => '12',
             'respiration_rate' => 'rate',
             'pulse' => 'sample pulse',
-            'vitals_date' => Carbon::today()->toString(),
+            'vitals_date' => Carbon::today()->toDateString(),
         ];
 
         $procedure = [
@@ -101,7 +101,6 @@ class PatientSeeder extends Seeder
 
         $payment = [
             'status' => 'test',
-            'email' => '',
             'amount' => 20000.00,
             'reference' => 'BG563FRAB90',
             'payment_type' => 'card'
