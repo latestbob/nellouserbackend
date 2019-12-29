@@ -64,12 +64,12 @@ class PatientSeeder extends Seeder
             'duration' => '3 days',
             'length' => 'Sample length',
             'quantity' => '6 tablets',
-            'immunization_llin' => 'Sample',
+            /*'immunization_llin' => 'Sample',
             'immunization_deworming' => 'Sample',
             'immunization_vitamin_A' => 'Sample',
             'immunization_status' => 'Sample Status',
             'immunization_visits' => 'Sample visits',
-            'immunization_vaccines' => 'Sample vaccines',
+            'immunization_vaccines' => 'Sample vaccines',*/
         ];
 
         $vital = [
