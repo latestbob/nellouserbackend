@@ -22,7 +22,7 @@ class HealthTipController extends Controller
     }
 
     public function lastTip() {
-        $tip = HealthTip::orderBy('created_at', 'desc')->first();
+        $tip = HealthTip::first(); //orderBy('created_at', 'desc')->first();
         return [
             'tip' => $this
         ];
