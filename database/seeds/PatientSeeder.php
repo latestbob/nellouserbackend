@@ -36,7 +36,7 @@ class PatientSeeder extends Seeder
             [
                 'firstname' => 'Rosetta',
                 'lastname' => 'Chechyn',
-                'phone' => '08909238292',
+                'phone' => '0709238292',
                 'email' => 'r.chechyn@gmail.com',
                 'password' => Hash::make('password'),
                 'sponsor' => 'Mother',
