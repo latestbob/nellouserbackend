@@ -39,6 +39,7 @@ Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jw
 
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('jwt.auth');
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
+Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
