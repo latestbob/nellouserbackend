@@ -102,8 +102,7 @@ class PatientSeeder extends Seeder
         $payment = [
             'status' => 'test',
             'amount' => 20000.00,
-            'reference' => 'BG563FRAB90',
-            'payment_type' => 'card'
+            'reference' => 'BG563FRAB90'
         ];
 
         foreach($patients as $patient) {
