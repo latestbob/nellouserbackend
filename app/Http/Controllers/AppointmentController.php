@@ -122,7 +122,7 @@ class AppointmentController extends Controller
     public function pendingAppointment(Request $request)
     {
         $user = $request->user();
-        $appointment = Appointment::where([
+        $appointment = Appointment::with(['center'])->where([
             'user_uuid' => $user->uuid,
             'status' => 'pending'
             ])->orderBy('created_at','desc')->first();
