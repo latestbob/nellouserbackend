@@ -14,6 +14,10 @@ use App\Http\Controllers\GuzzleClient;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Appointment;
+use App\Models\Encounter;
+use App\Models\Medication;
+
 class ProfileController extends Controller
 {
     use GuzzleClient;
@@ -178,5 +182,19 @@ class ProfileController extends Controller
                 return response($str, 400);
             }
         }
+    }
+
+
+    public function inBrief(Request $request) {
+        $user = $request->user();
+        $appointment = Appointment::where('user_uuid', $user->uuid)->orderBy('created_at','desc')->first();
+        $medication = Medication::where('user_uuid', $user->uuid)->orderBy('created_at', 'desc')->first();
+        $encounter = Encounter::where('user_uuid', $user->uuid)->orderBy('created_at', 'desc')->first();
+
+        return [
+            'appointment' => $appointment,
+            'medication' => $medication,
+            'encounter' => $encounter
+        ];
     }
 }

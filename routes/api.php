@@ -29,6 +29,7 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
+    Route::get('/summary', 'Api\ProfileController@inBrief');
     //Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
     //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 });

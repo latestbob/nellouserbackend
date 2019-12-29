@@ -47,12 +47,12 @@ class PatientSeeder extends Seeder
         ];
 
         $encounter = [
+            'bms' => 'Sample BMS',
             'drug' => 'Tetracycline',
             'test' => 'Sample Test',
             'diagnosis' => 'Negative',
             'note' => 'Taking less sugar should be fine',
             'encounter_date' => Carbon::today()->toDateString(),
-            'bms' => 'Sample BMS',
         ];
 
         $medication = [
