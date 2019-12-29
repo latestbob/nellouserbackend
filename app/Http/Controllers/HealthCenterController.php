@@ -15,7 +15,7 @@ class HealthCenterController extends Controller
      * @urlParam page int optional defaults to 1
      */
     public function index(Request $request) {
-        $centers = HealthCenter::orderBy('name')->paginate();
+        $centers = HealthCenter::orderBy('name'); //->paginate();
         return $centers;
     }
 }
