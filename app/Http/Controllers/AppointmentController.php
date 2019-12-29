@@ -119,10 +119,13 @@ class AppointmentController extends Controller
         return $appointment;
     }
 
-    public function lastAppointment(Request $request)
+    public function pendingAppointment(Request $request)
     {
         $user = $request->user();
-        $appointment = Appointment::where('user_uuid', $user->uuid)->orderBy('created_at','desc')->first();
+        $appointment = Appointment::where([
+            'user_uuid' => $user->uuid,
+            'status' => 'pending'
+            ])->orderBy('created_at','desc')->first();
         return $appointment;
     }
 }
