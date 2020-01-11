@@ -12,7 +12,9 @@ use App\Jobs\RegisterCustomer;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 class AuthController extends Controller
 {

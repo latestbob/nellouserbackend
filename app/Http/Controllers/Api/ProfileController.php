@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\GuzzleClient;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7;
 
 use App\Models\Appointment;
 use App\Models\Encounter;
@@ -21,7 +23,6 @@ use App\Models\Medication;
 class ProfileController extends Controller
 {
     use GuzzleClient;
-
 
 
     /**
