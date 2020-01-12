@@ -7,6 +7,7 @@ use App\Jobs\BookAppointment;
 use App\Models\Appointment;
 use App\Models\HealthCenter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
@@ -44,6 +45,7 @@ class AppointmentController extends Controller
         }
 
         $data = $validator->validated();
+        $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $request->user()->uuid;
         $data['center_uuid'] = $request->medical_center;
