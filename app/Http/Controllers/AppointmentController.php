@@ -86,7 +86,7 @@ class AppointmentController extends Controller
         $request->user_uuid = $request->user()->uuid;
         $validator = Validator::make($request->all(), [
             'uuid'           => 'required|exists:appointments',
-            'medical_center' => 'required|string|exists:health_centers:uuid',
+            'medical_center' => 'required|string', //|exists:health_centers:uuid',
             'reason'         => 'required|string',
             'date'           => 'required|date',
             'time'           => 'required|date_format:H:i'
