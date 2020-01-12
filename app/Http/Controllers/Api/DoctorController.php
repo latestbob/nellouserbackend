@@ -21,7 +21,7 @@ class DoctorController extends Controller
     {
         $conditions = ['user_type' => 'doctor'];
         if ($request->has('specialization')) {
-            $conditions['specialization'] = $request->specialization;
+            $conditions['aos'] = $request->specialization;
         }
         $doctors = User::with(['vendor'])->where($conditions)->paginate();
         return $doctors;
