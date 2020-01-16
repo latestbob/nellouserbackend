@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Traits;
 
 use App\Models\Vendor;
 use Carbon\Carbon;

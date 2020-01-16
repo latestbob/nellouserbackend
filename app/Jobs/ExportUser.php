@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\User;
 use GuzzleHttp\Psr7; 
 use GuzzleHttp\Exception\RequestException;
-use App\Http\Controllers\GuzzleClient;
+use App\Traits\GuzzleClient;
 
 
 class ExportUser implements ShouldQueue
