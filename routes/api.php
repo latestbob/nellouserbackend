@@ -70,3 +70,9 @@ Route::prefix('/import')->middleware('nello.auth')->group(function(){
     Route::post('/procedure', 'ImportController@importProcedure');
     Route::post('/vital', 'ImportController@importVital');
 });
+
+
+
+Route::prefix('/test')->group(function(){
+    Route::get('customers', 'TestController@customers');
+});
