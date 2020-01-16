@@ -10,7 +10,7 @@ use App\Jobs\UpdateCustomer;
 use App\Jobs\UploadPicture;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\GuzzleClient;
+use App\Traits\GuzzleClient;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Exception\RequestException;

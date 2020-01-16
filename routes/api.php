@@ -74,5 +74,7 @@ Route::prefix('/import')->middleware('nello.auth')->group(function(){
 
 
 Route::prefix('/test')->group(function(){
-    Route::get('customers', 'TestController@customers');
+    Route::get('customers', 'TestController@customers'); //create (), update(), delete()
+    Route::get('appointments', 'TestController@appointments'); //create() update(), delete()
 });
+

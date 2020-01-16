@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\GuzzleClient;
+use App\Traits\GuzzleClient;
 use App\Jobs\RegisterCustomer;
 use App\Models\Vendor;
 use Carbon\Carbon;

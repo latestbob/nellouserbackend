@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
-//use App\Http\Controllers\GuzzleClient;
+//use App\Traits\GuzzleClient;
 
 class NelloAuthMiddleware
 {

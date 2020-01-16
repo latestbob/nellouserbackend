@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Http\Controllers\GuzzleClient;
+use App\Traits\GuzzleClient;
 use App\Models\Vendor;
 
 class BookAppointment implements ShouldQueue
