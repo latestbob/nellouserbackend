@@ -133,7 +133,7 @@ class AuthController extends Controller
             if ($e->hasResponse()) {
                 return response(Psr7\str($e->getResponse()), 400);
             } else {
-                print_r($e);
+                //print_r($e);
                 $str = json_encode($e, true);
                 return response($str, 400);
             }

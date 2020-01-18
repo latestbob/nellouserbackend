@@ -9,6 +9,7 @@ use App\Models\HealthCenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\GuzzleClient;
 
 class AppointmentController extends Controller
 {

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\User;
 use GuzzleHttp\Psr7; 
 use GuzzleHttp\Exception\RequestException;
-use use App\Traits\GuzzleClient;
+use App\Traits\GuzzleClient;
 
 
 class ExportUser implements ShouldQueue
@@ -70,7 +70,8 @@ class ExportUser implements ShouldQueue
             if ($e->hasResponse()) {
                 echo Psr7\str($e->getResponse());
             } else {
-                print_r($e);
+                //print_r($e);
+                echo  json_encode($e, true);
             }
         }
     }

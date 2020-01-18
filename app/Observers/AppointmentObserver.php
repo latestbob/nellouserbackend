@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\ExportAppointment;
 use App\Models\Appointment;
 use Illuminate\Support\Str;
 
@@ -25,7 +26,7 @@ class AppointmentObserver
      */
     public function created(Appointment $appointment)
     {
-        //
+        ExportAppointment::dispatch($appointment, 'create');
     }
 
     /**
@@ -36,7 +37,7 @@ class AppointmentObserver
      */
     public function updated(Appointment $appointment)
     {
-        //
+        ExportAppointment::dispatch($appointment, 'update');
     }
 
     /**
@@ -47,7 +48,7 @@ class AppointmentObserver
      */
     public function deleted(Appointment $appointment)
     {
-        //
+        ExportAppointment::dispatch($appointment, 'delete');
     }
 
     /**
