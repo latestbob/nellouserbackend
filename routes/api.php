@@ -37,7 +37,8 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
-Route::get('/doctors', 'Api\DoctorController@fetchDoctors')->middleware('jwt.auth');
+Route::get('/drugs', 'Api\DrugController@index');
+Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
 Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations')->middleware('jwt.auth');
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
