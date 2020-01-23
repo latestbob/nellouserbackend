@@ -6,7 +6,10 @@ use App\Models\Vendor;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 
 trait GuzzleClient
@@ -90,5 +93,23 @@ trait GuzzleClient
 
         $response = $client->delete($path, $options);
         return $response;        
+    }
+
+    public function httpCall(string $method, Vendor $vendor, string $path, array $data) 
+    {
+        $_method = 'http' . $method;
+        try {
+            $response = $this->{$_method}($vendor, $path, $data);
+
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                return response(Psr7\str($e->getResponse()), 400);
+            } else {
+                //print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
+            }
+        }
     }
 }

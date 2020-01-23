@@ -28,7 +28,7 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testLogin()
+   /* public function testLogin()
     {
         $response = $this->postJson('/api/auth/login', [
             'email' => $this->user['email'],
@@ -110,16 +110,16 @@ class AuthTest extends TestCase
         $this->token = $data['token'];
         //echo 'TOKEN ' . $this->token;
         $response->assertJsonStructure(['user', 'token']);
-    }
+    }*/
 
-    public function testDelete()
+    /*public function testDelete()
     {
         $user = User::where('email', $this->user['email'])->first();
         //User::destroy($user->id);
         ExportUser::dispatchNow($user, 'delete');
         User::where('email', $this->user['email'])->delete();
         $this->assertDatabaseMissing('users', ['email' => $this->user['email']]);
-    }
+    }*/
 
     /*protected function tearDown() : void
     {

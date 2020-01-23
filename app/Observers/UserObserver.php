@@ -25,7 +25,7 @@ class UserObserver
     public function created(User $user)
     {
         if (!$user->local_saved) {
-            ExportUser::dispatch($user, 'create');
+        //    ExportUser::dispatch($user, 'create');
         }
     }
 

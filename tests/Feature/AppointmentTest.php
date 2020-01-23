@@ -17,7 +17,7 @@ class AppointmentTest extends TestCase
 
     //use RefreshDatabase;
     
-    private $user = [
+   /* private $user = [
         "firstname" => "Achilles",
         "lastname" => "Achilles",
         "email" => "achilles2@gmail.com",
@@ -37,7 +37,7 @@ class AppointmentTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    /*public function testExample()
     {
         $response = $this->get('/');
 
@@ -158,5 +158,5 @@ class AppointmentTest extends TestCase
         ExportUser::dispatchNow($user, 'delete');
         User::where('email', $this->user['email'])->delete();
         $this->assertDatabaseMissing('users', ['email' => $this->user['email']]);
-    }
+    }*/
 }

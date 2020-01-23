@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Auth;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
@@ -113,12 +114,16 @@ class AuthController extends Controller
         $vendor = Vendor::find(1);
 
         $userData = $validator->validated();
+
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
+        $userData['uuid'] = Str::uuid()->toString();
 
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
         }
+        
+        $user = User::create($userData);
 
         try {
 
@@ -129,7 +134,7 @@ class AuthController extends Controller
             }
             return $response->getBody();
         } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
+            //echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
                 return response(Psr7\str($e->getResponse()), 400);
             } else {
