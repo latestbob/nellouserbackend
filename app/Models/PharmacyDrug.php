@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PharmacyDrug extends Model
 {
-    protected $fillable = ['brand', 'name', 'price', 'category', 'uuid'];
+    protected $fillable = ['brand', 'name', 'price', 'image', 'category', 'uuid'];
 }

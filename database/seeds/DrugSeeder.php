@@ -22,6 +22,7 @@ class DrugSeeder extends Seeder
                 'name' => trim($drug['Name']),
                 'brand' => trim($drug['Brand']),
                 'category' => trim($drug['Category']),
+                'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
                 'price' => (double) $drug['Price'],
                 'uuid' => Str::uuid()->toString()
             ]);
