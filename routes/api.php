@@ -64,12 +64,18 @@ Route::prefix('/import')->middleware('nello.auth')->group(function(){
     Route::post('/health-centers', 'ImportController@importHealthCenter');
     Route::post('/encounter', 'ImportController@importEncounter');
     Route::post('/health-tip', 'ImportController@importHealthTip');
-    Route::post('/investigation', 'ImportController@importInvestigation');
+//    Route::post('/investigation', 'ImportController@importInvestigation');
     Route::post('/invoice', 'ImportController@importInvoice');
     Route::post('/medication', 'ImportController@importMedication');
     Route::post('/payment', 'ImportController@importPayment');
-    Route::post('/procedure', 'ImportController@importProcedure');
+//    Route::post('/procedure', 'ImportController@importProcedure');
     Route::post('/vital', 'ImportController@importVital');
+
+    Route::match(['post', 'put', 'delete'], '/appointments', 'ImportController@importAppointment');
+    Route::match(['post', 'put', 'delete'], '/investigations', 'ImportController@importInvestigation');
+    Route::match(['post', 'put', 'delete'], '/procedures', 'ImportController@importProcedure');
+    Route::match(['post', 'put', 'delete'], '/medical_history', 'ImportController@importMedicalHistory');
+
 });
 
 
