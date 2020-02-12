@@ -49,6 +49,8 @@ class AppointmentController extends Controller
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $request->user()->uuid;
+        $data['app_date'] = $request->date;
+        $data['app_time'] = $request->time;
         $data['center_uuid'] = $request->medical_center;
         $appointment = Appointment::create($data);
         return $appointment;
@@ -68,6 +70,12 @@ class AppointmentController extends Controller
             return response(['error' => 'Query parameter uuid is missing'], 400);
         }
         $appointment = $this->find($request->uuid);
+
+        if (empty($appointment)) return [];
+
+        $appointment->date = $appointment->app_date;
+        $appointment->time = $appointment->app_time;
+
         return $appointment;
     }
 
@@ -86,10 +94,10 @@ class AppointmentController extends Controller
     {
         $request->user_uuid = $request->user()->uuid;
         $validator = Validator::make($request->all(), [
-            'uuid'           => 'required|exists:appointments',
-            'medical_center' => 'required|string', //|exists:health_centers:uuid',
+            'uuid'           => 'required|exists:appointments,uuid',
+//            'medical_center' => 'required|string', //|exists:health_centers:uuid',
             'reason'         => 'required|string',
-            'date'           => 'required|date',
+            'date'           => 'required|date|after:today',
             'time'           => 'required|date_format:H:i'
         ]);
 
@@ -98,13 +106,15 @@ class AppointmentController extends Controller
         }
 
         $appointment = $this->find($request->uuid);
-        if (empty($appointment)) return;
+        if (empty($appointment)) return ['message' => 'Appointment update failed'];
 
         $data = $validator->validated();
-        $data['user_uuid'] = $request->user()->uuid;
-        $data['center_uuid'] = $request->medical_center;
+        $data['app_date'] = $request->date;
+        $data['app_time'] = $request->time;
+//        $data['user_uuid'] = $request->user()->uuid;
+//        $data['center_uuid'] = $request->medical_center;
         $appointment->update($data);
-        return $appointment;
+        return ['message' => 'Appointment updated successfully'];
     }
 
 
@@ -116,7 +126,7 @@ class AppointmentController extends Controller
     public function cancelAppointment(Request $request)
     {
         $appointment = $this->find($request->uuid);
-        if (empty($appointment)) return;
+        if (empty($appointment)) return [];
         $appointment->status = 'cancelled';
         $appointment->save();
         return $appointment;
@@ -129,6 +139,11 @@ class AppointmentController extends Controller
             'user_uuid' => $user->uuid,
             'status' => 'pending'
             ])->orderBy('created_at','desc')->first();
+
+        if (empty($appointment)) return [];
+
+        $appointment->date = $appointment->app_date;
+        $appointment->time = $appointment->app_time;
         return $appointment;
     }
 }
