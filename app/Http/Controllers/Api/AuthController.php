@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Traits\GuzzleClient;
-use App\Jobs\RegisterCustomer;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -36,34 +35,41 @@ class AuthController extends Controller
      */
     public function loginCustomer(Request $request)
     {
-        $user = User::With(['vendor'])->where('email', $request->email)->first();
-        if (!$user) {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8'
+        ]);
+
+
+        if ($validator->fails()) {
             return response([
                 'msg' => 'Invalid Credentials.'
             ], 400);
         }
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only(['email', 'password']);
 
 
         try {
 
-            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
-
-            if ($response->getReasonPhrase() === 'OK') { }
-            if (!$token = JWTAuth::fromUser($user)) {
+//            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
+//
+//            if ($response->getReasonPhrase() === 'OK') { }
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return response([
                     'msg' => 'Invalid Credentials.'
                 ], 400);
             }
 
-            //$user = Auth::user();
+            $user = Auth::user();
+
+            $user->vendor = $user->vendor;
 
             return [
                 'token'  => $token,
                 'user'   => $user
             ];
-            return $response->getBody();
+//            return $response->getBody();
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -79,9 +85,9 @@ class AuthController extends Controller
             ], 400);    
         }
 
-        return response([
-            'msg' => 'Invalid Credentials.'
-        ], 400);
+//        return response([
+//            'msg' => 'Invalid Credentials.'
+//        ], 400);
     }
 
 
