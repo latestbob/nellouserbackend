@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MedicalHistory;
+use App\Models\Appointment;
 use App\Models\Encounter;
 use App\Models\HealthCenter;
 use App\Models\HealthTip;
@@ -64,16 +66,15 @@ class ImportController extends Controller
     public function importInvestigation(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all();
-            Investigation::create($data);
+            Investigation::create($request->all());
         } elseif ($request->isMethod('put')) {
             $object = Investigation::where('uuid', $request->uuid)->first();
-            $data = $request->all();
-            $object->update($data);
+            if ($object) $object->update($request->all());
         } elseif ($request->isMethod('delete')) {
-            $object = Investigation::where('uuid', $request->uuid)->first();
-            $object->delete();
+            $object = Investigation::where('user_uuid', $request->user_uuid);
+            if ($object) $object->delete();
         }
+        return ['success'];
     }
 
     public function importInvoice(Request $request)
@@ -112,16 +113,33 @@ class ImportController extends Controller
     public function importProcedure(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all();
-            Procedure::create($data);
+            return Procedure::create($request->all());
         } elseif ($request->isMethod('put')) {
             $object = Procedure::where('uuid', $request->uuid)->first();
-            $data = $request->all();
-            $object->update($data);
+            if ($object && $object->update($request->all())) {
+                return $object;
+            }
         } elseif ($request->isMethod('delete')) {
-            $object = Procedure::where('uuid', $request->uuid)->first();
-            $object->delete();
+            $object = Procedure::where('user_uuid', $request->user_uuid);
+            if ($object->delete()) return ['successful'];
         }
+        return ['nada'];
+    }
+
+    public function importMedicalHistory(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            return MedicalHistory::create($request->all());
+        } elseif ($request->isMethod('put')) {
+            $object = MedicalHistory::where('uuid', $request->uuid)->first();
+            if ($object && $object->update($request->all())) {
+                return $object;
+            }
+        } elseif ($request->isMethod('delete')) {
+            $object = MedicalHistory::where('user_uuid', $request->user_uuid);
+            if ($object->delete()) return ['successful'];
+        }
+        return ['nada'];
     }
 
     public function importVital(Request $request)
@@ -142,15 +160,31 @@ class ImportController extends Controller
     public function importUser(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all();
-            return User::create($data);
+            return User::create($request->all());
         } elseif ($request->isMethod('put')) {
             $object = User::where('uuid', $request->uuid)->first();
-            $data = $request->all();
-            return $object->update($data);
+            if ($object && $object->update($request->all())) {
+                return $object;
+            }
         } elseif ($request->isMethod('delete')) {
             $object = User::where('uuid', $request->uuid)->first();
-            return $object->delete();
+            if ($object->delete()) return ['successful'];
+        }
+        return ['nada'];
+    }
+
+    public function importAppointment(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            return Appointment::create($request->all());
+        } elseif ($request->isMethod('put')) {
+            $object = Appointment::where('uuid', $request->uuid)->first();
+            if ($object && $object->update($request->all())) {
+                return $object;
+            }
+        } elseif ($request->isMethod('delete')) {
+            $object = Appointment::where('uuid', $request->uuid)->first();
+            if ($object->delete()) return ['successful'];
         }
         return ['nada'];
     }
