@@ -47,7 +47,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:50',
             'lastname'  => 'required|string|max:50',
-            'middlename' => 'string',
+            'middlename' => 'nullable|string',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|numeric',
             'dob' => 'nullable|date',
@@ -55,14 +55,16 @@ class ProfileController extends Controller
             'state' => 'nullable|string',
             'city'  => 'nullable|string',
             'religion' => 'nullable|string',
-            'gender' => 'nullable|string',
+            'gender' => 'string|in:Male,Female',
             'height' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'sponsor' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 400);
+            return response([
+                'msg' => $validator->errors()
+            ], 400);
         }
 
         $userData = $validator->validated();
@@ -83,7 +85,7 @@ class ProfileController extends Controller
 
         $user->update($userData);
         //UpdateCustomer::dispatch($userData);
-        return $user;
+        return ['msg' => 'Profile updated successfully.', 'user' => $user];
     }
 
 
