@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Jobs\ForgotPasswordJob;
+use App\Jobs\ResetPasswordJob;
+use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -106,8 +110,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:50',
             'lastname'  => 'required|string|max:50',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|numeric|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|string|min:6|confirmed',
             'dob' => 'nullable|date'
         ]);
@@ -157,6 +161,80 @@ class AuthController extends Controller
         //$user = User::create($userData);
         //RegisterCustomer::dispatch($user);
         //return $user;
+    }
+
+    public function forgotPasswordCustomer(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|exists:users,email'
+        ]);
+
+
+        if ($validator->fails()) {
+            return response([
+                'msg' => $validator->errors()
+            ], 400);
+        }
+
+        $user = User::where('email', '=', $request->email)->first();
+
+        ForgotPasswordJob::dispatch($user)->onConnection('database')->onQueue('mails');
+
+        return [
+            'email' => $user->email,
+            'msg' => "A password reset code has been sent to your mail box at {$user->email}",
+        ];
+    }
+
+    public function resetPasswordCustomer(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|exists:users,email',
+            'code' => 'required|string|max:255|exists:password_resets,token',
+            'password' => 'required|string|min:6'
+        ]);
+
+
+        if ($validator->fails()) {
+            return response([
+                'msg' => $validator->errors()
+            ], 400);
+        }
+
+        $pass = PasswordReset::where('token', '=', $request->code)->first();
+
+        if ($pass->email != $request->email) {
+            return response([
+                'msg' => [
+                    'code' => ['That code was not generated for the specified account']
+                ]
+            ], 400);
+        }
+
+        if (time() > (strtotime($pass->created_at) + (60 * 60))) {
+            return response([
+                'msg' => [
+                    'code' => ['Sorry that code has expired']
+                ]
+            ], 400);
+        }
+
+        $user = User::where(['email' => $request->email])->first();
+
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        ResetPasswordJob::dispatch(
+            $user,
+            $request->password
+            )->onConnection('database')->onQueue('mails');
+
+        $pass->delete();
+
+        return [
+            'msg' => "Your password has been reset successfully",
+        ];
     }
 
     public function getUser(Request $request)

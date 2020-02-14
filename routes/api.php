@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 Route::prefix('/auth')->group(function (){
     Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
     Route::post('/login', 'Api\AuthController@loginCustomer')->name('login');
+    Route::post('/forgot-password', 'Api\AuthController@forgotPasswordCustomer');
+    Route::post('/reset-password', 'Api\AuthController@resetPasswordCustomer');
     Route::post('/register', 'Api\AuthController@registerCustomer');
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
 });
