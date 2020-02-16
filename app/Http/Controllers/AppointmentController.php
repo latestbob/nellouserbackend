@@ -49,8 +49,8 @@ class AppointmentController extends Controller
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $request->user()->uuid;
-        //$data['date'] = $request->date;
-        //$data['time'] = $request->time;
+        $data['date'] = $request->date;
+        $data['time'] = $request->time;
         $data['center_uuid'] = $request->medical_center;
         $appointment = Appointment::create($data);
         return $appointment;
