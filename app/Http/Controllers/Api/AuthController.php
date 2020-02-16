@@ -47,7 +47,8 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'msg' => 'Invalid Credentials.'
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Validation error.'
             ], 400);
         }
 
@@ -69,7 +70,8 @@ class AuthController extends Controller
                 ];
             }
             return response([
-                'msg' => 'Invalid Credentials.'
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Empty user'
             ], 400);
 
             //            return $response->getBody();
@@ -88,10 +90,6 @@ class AuthController extends Controller
                 'msg' => 'Invalid Credentials.'
             ], 400);
         }
-
-        //        return response([
-        //            'msg' => 'Invalid Credentials.'
-        //        ], 400);
     }
 
 
