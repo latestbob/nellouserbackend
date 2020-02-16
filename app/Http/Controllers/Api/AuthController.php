@@ -53,27 +53,26 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-
+        $vendor = Vendor::find(1);
         try {
+            $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
 
-//            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
-//
-//            if ($response->getReasonPhrase() === 'OK') { }
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response([
-                    'msg' => 'Invalid Credentials.'
-                ], 400);
+            if ($response->getReasonPhrase() === 'OK') {
             }
 
-            $user = Auth::user();
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $token = JWTAuth::fromUser($user);
+                return [
+                    'token'  => $token,
+                    'user'   => $user
+                ];
+            }
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
 
-            $user->vendor = $user->vendor;
-
-            return [
-                'token'  => $token,
-                'user'   => $user
-            ];
-//            return $response->getBody();
+            //            return $response->getBody();
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -83,15 +82,16 @@ class AuthController extends Controller
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
-        } catch(ClientException $e) {
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
             return response([
                 'msg' => 'Invalid Credentials.'
-            ], 400);    
+            ], 400);
         }
 
-//        return response([
-//            'msg' => 'Invalid Credentials.'
-//        ], 400);
+        //        return response([
+        //            'msg' => 'Invalid Credentials.'
+        //        ], 400);
     }
 
 
@@ -132,7 +132,7 @@ class AuthController extends Controller
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
         }
-        
+
         $user = User::create($userData);
 
         try {
@@ -152,6 +152,11 @@ class AuthController extends Controller
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
         }
 
         return response([
@@ -163,7 +168,8 @@ class AuthController extends Controller
         //return $user;
     }
 
-    public function forgotPasswordCustomer(Request $request) {
+    public function forgotPasswordCustomer(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email'
@@ -186,7 +192,8 @@ class AuthController extends Controller
         ];
     }
 
-    public function resetPasswordCustomer(Request $request) {
+    public function resetPasswordCustomer(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
@@ -228,7 +235,7 @@ class AuthController extends Controller
         ResetPasswordJob::dispatch(
             $user,
             $request->password
-            )->onConnection('database')->onQueue('mails');
+        )->onConnection('database')->onQueue('mails');
 
         $pass->delete();
 
@@ -243,5 +250,4 @@ class AuthController extends Controller
         $user = JWTAuth::toUser($token);
         return ['user' => $user];
     }
-
 }

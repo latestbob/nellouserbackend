@@ -13,9 +13,9 @@ class AuthTest extends TestCase
     private $user = [
         "firstname" => "Achilles",
         "lastname" => "Achilles",
-        "email" => "achilles2@gmail.com",
+        "email" => "achilles20@gmail.com",
         "dob" => "1999-09-30",
-        "phone" =>  "08012345198",
+        "phone" =>  "08012005198",
         "password" => "password",
         "password_confirmation" => "password"
     ];
