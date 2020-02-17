@@ -17,7 +17,6 @@ use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 
 class AuthController extends Controller
@@ -55,8 +54,6 @@ class AuthController extends Controller
 
 
         try {
-
-//            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
 //
 //            if ($response->getReasonPhrase() === 'OK') { }
             if (!$token = JWTAuth::attempt($credentials)) {
@@ -66,6 +63,8 @@ class AuthController extends Controller
             }
 
             $user = Auth::user();
+
+//            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
 
             $user->vendor = $user->vendor;
 
@@ -83,10 +82,6 @@ class AuthController extends Controller
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
-        } catch(ClientException $e) {
-            return response([
-                'msg' => 'Invalid Credentials.'
-            ], 400);    
         }
 
 //        return response([
@@ -154,9 +149,9 @@ class AuthController extends Controller
             }
         }
 
-        return response([
-            'msg' => 'Error while creating account.'
-        ], 400);
+//        return response([
+//            'msg' => 'Error while creating account.'
+//        ], 400);
 
         //$user = User::create($userData);
         //RegisterCustomer::dispatch($user);
