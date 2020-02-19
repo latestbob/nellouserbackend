@@ -191,7 +191,6 @@ class AuthController extends Controller
 
     public function resetPasswordCustomer(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
             'code' => 'required|string|max:255|exists:password_resets,token',
@@ -223,16 +222,46 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $user = User::where(['email' => $request->email])->first();
+        $user = $request->user();
+        $vendor = Vendor::find($user->vendor_id);
 
-        $user->update([
-            'password' => Hash::make($request->password)
-        ]);
+        $userData = [
+            //'current_password' => $request->current_password,
+            'password' => $request->password,
+            'uuid'     => $user->uuid
+        ];
+
+        try {
+
+            $response = $this->httpPost($vendor, '/api/password/change', $userData);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                return response(Psr7\str($e->getResponse()), 400);
+            } else {
+                print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
+            }
+        }
+
+
+
+        //$user = User::where(['email' => $request->email])->first();
+
+        //$user->update([
+        //    'password' => Hash::make($request->password)
+        //]);
 
         ResetPasswordJob::dispatch(
             $user,
             $request->password
-        )->onConnection('database')->onQueue('mails');
+        ); //->onConnection('database')->onQueue('mails');
 
         $pass->delete();
 
