@@ -238,13 +238,25 @@ class AuthController extends Controller
             if ($response->getReasonPhrase() === 'OK') {
                 return $response->getBody();
             }
+
+            ResetPasswordJob::dispatch(
+                $user,
+                $request->password
+            ); //->onConnection('database')->onQueue('mails');
+    
+            $pass->delete();
+    
+            return [
+                'msg' => "Your password has been reset successfully",
+            ];
+                
             return $response->getBody();
         } catch (RequestException $e) {
-            return response([
+            /*return response([
                 'msg' => [
                     'code' => ['Sorry an error occured. Please try again.']
                 ]
-            ], 400);
+            ], 400);*/
 
             //echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -263,17 +275,6 @@ class AuthController extends Controller
         //$user->update([
         //    'password' => Hash::make($request->password)
         //]);
-
-        ResetPasswordJob::dispatch(
-            $user,
-            $request->password
-        ); //->onConnection('database')->onQueue('mails');
-
-        $pass->delete();
-
-        return [
-            'msg' => "Your password has been reset successfully",
-        ];
     }
 
     public function getUser(Request $request)
