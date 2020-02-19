@@ -222,7 +222,7 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $user = $request->user();
+        $user = User::where('email', $request->email);
         $vendor = Vendor::find($user->vendor_id);
 
         $userData = [
