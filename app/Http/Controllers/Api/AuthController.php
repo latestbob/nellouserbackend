@@ -48,7 +48,8 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response([
                 'msg' => 'Invalid Credentials.',
-                'type' => 'Validation error.'
+                'type' => 'Validation error.',
+                'errors' => $validator->errors()
             ], 400);
         }
 
