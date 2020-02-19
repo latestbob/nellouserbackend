@@ -173,7 +173,6 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|exists:users,email'
         ]);
 
-
         if ($validator->fails()) {
             return response([
                 'msg' => $validator->errors()
