@@ -182,7 +182,7 @@ class AuthController extends Controller
 
         $user = User::where('email', '=', $request->email)->first();
 
-        ForgotPasswordJob::dispatch($user)->onConnection('database')->onQueue('mails');
+        ForgotPasswordJob::dispatch($user); //->onConnection('database')->onQueue('mails');
 
         return [
             'email' => $user->email,
