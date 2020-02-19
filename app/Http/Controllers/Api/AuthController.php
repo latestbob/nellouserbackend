@@ -195,9 +195,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
             'code' => 'required|string|max:255|exists:password_resets,token',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:8'
         ]);
-
 
         if ($validator->fails()) {
             return response([
@@ -236,9 +235,9 @@ class AuthController extends Controller
 
             $response = $this->httpPost($vendor, '/api/password/change', $userData);
 
-            if ($response->getReasonPhrase() === 'OK') {
-                return $response->getBody();
-            }
+            //if ($response->getReasonPhrase() === 'OK') {
+                //return $response->getBody();
+            //}
 
             ResetPasswordJob::dispatch(
                 $user,
@@ -251,7 +250,7 @@ class AuthController extends Controller
                 'msg' => "Your password has been reset successfully",
             ];
                 
-            return $response->getBody();
+            //return $response->getBody();
         } catch (RequestException $e) {
             /*return response([
                 'msg' => [
