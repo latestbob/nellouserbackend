@@ -240,11 +240,17 @@ class AuthController extends Controller
             }
             return $response->getBody();
         } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => [
+                    'code' => ['Sorry an error occured. Please try again.']
+                ]
+            ], 400);
+
+            //echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
                 return response(Psr7\str($e->getResponse()), 400);
             } else {
-                print_r($e);
+                //print_r($e);
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
