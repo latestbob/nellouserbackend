@@ -13,8 +13,9 @@ use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 use App\Models\Appointment;
 use App\Models\Encounter;
@@ -67,7 +68,41 @@ class ProfileController extends Controller
             ], 400);
         }
 
-        $userData = $validator->validated();
+        $user = $request->user();
+        $user->load('vendor');
+        $data = $validator->validated();
+
+        try {
+
+            $response = $this->httpPost($user->vendor, '/api/profile/update', $data);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //    return $response->getBody();
+            //}
+            //return $response->getBody();
+            $user->update($data);
+            return ['msg' => 'Profile updated successfully.', 'user' => $user];
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+            }
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while updating account.'
+        ], 400);
+
         //$user = Auth::user();
         //$user->update($userData);
         //$user->load('vendor');
