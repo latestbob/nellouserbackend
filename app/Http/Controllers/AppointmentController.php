@@ -134,7 +134,6 @@ class AppointmentController extends Controller
         $validator = Validator::make($request->all(), [
             'uuid'           => 'required|string',
             'medical_center' => 'required|string',// |exists:health_centers,uuid',
-            'reason'         => 'required|string',
             'date'           => 'required|date|after:today',
             'time'           => 'required|date_format:H:i'
         ]);
