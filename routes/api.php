@@ -52,7 +52,7 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::get('/view','AppointmentController@viewAppointment');
     Route::post('/update', 'AppointmentController@updateAppointment');
     Route::post('/cancel', 'AppointmentController@cancelAppointment');
-    Route::get('/pending', 'AppointmentController@pendingAppointment');
+    Route::get('/pending', 'AppointmentController@pending');
 });
 
 
