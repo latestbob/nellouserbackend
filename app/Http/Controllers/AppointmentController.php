@@ -153,7 +153,9 @@ class AppointmentController extends Controller
             //if ($response->getReasonPhrase() === 'OK') {
             //    return $response->getBody();
             //}
-            return $response->getBody();
+
+            //return $response->getBody();
+            return ['message' => 'Appointment updated successfully'];
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
