@@ -89,7 +89,6 @@ class AppointmentController extends Controller
         return response([
             'msg' => 'Error while booking appointment.'
         ], 400);
-
     }
 
 
@@ -127,6 +126,105 @@ class AppointmentController extends Controller
 
         return response([
             'msg' => 'Error while fetching pending appointment.'
+        ], 400);
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'uuid'           => 'required|string',
+            'medical_center' => 'required|string',// |exists:health_centers,uuid',
+            'reason'         => 'required|string',
+            'date'           => 'required|date|after:today',
+            'time'           => 'required|date_format:H:i'
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+
+        $data = $validator->validated();
+        $data['status'] = 'pending';
+        $data['user_uuid'] = $request->user()->uuid;
+        $data['center_uuid'] = $request->medical_center;
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpPost($user->vendor, '/api/appointments/update', $data);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //    return $response->getBody();
+            //}
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while updating appointment.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while updating appointment.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while updating appointment.'
+        ], 400);
+    }
+
+    public function cancel(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'uuid'           => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+
+        $user = $request->user();
+        $user->load('vendor');
+        $data = $validator->validated();
+
+        try {
+
+            $response = $this->httpPost($user->vendor, '/api/appointments/cancel', $data);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //    return $response->getBody();
+            //}
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while updating appointment.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while updating appointment.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while updating appointment.'
         ], 400);
     }
 
