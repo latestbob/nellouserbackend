@@ -133,7 +133,7 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'uuid'           => 'required|string',
-            'medical_center' => 'required|string',// |exists:health_centers,uuid',
+            'reason'         => 'required|string',// |exists:health_centers,uuid',
             'date'           => 'required|date|after:today',
             'time'           => 'required|date_format:H:i'
         ]);
@@ -143,9 +143,6 @@ class AppointmentController extends Controller
         }
 
         $data = $validator->validated();
-        $data['status'] = 'pending';
-        $data['user_uuid'] = $request->user()->uuid;
-        $data['center_uuid'] = $request->medical_center;
         $user = $request->user();
         $user->load('vendor');
 
