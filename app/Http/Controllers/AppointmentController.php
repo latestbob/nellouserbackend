@@ -93,6 +93,44 @@ class AppointmentController extends Controller
     }
 
 
+    public function pending(Request $request)
+    {
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpGet($user->vendor, '/api/appointments/pending', ['user_uuid' => $user->uuid]);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //    return $response->getBody();
+            //}
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while fetching pending appointment.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while fetching pending appointment.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while fetching pending appointment.'
+        ], 400);
+    }
+
+
     /**
      * View Appointment
      * 
