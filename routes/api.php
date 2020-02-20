@@ -50,8 +50,8 @@ Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.a
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/book', 'AppointmentController@bookAppointment');
     Route::get('/view','AppointmentController@viewAppointment');
-    Route::post('/update', 'AppointmentController@updateAppointment');
-    Route::post('/cancel', 'AppointmentController@cancelAppointment');
+    Route::post('/update', 'AppointmentController@update');
+    Route::post('/cancel', 'AppointmentController@cancel');
     Route::get('/pending', 'AppointmentController@pending');
 });
 
