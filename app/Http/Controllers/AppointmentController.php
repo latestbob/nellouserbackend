@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Jobs\BookAppointment;
 use App\Models\Appointment;
 use App\Models\HealthCenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GuzzleClient;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 class AppointmentController extends Controller
 {
@@ -49,11 +51,45 @@ class AppointmentController extends Controller
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $request->user()->uuid;
-        $data['date'] = $request->date;
-        $data['time'] = $request->time;
+        //$data['date'] = $request->date;
+        //$data['time'] = $request->time;
         $data['center_uuid'] = $request->medical_center;
-        $appointment = Appointment::create($data);
-        return $appointment;
+        //$appointment = Appointment::create($data);
+        //return $appointment;
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpPost($user->vendor, '/api/appointments/book', $data);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while booking appointment.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while booking appointment.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while booking appointment.'
+        ], 400);
+
     }
 
 
