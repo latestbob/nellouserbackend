@@ -71,6 +71,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->load('vendor');
         $data = $validator->validated();
+        $data['uuid'] = $user->uuid;
 
         try {
 
