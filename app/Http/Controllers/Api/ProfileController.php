@@ -76,12 +76,15 @@ class ProfileController extends Controller
 
             $response = $this->httpPost($user->vendor, '/api/profile/update', $data);
 
-            //if ($response->getReasonPhrase() === 'OK') {
-            //    return $response->getBody();
-            //}
+            if ($response->getReasonPhrase() === 'OK') {
+                $user->update($data);
+                return ['msg' => 'Profile updated successfully.', 'user' => $user];
+            }
+
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
             //return $response->getBody();
-            $user->update($data);
-            return ['msg' => 'Profile updated successfully.', 'user' => $user];
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -102,25 +105,6 @@ class ProfileController extends Controller
         return response([
             'msg' => 'Error while updating account.'
         ], 400);
-
-        //$user = Auth::user();
-        //$user->update($userData);
-        //$user->load('vendor');
-        //$this->httpPost($user->vendor, '/api/profile/update', $userData);
-
-
-        if (Auth::check()) {
-            //from end user
-            $userData['local_saved'] = false;
-            $user = Auth::user();
-        } else {
-            //from vendor  
-            $user = User::where('uuid', $request->uuid)->first();
-        }
-
-        $user->update($userData);
-        //UpdateCustomer::dispatch($userData);
-        return ['msg' => 'Profile updated successfully.', 'user' => $user];
     }
 
 
