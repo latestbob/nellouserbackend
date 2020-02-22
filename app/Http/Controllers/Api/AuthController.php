@@ -77,16 +77,19 @@ class AuthController extends Controller
 
             //            return $response->getBody();
         } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
-            if ($e->hasResponse()) {
-                return response(Psr7\str($e->getResponse()), 400);
-            } else {
-                print_r($e);
-                $str = json_encode($e, true);
-                return response($str, 400);
-            }
+            //echo Psr7\str($e->getRequest());
+            //if ($e->hasResponse()) {
+                //return response(Psr7\str($e->getResponse()), 400);
+            //} else {
+                //print_r($e);
+                //$str = json_encode($e, true);
+                //return response($str, 400);
+            //}
+            return response([
+                'msg' => 'Invalid Credentials.',
+            ], 400);
         } catch (ClientException $e) {
-            echo Psr7\str($e->getRequest());
+            //echo Psr7\str($e->getRequest());
             return response([
                 'msg' => 'Invalid Credentials.'
             ], 400);
