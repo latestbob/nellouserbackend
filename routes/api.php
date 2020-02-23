@@ -57,9 +57,14 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
 
 
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
+    Route::post('/users/create', 'Api\AuthController@nelloCreateUser');
+
+
     Route::put('/profile/update', 'Api\ProfileController@updateCustomer');
     Route::post('/profile/picture', 'Api\ProfileController@uploadPicture');
 });
+
+
 
 Route::prefix('/import')->middleware('nello.auth')->group(function(){
     Route::match(['post', 'put', 'delete'], '/users', 'ImportController@importUser');

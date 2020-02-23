@@ -164,10 +164,6 @@ class AuthController extends Controller
         return response([
             'msg' => 'Error while creating account.'
         ], 400);
-
-        //$user = User::create($userData);
-        //RegisterCustomer::dispatch($user);
-        //return $user;
     }
 
     public function forgotPasswordCustomer(Request $request)
@@ -285,5 +281,11 @@ class AuthController extends Controller
         $token = $request->bearerToken();
         $user = JWTAuth::toUser($token);
         return ['user' => $user];
+    }
+
+    public function nelloCreateUser(Request $request)
+    {
+        $data = $request->all();
+
     }
 }

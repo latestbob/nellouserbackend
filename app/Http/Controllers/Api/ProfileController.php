@@ -6,8 +6,6 @@ namespace App\Http\Controllers\Api;
 use Auth;
 use Cloudder;
 use App\Http\Controllers\Controller;
-use App\Jobs\UpdateCustomer;
-use App\Jobs\UploadPicture;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
