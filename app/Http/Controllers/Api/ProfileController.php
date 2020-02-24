@@ -218,4 +218,75 @@ class ProfileController extends Controller
             'encounter' => $encounter
         ];
     }
+
+    public function encounters(Request $request)
+    {
+        return $this->__request($request, '/api/profile/encounters');
+    }
+
+    public function medications(Request $request)
+    {
+        return $this->__request($request, '/api/profile/medications');
+    }
+
+    public function vitalSigns(Request $request)
+    {
+        return $this->__request($request, '/api/profile/vital-signs');
+    }
+
+    public function procedures(Request $request)
+    {
+        return $this->__request($request, '/api/profile/procedures');
+    }
+
+    public function investigations(Request $request)
+    {
+        return $this->__request($request, '/api/profile/investigations');
+    }
+
+    public function invoices(Request $request)
+    {
+        return $this->__request($request, '/api/profile/invoices');
+    }
+
+    public function payments(Request $request)
+    {
+        return $this->__request($request, '/api/profile/payments');
+    }
+
+    private function __request(Request $request, string $endpoint)
+    {
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpGet($user->vendor, $endpoint, ['user_uuid' => $user->uuid]);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'An error occurred while fetching data.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'An error occurred while fetching data.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'An error occurred while fetching data.'
+        ], 400);
+    }
 }

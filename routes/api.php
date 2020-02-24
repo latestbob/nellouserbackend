@@ -30,6 +30,15 @@ Route::prefix('/auth')->group(function (){
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
+
+    Route::get('/encounters', 'Api\ProfileController@encounters');
+    Route::get('/medications', 'Api\Profilecontroller@medications');
+    Route::get('/vital-signs', 'Api\ProfileController@vitalSigns');
+    Route::get('/procedures', 'Api\ProfileController@procedures');
+    Route::get('/investigations', 'Api\ProfileController@investigations');
+    Route::get('/invoices', 'Api\ProfileController@invoices');
+    Route::get('/payments', 'Api\ProfileController@payments');
+
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
     Route::get('/summary', 'Api\ProfileController@inBrief');
     //Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');

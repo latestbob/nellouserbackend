@@ -286,6 +286,7 @@ class AuthController extends Controller
     public function nelloCreateUser(Request $request)
     {
         $data = $request->all();
-
+        $user = User::create($data);
+        return $user;
     }
 }
