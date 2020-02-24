@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\HealthCenter;
 use Illuminate\Http\Request;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
+use App\Traits\GuzzleClient;
 
 class HealthCenterController extends Controller
 {
+
+    use GuzzleClient;
+
+
     /**
      * Health centers
      * 
@@ -15,7 +23,38 @@ class HealthCenterController extends Controller
      * @urlParam page int optional defaults to 1
      */
     public function index(Request $request) {
-        $centers = HealthCenter::orderBy('name')->get(); //->paginate();
-        return $centers;
+        //$centers = HealthCenter::orderBy('name')->get(); //->paginate();
+        //return $centers;
+
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpGet($user->vendor, '/api/health-centers', []);
+
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while fetching pending appointment.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while fetching pending appointment.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'Error while fetching pending appointment.'
+        ], 400);
     }
 }

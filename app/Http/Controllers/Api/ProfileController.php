@@ -6,15 +6,14 @@ namespace App\Http\Controllers\Api;
 use Auth;
 use Cloudder;
 use App\Http\Controllers\Controller;
-use App\Jobs\UpdateCustomer;
-use App\Jobs\UploadPicture;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 use App\Models\Appointment;
 use App\Models\Encounter;
@@ -67,25 +66,44 @@ class ProfileController extends Controller
             ], 400);
         }
 
-        $userData = $validator->validated();
-        //$user = Auth::user();
-        //$user->update($userData);
-        //$user->load('vendor');
-        //$this->httpPost($user->vendor, '/api/profile/update', $userData);
+        $user = $request->user();
+        $user->load('vendor');
+        $data = $validator->validated();
+        $data['uuid'] = $user->uuid;
 
+        try {
 
-        if (Auth::check()) {
-            //from end user
-            $userData['local_saved'] = false;
-            $user = Auth::user();
-        } else {
-            //from vendor  
-            $user = User::where('uuid', $request->uuid)->first();
+            $response = $this->httpPost($user->vendor, '/api/profile/update', $data);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                $user->update($data);
+                return ['msg' => 'Profile updated successfully.', 'user' => $user];
+            }
+
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
+            //return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+            }
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while updating account.'
+            ], 400);
         }
 
-        $user->update($userData);
-        //UpdateCustomer::dispatch($userData);
-        return ['msg' => 'Profile updated successfully.', 'user' => $user];
+        return response([
+            'msg' => 'Error while updating account.'
+        ], 400);
     }
 
 
@@ -199,5 +217,76 @@ class ProfileController extends Controller
             'medication' => $medication,
             'encounter' => $encounter
         ];
+    }
+
+    public function encounters(Request $request)
+    {
+        return $this->__request($request, '/api/profile/encounters');
+    }
+
+    public function medications(Request $request)
+    {
+        return $this->__request($request, '/api/profile/medications');
+    }
+
+    public function vitalSigns(Request $request)
+    {
+        return $this->__request($request, '/api/profile/vital-signs');
+    }
+
+    public function procedures(Request $request)
+    {
+        return $this->__request($request, '/api/profile/procedures');
+    }
+
+    public function investigations(Request $request)
+    {
+        return $this->__request($request, '/api/profile/investigations');
+    }
+
+    public function invoices(Request $request)
+    {
+        return $this->__request($request, '/api/profile/invoices');
+    }
+
+    public function payments(Request $request)
+    {
+        return $this->__request($request, '/api/profile/payments');
+    }
+
+    private function __request(Request $request, string $endpoint)
+    {
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpGet($user->vendor, $endpoint, ['user_uuid' => $user->uuid]);
+
+            if ($response->getReasonPhrase() === 'OK') {
+                return $response->getBody();
+            }
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'An error occurred while fetching data.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'An error occurred while fetching data.'
+            ], 400);
+        }
+
+        return response([
+            'msg' => 'An error occurred while fetching data.'
+        ], 400);
     }
 }

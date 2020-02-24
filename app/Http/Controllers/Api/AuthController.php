@@ -17,7 +17,9 @@ use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -32,7 +34,7 @@ class AuthController extends Controller
 
     /**
      * Customer login
-     * 
+     *
      * @bodyParam email string required
      * @bodyParam password string required
      */
@@ -46,53 +48,61 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'msg' => 'Invalid Credentials.'
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Validation error.',
+                'errors' => $validator->errors()
             ], 400);
         }
 
         $credentials = $request->only(['email', 'password']);
 
-
+        $vendor = Vendor::find(1);
         try {
-//
-//            if ($response->getReasonPhrase() === 'OK') { }
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response([
-                    'msg' => 'Invalid Credentials.'
-                ], 400);
+            $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
+            $user = User::where('email', $request->email)->first();
+
+            if ($response->getReasonPhrase() === 'OK') {
+                $fullUrl = $request->fullUrl();
+                Cache::put($fullUrl . $user->uuid, $response->getBody());
             }
 
-            $user = Auth::user();
+            if ($user) {
+                $token = JWTAuth::fromUser($user);
+                return [
+                    'token'  => $token,
+                    'user'   => $user
+                ];
+            }
+            return response([
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Empty user'
+            ], 400);
 
-//            $response = $this->httpPost($user->vendor, '/api/auth/login', $credentials);
-
-            $user->vendor = $user->vendor;
-
-            return [
-                'token'  => $token,
-                'user'   => $user
-            ];
-//            return $response->getBody();
+            //            return $response->getBody();
         } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
-            if ($e->hasResponse()) {
-                return response(Psr7\str($e->getResponse()), 400);
-            } else {
-                print_r($e);
-                $str = json_encode($e, true);
-                return response($str, 400);
-            }
+            //echo Psr7\str($e->getRequest());
+            //if ($e->hasResponse()) {
+            //return response(Psr7\str($e->getResponse()), 400);
+            //} else {
+            //print_r($e);
+            //$str = json_encode($e, true);
+            //return response($str, 400);
+            //}
+            return response([
+                'msg' => 'Invalid Credentials.',
+            ], 400);
+        } catch (ClientException $e) {
+            //echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
         }
-
-//        return response([
-//            'msg' => 'Invalid Credentials.'
-//        ], 400);
     }
 
 
     /**
      * Customer registration
-     * 
+     *
      * @bodyParam firstname string required
      * @bodyParam lastname string requird
      * @bodyParam email string required
@@ -127,7 +137,7 @@ class AuthController extends Controller
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
         }
-        
+
         $user = User::create($userData);
 
         try {
@@ -147,23 +157,24 @@ class AuthController extends Controller
                 $str = json_encode($e, true);
                 return response($str, 400);
             }
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
         }
 
-//        return response([
-//            'msg' => 'Error while creating account.'
-//        ], 400);
-
-        //$user = User::create($userData);
-        //RegisterCustomer::dispatch($user);
-        //return $user;
+        return response([
+            'msg' => 'Error while creating account.'
+        ], 400);
     }
 
-    public function forgotPasswordCustomer(Request $request) {
+    public function forgotPasswordCustomer(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email'
         ]);
-
 
         if ($validator->fails()) {
             return response([
@@ -173,7 +184,7 @@ class AuthController extends Controller
 
         $user = User::where('email', '=', $request->email)->first();
 
-        ForgotPasswordJob::dispatch($user)->onConnection('database')->onQueue('mails');
+        ForgotPasswordJob::dispatch($user); //->onConnection('database')->onQueue('mails');
 
         return [
             'email' => $user->email,
@@ -181,14 +192,13 @@ class AuthController extends Controller
         ];
     }
 
-    public function resetPasswordCustomer(Request $request) {
-
+    public function resetPasswordCustomer(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
             'code' => 'required|string|max:255|exists:password_resets,token',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:8'
         ]);
-
 
         if ($validator->fails()) {
             return response([
@@ -214,22 +224,59 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $user = User::where(['email' => $request->email])->first();
+        $user = User::where('email', $request->email)->first();
+        $vendor = Vendor::find($user->vendor_id);
 
-        $user->update([
-            'password' => Hash::make($request->password)
-        ]);
-
-        ResetPasswordJob::dispatch(
-            $user,
-            $request->password
-            )->onConnection('database')->onQueue('mails');
-
-        $pass->delete();
-
-        return [
-            'msg' => "Your password has been reset successfully",
+        $userData = [
+            //'current_password' => $request->current_password,
+            'password' => $request->password,
+            'uuid'     => $user->uuid
         ];
+
+        try {
+
+            $response = $this->httpPost($vendor, '/api/password/change', $userData);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //return $response->getBody();
+            //}
+
+            ResetPasswordJob::dispatch(
+                $user,
+                $request->password
+            ); //->onConnection('database')->onQueue('mails');
+
+            $pass->delete();
+
+            return [
+                'msg' => "Your password has been reset successfully",
+            ];
+
+            //return $response->getBody();
+        } catch (RequestException $e) {
+            /*return response([
+                'msg' => [
+                    'code' => ['Sorry an error occured. Please try again.']
+                ]
+            ], 400);*/
+
+            //echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                return response(Psr7\str($e->getResponse()), 400);
+            } else {
+                //print_r($e);
+                $str = json_encode($e, true);
+                return response($str, 400);
+            }
+        }
+
+
+
+        //$user = User::where(['email' => $request->email])->first();
+
+        //$user->update([
+        //    'password' => Hash::make($request->password)
+        //]);
     }
 
     public function getUser(Request $request)
@@ -239,4 +286,10 @@ class AuthController extends Controller
         return ['user' => $user];
     }
 
+    public function nelloCreateUser(Request $request)
+    {
+        $data = $request->all();
+        $user = User::create($data);
+        return $user;
+    }
 }

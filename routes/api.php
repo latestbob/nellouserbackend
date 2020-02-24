@@ -30,6 +30,15 @@ Route::prefix('/auth')->group(function (){
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
+
+    Route::get('/encounters', 'Api\ProfileController@encounters');
+    Route::get('/medications', 'Api\Profilecontroller@medications');
+    Route::get('/vital-signs', 'Api\ProfileController@vitalSigns');
+    Route::get('/procedures', 'Api\ProfileController@procedures');
+    Route::get('/investigations', 'Api\ProfileController@investigations');
+    Route::get('/invoices', 'Api\ProfileController@invoices');
+    Route::get('/payments', 'Api\ProfileController@payments');
+
     Route::get('/health-history', 'Api\ProfileController@fetchHealthHistory');
     Route::get('/summary', 'Api\ProfileController@inBrief');
     //Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
@@ -50,16 +59,21 @@ Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.a
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/book', 'AppointmentController@bookAppointment');
     Route::get('/view','AppointmentController@viewAppointment');
-    Route::post('/update', 'AppointmentController@updateAppointment');
-    Route::post('/cancel', 'AppointmentController@cancelAppointment');
-    Route::get('/pending', 'AppointmentController@pendingAppointment');
+    Route::post('/update', 'AppointmentController@update');
+    Route::post('/cancel', 'AppointmentController@cancel');
+    Route::get('/pending', 'AppointmentController@pending');
 });
 
 
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
+    Route::post('/users/create', 'Api\AuthController@nelloCreateUser');
+
+
     Route::put('/profile/update', 'Api\ProfileController@updateCustomer');
     Route::post('/profile/picture', 'Api\ProfileController@uploadPicture');
 });
+
+
 
 Route::prefix('/import')->middleware('nello.auth')->group(function(){
     Route::match(['post', 'put', 'delete'], '/users', 'ImportController@importUser');
@@ -84,4 +98,13 @@ Route::prefix('/import')->middleware('nello.auth')->group(function(){
 Route::get('/test/{id}/see', function(){
     return response(['hey']);
 })->middleware('api.cache');
+
+
+Route::prefix('/blogs')->group(function(){
+    Route::get('/', 'Api\BlogController@index');
+    Route::get('/show/{slug}', 'Api\BlogController@show');
+    Route::post('/create', 'Api\BlogController@create')->middleware('jwt.auth');
+    Route::post('/update', 'Api\BlogController@update')->middleware('jwt.auth');
+    Route::delete('/{id}/delete', 'Api\BlogController@delete')->middleware('jwt.auth');
+});
 
