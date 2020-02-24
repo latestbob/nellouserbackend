@@ -42,6 +42,7 @@ class ImportNelloPatientsJob implements ShouldQueue
                 unset($patient['role_id']);
                 unset($patient['eclinic_upi']);
                 unset($patient['eclinic_patient_id']);
+                $patient['vendor_id'] = $vendor->id;
                 User::create($patient);
             }
         }
