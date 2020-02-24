@@ -69,7 +69,7 @@ class BlogController extends Controller
         //]);
 
         //$data = $validator->validated();
-        $blog = Blog::where('slug', $request->slug)->first();
+        $blog = Blog::with(['author'])->where('slug', $request->slug)->first();
         return $blog;
     }
 
