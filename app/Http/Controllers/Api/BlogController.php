@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -18,12 +19,17 @@ class BlogController extends Controller
     
     public function create(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'post'  => 'required|string',
             'image' => 'nullable|string'
         ]);
 
+        if ($validator->fails()) {
+            return response(['msg' => $validator->errors()], 400);
+        }
+
+        $data = $validator->validated();
         $data['slug'] = Str::slug($data['title']);
         $data['author_id'] = $request->user()->id;
 
@@ -34,13 +40,18 @@ class BlogController extends Controller
 
     public function update(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'id'    => 'required|integer|exists:blogs',
             'title' => 'required|string',
             'post'  => 'required|string',
             'image' => 'nullable|string'
         ]);
-        
+
+        if ($validator->fails()) {
+            return response(['msg' => $validator->errors()], 400);
+        }
+
+        $data = $validator->validated();
         $blog = Blog::find($request->id);
 
         $blog->update($data);
@@ -49,21 +60,23 @@ class BlogController extends Controller
 
     public function show(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'slug' => 'required|string|exists:blogs'
         ]);
 
+        $data = $validator->validated();
         $blog = Blog::where('slug', $data['slug'])->first();
         return $blog;
     }
 
     public function delete(Request $request)
     {
-        $data = $request->validate([
-            'slug' => 'required|string|exists:blogs'
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:blogs'
         ]);
 
-        Blog::where('slug', $data['slug'])->delete();
+        $data = $validator->validated();
+        Blog::destroy($data['id']);
         return ['msg' => 'Blog deleted'];
     }
 }
