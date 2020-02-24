@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -58,11 +59,13 @@ class AuthController extends Controller
         $vendor = Vendor::find(1);
         try {
             $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
+            $user = User::where('email', $request->email)->first();
 
             if ($response->getReasonPhrase() === 'OK') {
+                $fullUrl = $request->fullUrl();
+                Cache::put($fullUrl . $user->uuid, $response->getBody());
             }
 
-            $user = User::where('email', $request->email)->first();
             if ($user) {
                 $token = JWTAuth::fromUser($user);
                 return [

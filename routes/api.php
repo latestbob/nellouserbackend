@@ -99,3 +99,11 @@ Route::get('/test/{id}/see', function(){
     return response(['hey']);
 })->middleware('api.cache');
 
+
+Route::prefix('/blogs')->group(function(){
+    Route::get('/', 'BlogController@index');
+    Route::post('/create', 'BlogController@create')->middleware('jwt.auth');
+    Route::post('/{id}/update', 'BlogController@update')->middleware('jwt.auth');
+    Route::delete('/{id}/delete', 'BlogController@delete')->middleware('jwt.auth');
+});
+
