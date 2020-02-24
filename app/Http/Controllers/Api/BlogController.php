@@ -60,23 +60,30 @@ class BlogController extends Controller
 
     public function show(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'slug' => 'required|string|exists:blogs'
-        ]);
+        if (empty($request->slug)) {
+            return response(['msg' => ['Slug is missing']], 400);
+        }
+    
+        //$validator = Validator::make($request->all(), [
+        //    'slug' => 'required|string|exists:blogs'
+        //]);
 
-        $data = $validator->validated();
-        $blog = Blog::where('slug', $data['slug'])->first();
+        //$data = $validator->validated();
+        $blog = Blog::where('slug', $request->slug)->first();
         return $blog;
     }
 
     public function delete(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:blogs'
-        ]);
+        if (empty($request->id)) {
+            return response(['msg' => ['ID is missing']], 400);
+        }
+        //$validator = Validator::make($request->all(), [
+        //    'id' => 'required|integer|exists:blogs'
+        //]);
 
-        $data = $validator->validated();
-        Blog::destroy($data['id']);
+        //$data = $validator->validated();
+        Blog::destroy($request->id);
         return ['msg' => 'Blog deleted'];
     }
 }

@@ -102,8 +102,9 @@ Route::get('/test/{id}/see', function(){
 
 Route::prefix('/blogs')->group(function(){
     Route::get('/', 'Api\BlogController@index');
+    Route::get('/show/{slug}', 'Api\BlogController@show');
     Route::post('/create', 'Api\BlogController@create')->middleware('jwt.auth');
-    Route::post('/{id}/update', 'Api\BlogController@update')->middleware('jwt.auth');
+    Route::post('/update', 'Api\BlogController@update')->middleware('jwt.auth');
     Route::delete('/{id}/delete', 'Api\BlogController@delete')->middleware('jwt.auth');
 });
 
