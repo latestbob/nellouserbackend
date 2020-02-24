@@ -39,6 +39,8 @@ class ImportNelloPatientsJob implements ShouldQueue
             $body = (string) $response->getBody();
             $patients = json_decode($body, true, 1000);
             foreach($patients as $patient) {
+                unset($patient['eclinic_upi']);
+                unset($patient['eclinic_patient_id']);
                 User::create($patient);
             }
         }
