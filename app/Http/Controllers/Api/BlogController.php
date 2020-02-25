@@ -35,6 +35,7 @@ class BlogController extends Controller
         $data['author_id'] = $request->user()->id;
 
         $blog = Blog::create($data);
+        $blog->load('author');
         return ['data' => [$blog] ];
     }
 
@@ -53,7 +54,7 @@ class BlogController extends Controller
         }
 
         $data = $validator->validated();
-        $blog = Blog::find($request->id);
+        $blog = Blog::with(['author'])->find($request->id);
 
         $blog->update($data);
         return ['data' => [$blog] ];
