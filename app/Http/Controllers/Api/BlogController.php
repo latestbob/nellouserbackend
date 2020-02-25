@@ -35,7 +35,7 @@ class BlogController extends Controller
         $data['author_id'] = $request->user()->id;
 
         $blog = Blog::create($data);
-        return ['data' => $blog ];
+        return ['data' => [$blog] ];
     }
 
 
@@ -56,7 +56,7 @@ class BlogController extends Controller
         $blog = Blog::find($request->id);
 
         $blog->update($data);
-        return ['data' => $blog ];
+        return ['data' => [$blog] ];
     }
 
     public function show(Request $request)
