@@ -16,6 +16,7 @@ class FeedBackController extends Controller
         $validator = Validator::make($request->all(), [
             'phone' => 'nullable|string',
             'feedback'  => 'required|string',
+            'experience'  => 'required|string',
             'facilityID' => 'required|numeric'
         ]);
 
