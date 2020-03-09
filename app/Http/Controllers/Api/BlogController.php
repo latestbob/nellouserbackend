@@ -13,7 +13,8 @@ class BlogController extends Controller
 
     public function index(Request $request)
     {
-        $blogs = Blog::with(['author'])->orderBy('created_at', 'desc')->paginate();
+        $size = empty($request->size) ? 1 : $request->size;
+        $blogs = Blog::with(['author'])->orderBy('created_at', 'desc')->paginate($size);
         return $blogs;
     }
     
@@ -34,7 +35,8 @@ class BlogController extends Controller
         $data['author_id'] = $request->user()->id;
 
         $blog = Blog::create($data);
-        return $blog;
+        $blog->load('author');
+        return ['data' => [$blog] ];
     }
 
 
@@ -52,10 +54,10 @@ class BlogController extends Controller
         }
 
         $data = $validator->validated();
-        $blog = Blog::find($request->id);
+        $blog = Blog::with(['author'])->find($request->id);
 
         $blog->update($data);
-        return $blog;
+        return ['data' => [$blog] ];
     }
 
     public function show(Request $request)
