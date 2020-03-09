@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FeedBacks extends Model
+class Feedbacks extends Model
 {
     //
 }

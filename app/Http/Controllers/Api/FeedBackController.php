@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\FeedBacks;
+use App\Models\Feedbacks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,12 +27,12 @@ class FeedBackController extends Controller
         $data['vendor_id'] = $data['facilityID'];
         unset($data['facilityID']);
 
-        $feedback = FeedBacks::create($data);
+        $feedback = Feedbacks::create($data);
         return ['data' => [$feedback] ];
     }
 
     public function getFeedbacks(Request $request) {
 
-        return ['feedbacks' => FeedBacks::where(['vendor_id', '=', $request->facilityID])->get()];
+        return ['feedbacks' => Feedbacks::where(['vendor_id' => $request->facilityID])->get()];
     }
 }

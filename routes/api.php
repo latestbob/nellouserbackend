@@ -58,8 +58,8 @@ Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.a
 Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
 Route::prefix('/feedback')->group(function() {
-    Route::post('/create', 'FeedBackController@create');
-    Route::get('/view','FeedBackController@getFeedbacks');
+    Route::post('/create', 'Api\FeedBackController@create');
+    Route::get('/view','Api\FeedBackController@getFeedbacks');
 });
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
