@@ -20,7 +20,7 @@ class FeedBackController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['msg' => $validator->errors()], 400);
+            return response(['message' => $validator->errors()], 400);
         }
 
         $data = $validator->validated();
@@ -28,11 +28,16 @@ class FeedBackController extends Controller
         unset($data['facilityID']);
 
         $feedback = Feedbacks::create($data);
-        return ['data' => [$feedback] ];
+        return [
+            'message' => 'Feedback sent successfully',
+            'data' => [$feedback]
+        ];
     }
 
     public function getFeedbacks(Request $request) {
 
-        return ['feedbacks' => Feedbacks::where(['vendor_id' => $request->facilityID])->get()];
+        return [
+            'feedbacks' => Feedbacks::where(['vendor_id' => $request->facilityID])->get()
+        ];
     }
 }
