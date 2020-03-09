@@ -57,6 +57,11 @@ Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth')
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
+Route::prefix('/feedback')->group(function() {
+    Route::post('/create', 'FeedBackController@create');
+    Route::get('/view','FeedBackController@getFeedbacks');
+});
+
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/book', 'AppointmentController@bookAppointment');
     Route::get('/view','AppointmentController@viewAppointment');
