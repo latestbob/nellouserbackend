@@ -55,6 +55,7 @@ Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecialization
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
+Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/book', 'AppointmentController@bookAppointment');
