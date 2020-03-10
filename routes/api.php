@@ -27,6 +27,13 @@ Route::prefix('/auth')->group(function (){
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
 });
 
+Route::prefix('/admin/auth')->group(function (){
+    Route::post('/login', 'Api\AdminAuthController@loginAdmin')->name('login');
+    Route::post('/forgot-password', 'Api\AdminAuthController@forgotPasswordAdmin');
+    Route::post('/reset-password', 'Api\AdminAuthController@resetPasswordAdmin');
+    Route::get('/user', 'Api\AdminAuthController@getUser');
+});
+
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
@@ -59,7 +66,7 @@ Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
 Route::prefix('/feedback')->group(function() {
     Route::post('/create', 'Api\FeedBackController@create');
-    Route::get('/view','Api\FeedBackController@getFeedbacks');
+    Route::post('/view','Api\FeedBackController@getFeedbacks');
 });
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
