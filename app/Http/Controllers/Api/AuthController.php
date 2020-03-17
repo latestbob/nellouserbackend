@@ -41,6 +41,7 @@ class AuthController extends Controller
     public function loginCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'facilityID' => 'required|numeric',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8'
         ]);
@@ -56,7 +57,7 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-        $vendor = Vendor::find(1);
+        $vendor = Vendor::find($request->facilityID);
         try {
             $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
             $user = User::where('email', $request->email)->first();
@@ -126,7 +127,7 @@ class AuthController extends Controller
             return response($validator->errors(), 400);
         }
 
-        $vendor = Vendor::find(1);
+        $vendor = Vendor::find($request->facilityID ?: 1);
 
         $userData = $validator->validated();
 
