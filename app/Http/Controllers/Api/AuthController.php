@@ -34,7 +34,7 @@ class AuthController extends Controller
 
     /**
      * Customer login
-     * 
+     *
      * @bodyParam email string required
      * @bodyParam password string required
      */
@@ -82,11 +82,11 @@ class AuthController extends Controller
         } catch (RequestException $e) {
             //echo Psr7\str($e->getRequest());
             //if ($e->hasResponse()) {
-                //return response(Psr7\str($e->getResponse()), 400);
+            //return response(Psr7\str($e->getResponse()), 400);
             //} else {
-                //print_r($e);
-                //$str = json_encode($e, true);
-                //return response($str, 400);
+            //print_r($e);
+            //$str = json_encode($e, true);
+            //return response($str, 400);
             //}
             return response([
                 'msg' => 'Invalid Credentials.',
@@ -102,7 +102,7 @@ class AuthController extends Controller
 
     /**
      * Customer registration
-     * 
+     *
      * @bodyParam firstname string required
      * @bodyParam lastname string requird
      * @bodyParam email string required
@@ -238,20 +238,20 @@ class AuthController extends Controller
             $response = $this->httpPost($vendor, '/api/password/change', $userData);
 
             //if ($response->getReasonPhrase() === 'OK') {
-                //return $response->getBody();
+            //return $response->getBody();
             //}
 
             ResetPasswordJob::dispatch(
                 $user,
                 $request->password
             ); //->onConnection('database')->onQueue('mails');
-    
+
             $pass->delete();
-    
+
             return [
                 'msg' => "Your password has been reset successfully",
             ];
-                
+
             //return $response->getBody();
         } catch (RequestException $e) {
             /*return response([

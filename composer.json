@@ -20,7 +20,8 @@
         "mailgun/mailgun-php": "^3.0",
         "mpociot/laravel-apidoc-generator": "^4.0",
         "tymon/jwt-auth": "dev-develop",
-        "wildbit/swiftmailer-postmark": "^3.1"
+        "wildbit/swiftmailer-postmark": "^3.1",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
