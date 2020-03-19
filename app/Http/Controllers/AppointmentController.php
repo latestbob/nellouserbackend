@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Models\Appointment;
 use App\Models\HealthCenter;
 use Illuminate\Http\Request;
@@ -12,6 +11,7 @@ use App\Traits\GuzzleClient;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {

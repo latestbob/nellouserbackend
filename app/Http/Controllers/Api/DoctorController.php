@@ -19,11 +19,12 @@ class DoctorController extends Controller
      */
     public function fetchDoctors(Request $request)
     {
-        $conditions = ['user_type' => 'doctor'];
-        if ($request->has('specialization')) {
-            $conditions['aos'] = $request->specialization;
-        }
-        $doctors = User::with(['vendor'])->where($conditions)->paginate();
+        $spec = $request->specialization;
+        $doctors = User::with(['vendor'])->where('user_type', 'doctor')
+            ->when($spec, function($query, $spec){
+                $query->where('aos', 'LIKE', "%$spec%");
+            })->paginate();
+        
         return $doctors;
     }
 
