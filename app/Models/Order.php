@@ -11,7 +11,7 @@ class Order extends Model
         'payment_method', 'customer_id', 'cart_uuid',
         'amount', 'firstname', 'lastname', 'email', 'phone',
         'order_ref', 'company', 'address1', 'address2',
-        'city', 'state', 'postal_code', 'prescription', 'payment_confirmed'
+        'city', 'state', 'postal_code', 'payment_confirmed'
     ];
 
     public function items($id = null) {
