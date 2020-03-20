@@ -168,8 +168,7 @@ class CartController extends Controller
 
         if ($request->hasFile('file')) {
 
-//            $item->prescription = $prescription = $this->uploadFile($request, 'file');
-            $item->prescription = $prescription = "https://localhost/personal/wizdom/admin/storage/blog/image/bc872aacca0ce8d19204dc3cd5570797a7767b16.jpg";
+            $item->prescription = $prescription = $this->uploadFile($request, 'file');
             $item->save();
 
             return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
