@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\PharmacyDrug;
+use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +13,9 @@ use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
+
+    use FileUpload;
+
     public function getItems(Request $request) {
         return Cart::with(['drug'])->where(['cart_uuid' => $request->cart_uuid])->get();
     }
@@ -25,12 +29,12 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()], 400);
+            return response(['message' => $validator->errors()]);
         }
 
         $data = $validator->validated();
 
-        $drug = PharmacyDrug::find($data['drug_id']);
+        $drug = PharmacyDrug::where(['id' => $data['drug_id']])->first();
 
         if (empty($drug)) {
             return response()->json([
@@ -46,8 +50,10 @@ class CartController extends Controller
         $data['price'] = $drug->price * $data['quantity'];
 
         if (empty($request->cart_uuid)) {
-            $request->cart_uuid = Str::uuid()->toString();
+            $request->cart_uuid = strtolower(Str::uuid()->toString());
         }
+
+        $data['vendor_id'] = $drug->vendor_id;
 
         $data['cart_uuid'] = $request->cart_uuid;
 
@@ -81,13 +87,13 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()], 400);
+            return response(['message' => $validator->errors()]);
         }
 
         $data = $validator->validated();
 
         $cart_uuid = $request->cart_uuid;
-        $drug = PharmacyDrug::find($data['drug_id']);
+        $drug = PharmacyDrug::where(['id' => $data['drug_id']])->first();
 
         if (empty($drug)) {
             return response()->json([
@@ -131,7 +137,7 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()], 400);
+            return response(['message' => $validator->errors()]);
         }
 
         Cart::where([
@@ -139,5 +145,35 @@ class CartController extends Controller
             'drug_id'   => $request->drug_id
         ])->delete();
         return ['message' => 'Removed'];
+    }
+
+    public function addPrescription(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'cart_uuid' => 'required|string',
+            'drug_id' => 'required|integer',
+            'file' => 'required|image|mimes:jpeg,jpg,png',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()]);
+        }
+
+        $item = Cart::where(['cart_uuid' => $request->cart_uuid, 'drug_id' => $request->drug_id])->first();
+
+        if (empty($item)) {
+
+            return response(['message' => "Failed to add prescription, item not found"]);
+        }
+
+        if ($request->hasFile('file')) {
+
+//            $item->prescription = $prescription = $this->uploadFile($request, 'file');
+            $item->prescription = $prescription = "https://localhost/personal/wizdom/admin/storage/blog/image/bc872aacca0ce8d19204dc3cd5570797a7767b16.jpg";
+            $item->save();
+
+            return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
+
+        } else return response(['message' => "No prescription file uploaded"]);
     }
 }

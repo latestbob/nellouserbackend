@@ -7,7 +7,6 @@ use App\Jobs\SendOrderMail;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
-use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,8 +14,6 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-
-    use FileUpload;
 
     public function checkout(Request $request)
     {
@@ -26,7 +23,6 @@ class OrderController extends Controller
             'lastname' => 'required|string',
             'company' => 'nullable|string',
             'phone' => 'required|numeric',
-            'email' => 'required|email|unique:users,email',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'address1' => 'required|string',
             'address2' => 'nullable|string',
@@ -39,12 +35,25 @@ class OrderController extends Controller
             return response(['message' => $validator->errors()]);
         }
 
+        $check = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+
+        if (!empty($check)) {
+            return response(['message' => [["You already checked out those cart items"]]]);
+        }
+
         $data = $validator->validated();
+        $data['email'] = $request->email;
 
         $userID = null;
 
         if (!empty($request->userID)) $userID = $request->userID;
         elseif (!empty($request->password)) {
+
+            $check = User::where(['email' => $request->email])->first();
+
+            if (!empty($check)) {
+                return response(['message' => "The email has already been taken."]);
+            }
 
             $user = User::create([
                 'firstname' => $request->firstname,
@@ -62,11 +71,6 @@ class OrderController extends Controller
 
         $data['state'] = $data['region'];
 
-        if ($request->hasFile('file')) {
-
-            $data['prescription'] = $this->uploadFile($request, 'file');
-        }
-
         if ($userID) $data['customer_id'] = $userID;
 
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
@@ -78,7 +82,7 @@ class OrderController extends Controller
         SendOrderMail::dispatch($order, $request->email);
 
         return [
-            'message' => 'Checkout successfully',
+            'message' => 'Checkout successful',
             'order' => $order
         ];
     }
