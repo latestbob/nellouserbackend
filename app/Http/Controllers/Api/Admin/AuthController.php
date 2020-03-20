@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\AdminForgotPasswordJob;
@@ -18,7 +18,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AdminAuthController extends Controller
+class AuthController extends Controller
 {
 
     use GuzzleClient;
@@ -165,11 +165,11 @@ class AdminAuthController extends Controller
             $admin = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
+                return response()->json(['status' => 'Token is Invalid'], 400);
             }else if ($e instanceof TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
+                return response()->json(['status' => 'Token is Expired'], 400);
             }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+                return response()->json(['status' => 'Authorization Token not found'], 400);
             }
         }
 

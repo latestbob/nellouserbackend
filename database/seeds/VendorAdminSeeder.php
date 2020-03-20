@@ -19,6 +19,7 @@ class VendorAdminSeeder extends Seeder
             $admin = new \App\Models\Admin();
             $admin->email = $faker->email;
             $admin->phone = $faker->e164PhoneNumber;
+            $admin->picture = "http://www.famacare.com/img/famacare.png";
             $admin->password = \Illuminate\Support\Facades\Hash::make("password");
             $admin->vendor_id = $vendor->id;
             $admin->save();

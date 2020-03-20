@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PharmacyDrug extends Model
 {
-    protected $fillable = ['brand', 'name', 'price', 'image', 'category', 'uuid'];
+    protected $table = 'pharmacy_drugs';
+    protected $primaryKey = 'id';
+
+    protected $fillable = ['brand', 'name', 'price', 'image', 'category', 'uuid', 'vendor_id'];
 }
