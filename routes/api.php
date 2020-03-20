@@ -27,11 +27,25 @@ Route::prefix('/auth')->group(function (){
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
 });
 
-Route::prefix('/admin/auth')->group(function (){
-    Route::post('/login', 'Api\AdminAuthController@loginAdmin')->name('login');
-    Route::post('/forgot-password', 'Api\AdminAuthController@forgotPasswordAdmin');
-    Route::post('/reset-password', 'Api\AdminAuthController@resetPasswordAdmin');
-    Route::get('/user', 'Api\AdminAuthController@getUser');
+Route::prefix('/admin')->group(function (){
+
+    Route::prefix('/auth')->group(function (){
+        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');
+        Route::post('/forgot-password', 'Api\Admin\AuthController@forgotPasswordAdmin');
+        Route::post('/reset-password', 'Api\Admin\AuthController@resetPasswordAdmin');
+        Route::get('/user', 'Api\Admin\AuthController@getUser');
+    });
+
+    Route::prefix('/feedback')->group(function() {
+        Route::post('/view','Api\Admin\FeedBackController@getFeedbacks');
+    });
+
+    Route::prefix('/order')->group(function (){
+        Route::post('/drug/view', 'Api\Admin\OrderController@drugOrders');
+        Route::post('/drug/{cart_uuid}/items', 'Api\Admin\OrderController@drugOrderItems');
+        Route::post('/drug/item/action', 'Api\Admin\OrderController@drugOrderItemAction');
+    });
+
 });
 
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
@@ -66,7 +80,6 @@ Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
 Route::prefix('/feedback')->group(function() {
     Route::post('/create', 'Api\FeedBackController@create');
-    Route::post('/view','Api\FeedBackController@getFeedbacks');
 });
 
 Route::post('/file-upload', 'FileController@fileUpload');
@@ -77,6 +90,7 @@ Route::prefix('/cart')->group(function() {
     Route::post('/add', 'Api\CartController@addToCart')->name('add_to_cart');
     Route::post('/remove', 'Api\CartController@removeFromCart')->name('remove_from_cart');
     Route::post('/update', 'Api\CartController@updateCart')->name('update_cart');
+    Route::post('/add-prescription', 'Api\CartController@addPrescription')->name('add_prescription_to_cart_item');
 });
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
