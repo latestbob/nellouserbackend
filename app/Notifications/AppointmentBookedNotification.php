@@ -44,7 +44,7 @@ class AppointmentBookedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting("Hi $notifiable->first_name")
+                    ->greeting("Hi $notifiable->firstname")
                     ->line('This is to notify you that your appointment has been booked successfully.')
                     //->action('Notification Action', url('/'))
                     ->line('Thank you for choosing Nello!');

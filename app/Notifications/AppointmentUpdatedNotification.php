@@ -44,7 +44,7 @@ class AppointmentUpdatedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->greeting("Hi $notifiable->first_name")
+            ->greeting("Hi $notifiable->firstname")
             ->line('This is to notify you that the details of your appointment have been updated.')
             //->action('Notification Action', url('/'))
             ->line('Thank you for choosing Nello!');
