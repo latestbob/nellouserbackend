@@ -54,7 +54,7 @@ class TextMessageChannel
 
         // handle SubmitResponse xml
         if ($result == null) {
-            
+            echo 'ERROR : No Response available';
             print_r(['msg' => "ERROR : No Response available"]);
         } else {
             // create xml from result
