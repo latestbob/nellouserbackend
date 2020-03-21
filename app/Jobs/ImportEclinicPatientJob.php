@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User;
+use App\Notifications\NelloAccountNotification;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -66,6 +67,7 @@ class ImportEclinicPatientJob implements ShouldQueue
                     ];
     
                     $user = User::create($data);
+                    //$user->notify(new NelloAccountNotification);
 
                     //ExportUserJob::dispatch($user);
                     ImportEclinicMedicationsJob::dispatch($patient['medications'], $user);
