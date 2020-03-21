@@ -72,7 +72,7 @@ Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jw
 Route::get('/drugs', 'Api\DrugController@index');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
-Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations')->middleware('jwt.auth');
+Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations');
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');

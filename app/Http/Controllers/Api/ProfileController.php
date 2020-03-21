@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 
-use Auth;
-use Cloudder;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,6 +16,8 @@ use GuzzleHttp\Exception\RequestException;
 use App\Models\Appointment;
 use App\Models\Encounter;
 use App\Models\Medication;
+use Illuminate\Support\Facades\Auth;
+use JD\Cloudder\Facades\Cloudder;
 
 class ProfileController extends Controller
 {
@@ -69,7 +69,13 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->load('vendor');
         $data = $validator->validated();
+        $user->update($data);
+
+        return ['msg' => 'Profile updated successfully.', 'user' => $user];
+
+        /**DO NOT DELETE */
         $data['uuid'] = $user->uuid;
+
 
         try {
 
@@ -122,7 +128,7 @@ class ProfileController extends Controller
             Cloudder::upload($request->file('picture'));
             $response = Cloudder::getResult();
             $imageUrl = $response['url'];
-            $user = Auth::user();
+            $user = $request->user();
             $user->picture = $imageUrl;
             $user->save();
             //UploadPicture::dispatch([
@@ -179,6 +185,12 @@ class ProfileController extends Controller
         $user = $request->user();
         $vendor = Vendor::find($user->vendor_id);
 
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return ['msg' => 'Password changed'];
+
+        /** DO NOT DELETE */
         $userData = [
             'current_password' => $request->current_password,
             'password' => $request->new_password,
@@ -221,26 +233,31 @@ class ProfileController extends Controller
 
     public function encounters(Request $request)
     {
+        return $request->user()->encounters()->get();
         return $this->__request($request, '/api/profile/encounters');
     }
 
     public function medications(Request $request)
     {
+        return $request->user()->medications()->get();
         return $this->__request($request, '/api/profile/medications');
     }
 
     public function vitalSigns(Request $request)
     {
+        return $request->user()->vitals()->get();
         return $this->__request($request, '/api/profile/vital-signs');
     }
 
     public function procedures(Request $request)
     {
+        return $request->user()->procedures()->get();
         return $this->__request($request, '/api/profile/procedures');
     }
 
     public function investigations(Request $request)
     {
+        return $request->user()->investigations()->get();
         return $this->__request($request, '/api/profile/investigations');
     }
 
@@ -251,6 +268,7 @@ class ProfileController extends Controller
 
     public function payments(Request $request)
     {
+        return $request->user()->payments()->get();
         return $this->__request($request, '/api/profile/payments');
     }
 

@@ -36,13 +36,12 @@ class DoctorController extends Controller
      */
     public function fetchSpecializations()
     {
-        $specs = User::select('aos')->distinct()->get();
+        $specs = User::whereNotNull('aos')->select('aos')->distinct()->get();
         return $specs;
     }
 
     /**
      * Rate a doctor
-     * 
      * 
      * 
      * @bodyParam rating int required
