@@ -20,6 +20,15 @@ class AppointmentController extends Controller
 {
     use GuzzleClient;
 
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $appointments = Appointment::whereHas('user', function($query) use ($user) {
+            $query->where('vendor_id', $user->vendor_id);
+        })->paginate();
+        return $appointments;
+    }
+
     private function find(string $uuid): Appointment
     {
         $appointment = Appointment::where('uuid', $uuid)

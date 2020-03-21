@@ -307,4 +307,11 @@ class ProfileController extends Controller
             'msg' => 'An error occurred while fetching data.'
         ], 400);
     }
+
+    public function appointments(Request $request)
+    {
+        $appointments = Appointment::where('user_uuid', $request->user()->uuid)
+            ->paginate();
+        return $appointments;
+    }
 }
