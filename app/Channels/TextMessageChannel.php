@@ -22,7 +22,8 @@ class TextMessageChannel
         $message = $notification->toTextMessage($notifiable);
 
         //$this->sendSMS($message, [$notifiable->phone]);
-        $this->processSMS($message, $notifiable->phone);
+        $phone = '+234' . substr(trim($notifiable->phone), 1);
+        $this->processSMS($message, $phone);
     }
 
     private function strToHex($string)
