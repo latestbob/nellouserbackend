@@ -13,8 +13,8 @@ class TextMessageChannel
     private const RES_PATH = "/api/sxmp/1.0";
     private const USERNAME = "NG.100.0419";
     private const PASSWORD = "K3rtHPG7";
-    //private const ENCODING = "ISO-8859-1";
-    private const ENCODING = "UTF-8";
+    private const ENCODING = "ISO-8859-1";
+    //private const ENCODING = "UTF-8";
     private const SOURCE_TYPE = "alphanumeric";
     private const SOURCE_ADDRESS = "Famacare";
 
