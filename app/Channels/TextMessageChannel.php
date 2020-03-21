@@ -65,6 +65,7 @@ class TextMessageChannel
                 $root = $response;
             }
             if ($root->error[0]['code'] == 0) {
+                echo 'Successful';
                 // successful submit if errce code is 0
                 //$ticketId = $root->ticketId[0];
                 /* * IMPORTANT NOTE : The TicketID value should be stored by your * application in your own database * since this value is
@@ -75,9 +76,10 @@ class TextMessageChannel
                 //echo 'Successful';
                 //return ['msg' => "Received TicketID : " . $ticketId];
             } else {
+                echo 'Error: => ' . 
                 // error if code is not 0 an error occured
-                //$message = $root->error[0]['message']; /*c * IMPORTANT NOTE : An an error occured and should be handled        here. */
-                //echo 'Error: ' . $message;
+                $message = $root->error[0]['message']; /*c * IMPORTANT NOTE : An an error occured and should be handled        here. */
+                echo 'Error: ' . $message;
                 //return ['msg' => "Error occured : " . $message];
             }
         }
