@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Models\Appointment;
 use App\Models\HealthCenter;
+use App\Notifications\AppointmentBookedNotification;
+use App\Notifications\AppointmentCancelledNotification;
+use App\Notifications\AppointmentUpdatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -12,10 +14,20 @@ use App\Traits\GuzzleClient;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
     use GuzzleClient;
+
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $appointments = Appointment::whereHas('user', function($query) use ($user) {
+            $query->where('vendor_id', $user->vendor_id);
+        })->paginate();
+        return $appointments;
+    }
 
     private function find(string $uuid): Appointment
     {
@@ -28,7 +40,7 @@ class AppointmentController extends Controller
 
     /**
      * Book appointment
-     * 
+     *
      * @bodyParam medical_center uuid required a health center uuid
      * @bodyParam reason string required the purpose of the appointment
      * @bodyParam date date format yyyy-mm-dd
@@ -47,16 +59,17 @@ class AppointmentController extends Controller
             return response($validator->errors(), 400);
         }
 
+        $user = $request->user();
         $data = $validator->validated();
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
-        $data['user_uuid'] = $request->user()->uuid;
-        //$data['date'] = $request->date;
-        //$data['time'] = $request->time;
+        $data['user_uuid'] = $user->uuid;
         $data['center_uuid'] = $request->medical_center;
-        //$appointment = Appointment::create($data);
-        //return $appointment;
-        $user = $request->user();
+        $appointment = Appointment::create($data);
+        $user->notify(new AppointmentBookedNotification($appointment));
+        return $appointment;
+
+        /**DO NOT DELETE */
         $user->load('vendor');
 
         try {
@@ -86,11 +99,22 @@ class AppointmentController extends Controller
             ], 400);
         }
 
+        return response([
+            'msg' => 'Error while booking appointment.'
+        ], 400);
     }
 
 
     public function pending(Request $request)
     {
+        $appointment = Appointment::with(['center'])->where([
+            'user_uuid' => $request->user()->uuid,
+            'status' => 'pending'
+        ])->orderBy('created_at','desc')->first();
+
+        return $appointment;
+
+        /**DO NOT DELETE */
         $user = $request->user();
         $user->load('vendor');
 
@@ -121,8 +145,22 @@ class AppointmentController extends Controller
             ], 400);
         }
 
+        return response([
+            'msg' => 'Error while fetching pending appointment.'
+        ], 400);
     }
 
+    /**
+     * Update appointment
+     *
+     * Update the details of an appointment
+     *
+     * @bodyParam uuid uuid required the uuid of the appointment
+     * @bodyParam medical_center uuid required a health center uuid
+     * @bodyParam reason string required the purpose of the appointment
+     * @bodyParam date date format yyyy-mm-dd
+     * @bodyParam time time format HH:mm
+     */
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -136,8 +174,14 @@ class AppointmentController extends Controller
             return response($validator->errors(), 400);
         }
 
-        $data = $validator->validated();
         $user = $request->user();
+        $appointment = Appointment::where('uuid', $request->uuid)->first();
+        $data = $validator->validated();
+        $appointment->update($data);
+        $user->notify(new AppointmentUpdatedNotification($appointment));
+        return $appointment;
+
+        /**DO NOT DELETE */
         $user->load('vendor');
 
         try {
@@ -169,8 +213,16 @@ class AppointmentController extends Controller
             ], 400);
         }
 
+        return response([
+            'msg' => 'Error while updating appointment.'
+        ], 400);
     }
 
+    /**
+     * Cancel appointment
+     *
+     * @urlParam uuid uuid required the uuid of the appointment
+     */
     public function cancel(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -182,6 +234,13 @@ class AppointmentController extends Controller
         }
 
         $user = $request->user();
+        $appointment = Appointment::where('uuid', $request->uuid)->first();
+        $appointment->status = 'cancelled';
+        $appointment->save();
+        $user->notify(new AppointmentCancelledNotification($appointment));
+        return $appointment;
+
+        /**DO NOT DELETE */
         $user->load('vendor');
         $data = $validator->validated();
 
@@ -212,115 +271,25 @@ class AppointmentController extends Controller
             ], 400);
         }
 
+        return response([
+            'msg' => 'Error while updating appointment.'
+        ], 400);
     }
 
 
     /**
      * View Appointment
-     * 
+     *
      * View details of an appointment
-     * 
+     *
      * @urlParam uuid uuid required the uuid of the appointment
      */
     public function viewAppointment(Request $request)
     {
-        $user = $request->user();
-        $user->load('vendor');
-
-        try {
-
-            $response = $this->httpGet($user->vendor, '/api/profile/appointments', ['user_uuid' => $user->uuid]);
-
-            //if ($response->getReasonPhrase() === 'OK') {
-            //    return $response->getBody();
-            //}
-            return $response->getBody();
-        } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
-            if ($e->hasResponse()) {
-                echo Psr7\str($e->getResponse());
-            } else {
-                print_r($e);
-                //$str = json_encode($e, true);
-            }
-            return response([
-                'msg' => 'Error while fetching appointments.'
-            ], 400);
-
-        } catch (ClientException $e) {
-            echo Psr7\str($e->getRequest());
-            return response([
-                'msg' => 'Error while fetching appointments.'
-            ], 400);
+        if (empty($request->uuid)) {
+            return response(['error' => 'Query parameter uuid is missing'], 400);
         }
-
-    }
-
-    /**
-     * Update appointment
-     *
-     * Update the details of an appointment 
-     *  
-     * @bodyParam uuid uuid required the uuid of the appointment
-     * @bodyParam medical_center uuid required a health center uuid
-     * @bodyParam reason string required the purpose of the appointment
-     * @bodyParam date date format yyyy-mm-dd
-     * @bodyParam time time format HH:mm
-     */
-    public function updateAppointment(Request $request)
-    {
-        $request->user_uuid = $request->user()->uuid;
-        $validator = Validator::make($request->all(), [
-            'uuid'           => 'required|exists:appointments,uuid',
-//            'medical_center' => 'required|string', //|exists:health_centers:uuid',
-            'reason'         => 'required|string',
-            'date'           => 'required|date|after:today',
-            'time'           => 'required|date_format:H:i'
-        ]);
-
-        if ($validator->fails()) {
-            return response($validator->errors(), 400);
-        }
-
         $appointment = $this->find($request->uuid);
-        if (empty($appointment)) return ['message' => 'Appointment update failed'];
-
-        $data = $validator->validated();
-        $data['app_date'] = $request->date;
-        $data['app_time'] = $request->time;
-//        $data['user_uuid'] = $request->user()->uuid;
-//        $data['center_uuid'] = $request->medical_center;
-        $appointment->update($data);
-        return ['message' => 'Appointment updated successfully'];
-    }
-
-
-    /**
-     * Cancel appointment
-     * 
-     * @urlParam uuid uuid required the uuid of the appointment
-     */
-    public function cancelAppointment(Request $request)
-    {
-        $appointment = $this->find($request->uuid);
-        if (empty($appointment)) return [];
-        $appointment->status = 'cancelled';
-        $appointment->save();
-        return $appointment;
-    }
-
-    public function pendingAppointment(Request $request)
-    {
-        $user = $request->user();
-        $appointment = Appointment::with(['center'])->where([
-            'user_uuid' => $user->uuid,
-            'status' => 'pending'
-            ])->orderBy('created_at','desc')->first();
-
-        if (empty($appointment)) return [];
-
-        $appointment->date = $appointment->app_date;
-        $appointment->time = $appointment->app_time;
         return $appointment;
     }
 }

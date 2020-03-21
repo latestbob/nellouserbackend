@@ -64,6 +64,8 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::get('/summary', 'Api\ProfileController@inBrief');
     //Route::get('/medical-reports', 'Api\ProfileController@fetchMedicalReports');
     //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
+
+    Route::get('/appointments', 'Api\ProfileController@appointments');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
@@ -72,7 +74,7 @@ Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jw
 Route::get('/drugs', 'Api\DrugController@index');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
-Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations')->middleware('jwt.auth');
+Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations');
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
 Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
@@ -94,6 +96,7 @@ Route::prefix('/cart')->group(function() {
 });
 
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
+    Route::get('/', 'AppointmentController@index');
     Route::post('/book', 'AppointmentController@bookAppointment');
     Route::get('/view','AppointmentController@viewAppointment');
     Route::post('/update', 'AppointmentController@update');
@@ -101,6 +104,8 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::get('/pending', 'AppointmentController@pending');
 });
 
+Route::get('/users/{user:uuid}/appointments', 'AppointmentController@fetchUserAppointments');
+//Route::get('/users/{user:uuid}/appointments', 'AppointmentController@fetchUserAppointments');
 
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
     Route::post('/users/create', 'Api\AuthController@nelloCreateUser');

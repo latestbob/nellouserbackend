@@ -23,9 +23,10 @@ class HealthCenterController extends Controller
      * @urlParam page int optional defaults to 1
      */
     public function index(Request $request) {
-        //$centers = HealthCenter::orderBy('name')->get(); //->paginate();
-        //return $centers;
+        $centers = HealthCenter::orderBy('name')->get(); //->paginate();
+        return $centers;
 
+        /**DO NOT DELETE */
         $user = $request->user();
         $user->load('vendor');
 

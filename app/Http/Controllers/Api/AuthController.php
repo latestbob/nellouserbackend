@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
+use App\Notifications\VerificationNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Psr7;
@@ -57,6 +58,20 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        return [
+            'token'  => $token,
+            'user'   => $user
+        ];
+
+        /** DO NOT DELETE */
         $vendor = Vendor::find($request->facilityID);
         try {
             $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
@@ -134,13 +149,20 @@ class AuthController extends Controller
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
         $userData['uuid'] = Str::uuid()->toString();
+        $userData['password'] = bcrypt($userData['password']);
 
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
         }
 
         $user = User::create($userData);
+        $code = random_int(100000, 999999);
 
+        $user->notify(new VerificationNotification($code));
+
+        return $user;
+
+        /**DO NOT DELETE */
         try {
 
             $response = $this->httpPost($vendor, '/api/auth/register', $userData);
@@ -226,6 +248,20 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->password);
+        $user->save();
+        ResetPasswordJob::dispatch(
+            $user,
+            $request->password
+        ); //->onConnection('database')->onQueue('mails');
+
+        $pass->delete();
+
+        return [
+            'msg' => "Your password has been reset successfully",
+        ];
+
+        /**DO NOT DELETE */
         $vendor = Vendor::find($user->vendor_id);
 
         $userData = [
