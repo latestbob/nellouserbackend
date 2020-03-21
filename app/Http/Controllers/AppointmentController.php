@@ -86,9 +86,6 @@ class AppointmentController extends Controller
             ], 400);
         }
 
-        return response([
-            'msg' => 'Error while booking appointment.'
-        ], 400);
     }
 
 
@@ -124,9 +121,6 @@ class AppointmentController extends Controller
             ], 400);
         }
 
-        return response([
-            'msg' => 'Error while fetching pending appointment.'
-        ], 400);
     }
 
     public function update(Request $request)
@@ -175,9 +169,6 @@ class AppointmentController extends Controller
             ], 400);
         }
 
-        return response([
-            'msg' => 'Error while updating appointment.'
-        ], 400);
     }
 
     public function cancel(Request $request)
@@ -221,9 +212,6 @@ class AppointmentController extends Controller
             ], 400);
         }
 
-        return response([
-            'msg' => 'Error while updating appointment.'
-        ], 400);
     }
 
 
@@ -236,17 +224,36 @@ class AppointmentController extends Controller
      */
     public function viewAppointment(Request $request)
     {
-        if (empty($request->uuid)) {
-            return response(['error' => 'Query parameter uuid is missing'], 400);
+        $user = $request->user();
+        $user->load('vendor');
+
+        try {
+
+            $response = $this->httpGet($user->vendor, '/api/profile/appointments', ['user_uuid' => $user->uuid]);
+
+            //if ($response->getReasonPhrase() === 'OK') {
+            //    return $response->getBody();
+            //}
+            return $response->getBody();
+        } catch (RequestException $e) {
+            echo Psr7\str($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Psr7\str($e->getResponse());
+            } else {
+                print_r($e);
+                //$str = json_encode($e, true);
+            }
+            return response([
+                'msg' => 'Error while fetching appointments.'
+            ], 400);
+
+        } catch (ClientException $e) {
+            echo Psr7\str($e->getRequest());
+            return response([
+                'msg' => 'Error while fetching appointments.'
+            ], 400);
         }
-        $appointment = $this->find($request->uuid);
 
-        if (empty($appointment)) return [];
-
-        $appointment->date = $appointment->app_date;
-        $appointment->time = $appointment->app_time;
-
-        return $appointment;
     }
 
     /**
