@@ -149,6 +149,7 @@ class AuthController extends Controller
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
         $userData['uuid'] = Str::uuid()->toString();
+        $userData['password'] = bcrypt($userData['password']);
 
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
