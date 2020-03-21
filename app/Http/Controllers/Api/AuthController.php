@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
+use App\Notifications\VerificationNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Psr7;
@@ -154,6 +155,9 @@ class AuthController extends Controller
         }
 
         $user = User::create($userData);
+        $code = random_int(100000, 999999);
+
+        $user->notify(new VerificationNotification($code));
 
         return $user;
 
