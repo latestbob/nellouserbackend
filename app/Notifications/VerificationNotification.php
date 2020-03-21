@@ -66,10 +66,10 @@ class VerificationNotification extends BaseNotification implements ShouldQueue
     public function toTextMessage($notifiable)
     {
         $sms =  "
-        Please verify that it is you.&#010;
+        Please verify that it is you.
         Your verification code is $this->code.
-        If this was not you, please ignore. \n
-        Yours sincerely,&#010;
+        If this was not you, please ignore.
+        Yours sincerely,
         Nello ";
         return $sms;
     }
