@@ -67,26 +67,29 @@ class AuthController extends Controller
         $user = Auth::user();
 
         return [
-            'token'  => $token,
-            'user'   => $user
+            'token' => $token,
+            'user' => $user
         ];
 
         /** DO NOT DELETE */
-        $vendor = Vendor::find($request->facilityID);
+        $vendor = Vendor::where(['id' => $request->facilityID]);
+
         try {
+
             $response = $this->httpPost($vendor, '/api/auth/login', $credentials);
-            $user = User::where('email', $request->email)->first();
 
             if ($response->getReasonPhrase() === 'OK') {
                 $fullUrl = $request->fullUrl();
                 Cache::put($fullUrl . $user->uuid, $response->getBody());
             }
 
+            $user = User::where('email', $request->email)->first();
+
             if ($user) {
                 $token = JWTAuth::fromUser($user);
                 return [
-                    'token'  => $token,
-                    'user'   => $user
+                    'token' => $token,
+                    'user' => $user
                 ];
             }
             return response([
@@ -130,7 +133,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:50',
-            'lastname'  => 'required|string|max:50',
+            'lastname' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|string|min:6|confirmed',
@@ -267,7 +270,7 @@ class AuthController extends Controller
         $userData = [
             //'current_password' => $request->current_password,
             'password' => $request->password,
-            'uuid'     => $user->uuid
+            'uuid' => $user->uuid
         ];
 
         try {
@@ -306,7 +309,6 @@ class AuthController extends Controller
                 return response($str, 400);
             }
         }
-
 
 
         //$user = User::where(['email' => $request->email])->first();

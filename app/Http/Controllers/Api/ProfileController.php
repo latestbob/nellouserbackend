@@ -310,8 +310,9 @@ class ProfileController extends Controller
 
     public function appointments(Request $request)
     {
-        $appointments = Appointment::where('user_uuid', $request->user()->uuid)
-            ->paginate();
+        $appointments = Appointment::with('center')->where('user_uuid', $request->user()->uuid)
+            ->orderByDesc('id')
+            ->paginate(10);
         return $appointments;
     }
 }

@@ -11,9 +11,9 @@ class DoctorController extends Controller
 {
     /**
      * Doctors
-     * 
+     *
      * Fetch paged list of doctors
-     * 
+     *
      * @urlParam page int optional defaults to 1
      * @urlParam specialization string optional
      */
@@ -24,14 +24,14 @@ class DoctorController extends Controller
             ->when($spec, function($query, $spec){
                 $query->where('aos', 'LIKE', "%$spec%");
             })->paginate();
-        
+
         return $doctors;
     }
 
 
     /**
      * Doctors specializations
-     * 
+     *
      * Fetch list of doctors specializations
      */
     public function fetchSpecializations()
@@ -42,8 +42,8 @@ class DoctorController extends Controller
 
     /**
      * Rate a doctor
-     * 
-     * 
+     *
+     *
      * @bodyParam rating int required
      * @bodyParam doctor_uuid string required
      */
@@ -61,7 +61,7 @@ class DoctorController extends Controller
 
     public function importDoctor(Request $request)
     {
-        
+
     }
 
 }
