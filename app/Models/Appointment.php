@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $table = 'appointments';
-    protected $fillable = ['uuid', 'description','user_uuid','status','reason','app_date','app_time','location','source','session_id','ref_no','center_uuid'];
+    protected $fillable = ['uuid', 'description','user_uuid','status','reason','date','time','location','source','session_id','ref_no','center_uuid'];
 
     public function center() 
     {

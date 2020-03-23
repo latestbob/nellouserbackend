@@ -66,8 +66,6 @@ class AppointmentController extends Controller
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
         $data['center_uuid'] = $request->medical_center;
-        $data['app_date'] = $request->date;
-        $data['app_time'] = $request->time;
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
         return $appointment;
@@ -181,9 +179,6 @@ class AppointmentController extends Controller
         $user = $request->user();
         $appointment = Appointment::where('uuid', $request->uuid)->first();
         $data = $validator->validated();
-
-        $data['app_date'] = $request->date;
-        $data['app_time'] = $request->time;
 
         $appointment->update($data);
 
