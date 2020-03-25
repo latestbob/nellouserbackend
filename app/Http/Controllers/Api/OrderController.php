@@ -21,14 +21,14 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            'company' => 'nullable|string',
+            'company' => 'required|string',
             'phone' => 'required|numeric',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'address1' => 'required|string',
             'address2' => 'nullable|string',
             'city' => 'required|string',
-            'region' => 'required|string',
-            'postal_code' => 'nullable|string',
+            'state' => 'required|string',
+            'postal_code' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -52,7 +52,7 @@ class OrderController extends Controller
             $check = User::where(['email' => $request->email])->first();
 
             if (!empty($check)) {
-                return response(['message' => "The email has already been taken."]);
+                return response(['message' => [["The email has already been taken."]]]);
             }
 
             $user = User::create([
@@ -69,13 +69,11 @@ class OrderController extends Controller
             if ($user) $userID = $user->id;
         }
 
-        $data['state'] = $data['region'];
-
         if ($userID) $data['customer_id'] = $userID;
 
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-        $data['amount'] = $cart->sum('price');
+        $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
 
         $order = Order::create($data);
 
@@ -84,6 +82,35 @@ class OrderController extends Controller
         return [
             'message' => 'Checkout successful',
             'order' => $order
+        ];
+    }
+
+    public function confirmPayment(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'reference' => 'required|string|exists:orders,order_ref'
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()]);
+        }
+
+        $order = Order::where(['order_ref' => $request->reference])->first();
+
+        if (empty($order)) {
+
+            return [
+                'message' => 'Sorry, no order was found with that reference code'
+            ];
+        }
+
+        $order->payment_confirmed = 1;
+        $order->payment_method = "Paystack";
+        $order->save();
+
+        return [
+            'message' => 'Thank you. Your payment has been confirmed'
         ];
     }
 }

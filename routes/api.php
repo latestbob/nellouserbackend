@@ -38,6 +38,7 @@ Route::prefix('/admin')->group(function (){
 
     Route::prefix('/feedback')->group(function() {
         Route::post('/view','Api\Admin\FeedBackController@getFeedbacks');
+        Route::post('/analysis','Api\Admin\FeedBackController@getFeedbackAnalysis');
     });
 
     Route::prefix('/order')->group(function (){
@@ -86,6 +87,7 @@ Route::prefix('/feedback')->group(function() {
 
 Route::post('/file-upload', 'FileController@fileUpload');
 Route::post('/order/drug', 'Api\OrderController@checkout');
+Route::post('/order/drug/confirm-payment', 'Api\OrderController@confirmPayment');
 
 Route::prefix('/cart')->group(function() {
     Route::post('/items', 'Api\CartController@getItems')->name('get_cart_items');
