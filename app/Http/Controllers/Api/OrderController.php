@@ -21,7 +21,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            'company' => 'required|string',
+            'company' => 'nullable|string',
             'phone' => 'required|numeric',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'address1' => 'required|string',
@@ -35,14 +35,31 @@ class OrderController extends Controller
             return response(['message' => $validator->errors()]);
         }
 
-        $check = Order::where(['cart_uuid' => $request->cart_uuid])->first();
-
-        if (!empty($check)) {
-            return response(['message' => [["You already checked out those cart items"]]]);
-        }
-
         $data = $validator->validated();
         $data['email'] = $request->email;
+
+        $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+
+        if (!empty($order)) {
+
+            if ($order->payment_confirmed == 1)
+                return response(['message' => [["You already checked out and made payment for those cart items"]]]);
+            else {
+
+                $data['order_ref'] = strtoupper(Str::uuid()->toString());
+                $cart = Cart::where('cart_uuid', $data['cart_uuid']);
+                $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+
+                $order->update($data);
+
+                SendOrderMail::dispatch($order, $request->email);
+
+                return [
+                    'message' => 'Checkout successful',
+                    'order' => $order
+                ];
+            }
+        }
 
         $userID = null;
 
