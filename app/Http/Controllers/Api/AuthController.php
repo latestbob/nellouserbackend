@@ -57,6 +57,7 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only(['email', 'password']);
+        //$credentials['active'] = true;
 
         if (!$token = JWTAuth::attempt($credentials)) {
             return response([
@@ -158,10 +159,10 @@ class AuthController extends Controller
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
         }
 
+        $userData['token'] = Str::random(15);
         $user = User::create($userData);
-        $code = random_int(100000, 999999);
 
-        $user->notify(new VerificationNotification($code));
+        $user->notify(new VerificationNotification());
 
         return $user;
 
@@ -194,6 +195,25 @@ class AuthController extends Controller
             'msg' => 'Error while creating account.'
         ], 400);
     }
+
+    public function verifyToken(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string|exists:users'
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+
+        $user = User::where('token', $request->token)->first();
+        $user->active = true;
+        $user->save();
+
+        return ['msg' => 'Token is valid'];
+    }
+
+
 
     public function forgotPasswordCustomer(Request $request)
     {

@@ -12,15 +12,13 @@ class VerificationNotification extends BaseNotification implements ShouldQueue
 {
     use Queueable;
 
-    private $code;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($code)
+    public function __construct()
     {
-        $this->code = $code;
     }
 
     /**
@@ -31,7 +29,7 @@ class VerificationNotification extends BaseNotification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', TextMessageChannel::class];
+        return ['mail']; //, TextMessageChannel::class];
     }
 
     /**
@@ -40,13 +38,13 @@ class VerificationNotification extends BaseNotification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($user)
     {
         return (new MailMessage)
-            ->greeting("Hi $notifiable->firstname")
+            ->greeting("Hi $user->firstname")
             ->line('Please verify your email address by visiting the link below.')
-            ->line("Your verification code is $this->code")
-            ->action('Verify', url("https://asknello.com/$notifiable->user_type/contact/confirm"))
+            //->line("Your verification code is $this->code")
+            ->action('Verify', url("https://asknello.com/verification/$user->token"))
             ->line('Thank you for choosing Nello!');
     }
 

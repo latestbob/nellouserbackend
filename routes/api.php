@@ -25,6 +25,8 @@ Route::prefix('/auth')->group(function (){
     Route::post('/reset-password', 'Api\AuthController@resetPasswordCustomer');
     Route::post('/register', 'Api\AuthController@registerCustomer');
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
+
+    Route::post('/verify', 'Api\AuthController@verifyToken');
 });
 
 Route::prefix('/admin')->group(function (){
