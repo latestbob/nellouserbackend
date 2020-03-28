@@ -42,4 +42,25 @@ class FeedBackController extends Controller
             ->orderBy('created_at', 'desc')->paginate($size);
         return $feedbacks;
     }
+
+    public function getFeedbackAnalysis(Request $request) {
+
+        try {
+            $admin = JWTAuth::parseToken()->authenticate();
+        } catch (Exception $e) {
+            if ($e instanceof TokenInvalidException){
+                return response()->json(['status' => 'Token is Invalid'], 401);
+            }else if ($e instanceof TokenExpiredException){
+                return response()->json(['status' => 'Token is Expired'], 401);
+            }else{
+                return response()->json(['status' => 'Authorization Token not found'], 401);
+            }
+        }
+
+        return [
+            'happy' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'happy'])->count('id'),
+            'sad' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'sad'])->count('id'),
+            'neutral' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'neutral'])->count('id')
+        ];
+    }
 }

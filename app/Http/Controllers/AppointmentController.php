@@ -23,7 +23,7 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $appointments = Appointment::whereHas('user', function($query) use ($user) {
+        $appointments = Appointment::whereHas('user', function ($query) use ($user) {
             $query->where('vendor_id', $user->vendor_id);
         })->paginate();
         return $appointments;
@@ -40,7 +40,7 @@ class AppointmentController extends Controller
 
     /**
      * Book appointment
-     * 
+     *
      * @bodyParam medical_center uuid required a health center uuid
      * @bodyParam reason string required the purpose of the appointment
      * @bodyParam date date format yyyy-mm-dd
@@ -50,9 +50,10 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'medical_center' => 'required|string',// |exists:health_centers,uuid',
-            'reason'         => 'required|string',
-            'date'           => 'required|date|after:today',
-            'time'           => 'required|date_format:H:i'
+            'reason' => 'required|string',
+            'description' => 'required|string',
+            'date' => 'required|date|after:today',
+            'time' => 'required|date_format:H:i'
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +69,7 @@ class AppointmentController extends Controller
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
         return $appointment;
-        
+
         /**DO NOT DELETE */
         $user->load('vendor');
 
@@ -110,7 +111,7 @@ class AppointmentController extends Controller
         $appointment = Appointment::with(['center'])->where([
             'user_uuid' => $request->user()->uuid,
             'status' => 'pending'
-        ])->orderBy('created_at','desc')->first();
+        ])->orderBy('created_at', 'desc')->first();
 
         return $appointment;
 
@@ -153,8 +154,8 @@ class AppointmentController extends Controller
     /**
      * Update appointment
      *
-     * Update the details of an appointment 
-     *  
+     * Update the details of an appointment
+     *
      * @bodyParam uuid uuid required the uuid of the appointment
      * @bodyParam medical_center uuid required a health center uuid
      * @bodyParam reason string required the purpose of the appointment
@@ -164,10 +165,11 @@ class AppointmentController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'uuid'           => 'required|string',
-            'reason'         => 'required|string',// |exists:health_centers,uuid',
-            'date'           => 'required|date|after:today',
-            'time'           => 'required|date_format:H:i'
+            'uuid' => 'required|string',
+            'reason' => 'required|string',
+            'description' => 'required|string',
+            'date' => 'required|date|after:today',
+            'time' => 'required|date_format:H:i'
         ]);
 
         if ($validator->fails()) {
@@ -177,7 +179,9 @@ class AppointmentController extends Controller
         $user = $request->user();
         $appointment = Appointment::where('uuid', $request->uuid)->first();
         $data = $validator->validated();
+
         $appointment->update($data);
+
         $user->notify(new AppointmentUpdatedNotification($appointment));
         return $appointment;
 
@@ -220,13 +224,13 @@ class AppointmentController extends Controller
 
     /**
      * Cancel appointment
-     * 
+     *
      * @urlParam uuid uuid required the uuid of the appointment
      */
     public function cancel(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'uuid'           => 'required|string',
+            'uuid' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -279,9 +283,9 @@ class AppointmentController extends Controller
 
     /**
      * View Appointment
-     * 
+     *
      * View details of an appointment
-     * 
+     *
      * @urlParam uuid uuid required the uuid of the appointment
      */
     public function viewAppointment(Request $request)
