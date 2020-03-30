@@ -41,6 +41,11 @@ class OrderController extends Controller
 
         $size = empty($request->size) ? 1 : $request->size;
 
+        $orders = Order::with(['items' => function($query){
+            $query->selectRaw("ROUND(SUM(carts.price), 2) as amount");
+        }])->orderBy('id', 'desc')->paginate();
+
+        return $orders;
 
         $orders = Order::query()->join('carts', 'orders.cart_uuid', '=',
             'carts.cart_uuid', 'INNER')->leftJoin('users', 'orders.customer_id', '=', 'users.id')
