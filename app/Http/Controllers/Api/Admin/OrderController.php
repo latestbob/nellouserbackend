@@ -43,19 +43,20 @@ class OrderController extends Controller
 
         $orders = Order::with(['items' => function($query){
             $query->selectRaw("ROUND(SUM(carts.price), 2) as amount");
-        }])->orderBy('id', 'desc')->paginate();
+        }])->where('carts.vendor_id', $admin->vendor_id)
+            ->orderBy('id', 'desc')->paginate($size);
 
         return $orders;
 
-        $orders = Order::query()->join('carts', 'orders.cart_uuid', '=',
-            'carts.cart_uuid', 'INNER')->leftJoin('users', 'orders.customer_id', '=', 'users.id')
-            ->where('carts.vendor_id', $admin->vendor_id)
-            ->select(['*', 'orders.firstname', 'orders.lastname', 'orders.id',
-                'orders.phone', 'orders.email', 'orders.city', 'orders.state', 'orders.created_at'])
-            ->selectRaw("ROUND(SUM(carts.price), 2) as amount")
-            ->groupBy('carts.cart_uuid')->orderByDesc('orders.id')->paginate($size);
+//        $orders = Order::query()->join('carts', 'orders.cart_uuid', '=',
+//            'carts.cart_uuid', 'INNER')->leftJoin('users', 'orders.customer_id', '=', 'users.id')
+//            ->where('carts.vendor_id', $admin->vendor_id)
+//            ->select(['*', 'orders.firstname', 'orders.lastname', 'orders.id',
+//                'orders.phone', 'orders.email', 'orders.city', 'orders.state', 'orders.created_at'])
+//            ->selectRaw("ROUND(SUM(carts.price), 2) as amount")
+//            ->groupBy('carts.cart_uuid')->orderByDesc('orders.id')->paginate($size);
 
-        return $orders;
+//        return $orders;
     }
 
     public function drugOrderItems(Request $request) {
