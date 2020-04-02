@@ -26,7 +26,7 @@ class ProfileController extends Controller
 
     /**
      * Update customer profile
-     * 
+     *
      * @bodyParam firstname string required
      * @bodyParam lastname string required
      * @bodyParam middlename string
@@ -115,9 +115,9 @@ class ProfileController extends Controller
 
     /**
      * Upload picture
-     * 
+     *
      * Upload customer profile picture
-     * 
+     *
      * @bodyParam picture file required image file
      */
     public function uploadPicture(Request $request)
@@ -138,13 +138,13 @@ class ProfileController extends Controller
             //]);
             return ['image_url' => $imageUrl];
         }
-        
+
         return response(['error' => 'Image not found'], 400);
     }
 
     /**
      * Health history
-     * 
+     *
      * Fetch customer's health history data
      */
     public function fetchHealthHistory(Request $request)
@@ -169,9 +169,9 @@ class ProfileController extends Controller
 
     /**
      * Change password
-     * 
+     *
      * Change customer password
-     * 
+     *
      * @bodyParam current_password string required
      * @bodyParam new_password string required
      */

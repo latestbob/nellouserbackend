@@ -47,6 +47,7 @@ Route::prefix('/admin')->group(function (){
         Route::post('/drug/view', 'Api\Admin\OrderController@drugOrders');
         Route::post('/drug/{cart_uuid}/items', 'Api\Admin\OrderController@drugOrderItems');
         Route::post('/drug/item/action', 'Api\Admin\OrderController@drugOrderItemAction');
+        Route::post('/drug/item/add-prescription', 'Api\Admin\OrderController@addPrescription');
     });
 
 });
