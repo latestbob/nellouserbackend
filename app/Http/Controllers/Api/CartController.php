@@ -163,16 +163,17 @@ class CartController extends Controller
 
         if (empty($item)) {
 
-            return response(['message' => "Failed to add prescription, item not found"]);
+            return response(['message' => [["Failed to add prescription, item not found"]]]);
         }
 
         if ($request->hasFile('file')) {
 
             $item->prescription = $prescription = $this->uploadFile($request, 'file');
+            $item->prescribed_by = 'customer';
             $item->save();
 
             return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
 
-        } else return response(['message' => "No prescription file uploaded"]);
+        } else return response(['message' => [["No prescription file uploaded"]]]);
     }
 }
