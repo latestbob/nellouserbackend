@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
@@ -24,6 +25,7 @@ use JD\Cloudder\Facades\Cloudder;
 class ProfileController extends Controller
 {
     use GuzzleClient;
+    use FileUpload;
 
 
     /**
@@ -347,8 +349,8 @@ class ProfileController extends Controller
 
         if ($request->hasFile('file')) {
 
-//            $item->prescription = $prescription = $this->uploadFile($request, 'file');
-            $item->prescription = $prescription = 'http://localhost:3000/static/media/drug-placeholder.d504dfec.png';
+            $item->prescription = $prescription = $this->uploadFile($request, 'file');
+//            $item->prescription = $prescription = 'http://localhost:3000/static/media/drug-placeholder.d504dfec.png';
             $item->prescribed_by = 'customer';
             if (!$item->user_id) $item->user_id = $request->user()->id;
             $item->save();
