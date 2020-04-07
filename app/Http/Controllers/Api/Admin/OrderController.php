@@ -74,7 +74,7 @@ class OrderController extends Controller
         }
 
         if (empty($request->cart_uuid)) {
-            return response(['message' => ['Cart ID is missing']], 401);
+            return response(['message' => [['Cart ID is missing']]]);
         }
 
         $size = empty($request->size) ? 1 : $request->size;

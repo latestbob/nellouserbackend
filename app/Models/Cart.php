@@ -17,7 +17,11 @@ class Cart extends Model
 
     public function drug()
     {
-        $item = $this->belongsTo('App\Models\PharmacyDrug', 'drug_id', 'id');
-        return $item;
+        return $this->belongsTo('App\Models\PharmacyDrug', 'drug_id', 'id');
+    }
+
+    public function vendor() {
+
+        return $this->belongsTo('App\Models\Vendor', 'vendor_id', 'id');
     }
 }

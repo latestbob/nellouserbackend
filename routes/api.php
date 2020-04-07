@@ -70,6 +70,8 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 
     Route::get('/appointments', 'Api\ProfileController@appointments');
+    Route::get('/prescriptions', 'Api\ProfileController@getPrescriptions');
+    Route::post('/add-prescription', 'Api\ProfileController@addPrescription');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
