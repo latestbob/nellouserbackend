@@ -41,8 +41,9 @@ class OrderController extends Controller
 
         $size = empty($request->size) ? 1 : $request->size;
 
-        $orders = Order::with(['items' => function($query){
-            $query->selectRaw("ROUND(SUM(carts.price), 2) as amount");
+        $orders = Order::with(['items' => function($query) use ($admin) {
+            $query->where('carts.vendor_id', $admin->vendor_id)
+                ->selectRaw("ROUND(SUM(carts.price), 2) as amount");
         }])->orderBy('id', 'desc')->paginate();
 
         return $orders;
