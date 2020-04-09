@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     const TAX_FEE = 0.05; //percentage of total price
-    protected $fillable = ['cart_uuid', 'drug_id', 'quantity', 'price', 'prescription', 'user_id', 'vendor_id'];
+    protected $fillable = ['cart_uuid', 'drug_id', 'quantity', 'price', 'prescription', 'prescribed_by', 'user_id', 'vendor_id'];
 
     public function order()
     {
@@ -17,7 +17,11 @@ class Cart extends Model
 
     public function drug()
     {
-        $item = $this->belongsTo('App\Models\PharmacyDrug', 'drug_id', 'id');
-        return $item;
+        return $this->belongsTo('App\Models\PharmacyDrug', 'drug_id', 'id');
+    }
+
+    public function vendor() {
+
+        return $this->belongsTo('App\Models\Vendor', 'vendor_id', 'id');
     }
 }

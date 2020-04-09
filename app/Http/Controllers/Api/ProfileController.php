@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Order;
 use App\Models\User;
+use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
@@ -22,11 +25,12 @@ use JD\Cloudder\Facades\Cloudder;
 class ProfileController extends Controller
 {
     use GuzzleClient;
+    use FileUpload;
 
 
     /**
      * Update customer profile
-     * 
+     *
      * @bodyParam firstname string required
      * @bodyParam lastname string required
      * @bodyParam middlename string
@@ -115,9 +119,9 @@ class ProfileController extends Controller
 
     /**
      * Upload picture
-     * 
+     *
      * Upload customer profile picture
-     * 
+     *
      * @bodyParam picture file required image file
      */
     public function uploadPicture(Request $request)
@@ -138,13 +142,13 @@ class ProfileController extends Controller
             //]);
             return ['image_url' => $imageUrl];
         }
-        
+
         return response(['error' => 'Image not found'], 400);
     }
 
     /**
      * Health history
-     * 
+     *
      * Fetch customer's health history data
      */
     public function fetchHealthHistory(Request $request)
@@ -169,9 +173,9 @@ class ProfileController extends Controller
 
     /**
      * Change password
-     * 
+     *
      * Change customer password
-     * 
+     *
      * @bodyParam current_password string required
      * @bodyParam new_password string required
      */
@@ -310,9 +314,49 @@ class ProfileController extends Controller
 
     public function appointments(Request $request)
     {
-        $appointments = Appointment::with('center')->where('user_uuid', $request->user()->uuid)
+        return Appointment::with('center')->where('user_uuid', $request->user()->uuid)
             ->orderByDesc('id')
             ->paginate(10);
-        return $appointments;
+    }
+
+    public function getPrescriptions(Request $request) {
+        return Order::with(['items', 'items.drug', 'items.vendor'])->where(['customer_id' => $request->user()->id])->orderByDesc('id')->paginate(10);
+    }
+
+    public function addPrescription(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'cart_uuid' => 'required|string',
+            'drug_id' => 'required|integer',
+            'file' => 'required|image|mimes:jpeg,jpg,png',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()]);
+        }
+
+        $item = Cart::where(['cart_uuid' => $request->cart_uuid, 'drug_id' => $request->drug_id])->first();
+
+        if (empty($item)) {
+
+            return response(['message' => [["Failed to add prescription, item not found"]]]);
+        }
+
+        if ($item->user_id && $item->user_id != $request->user()->id) {
+
+            return response(['message' => [["Failed to add prescription, item does not belong to you"]]]);
+        }
+
+        if ($request->hasFile('file')) {
+
+            $item->prescription = $prescription = $this->uploadFile($request, 'file');
+//            $item->prescription = $prescription = 'http://localhost:3000/static/media/drug-placeholder.d504dfec.png';
+            $item->prescribed_by = 'customer';
+            if (!$item->user_id) $item->user_id = $request->user()->id;
+            $item->save();
+
+            return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
+
+        } else return response(['message' => [["No prescription file uploaded"]]]);
     }
 }

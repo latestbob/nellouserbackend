@@ -199,18 +199,24 @@ class AuthController extends Controller
     public function verifyToken(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|string|exists:users'
+            'token' => 'required|string|exists:users,token'
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 400);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $user = User::where('token', $request->token)->first();
         $user->active = true;
         $user->save();
 
-        return ['msg' => 'Token is valid'];
+        return [
+            'status' => true,
+            'message' => 'Email verified successfully'
+        ];
     }
 
 

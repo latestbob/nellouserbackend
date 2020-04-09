@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GuzzleClient;
+use Carbon\Carbon;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -52,12 +53,28 @@ class AppointmentController extends Controller
             'medical_center' => 'required|string',// |exists:health_centers,uuid',
             'reason' => 'required|string',
             'description' => 'required|string',
-            'date' => 'required|date|after:today',
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:H:i'
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 400);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+        $now = Carbon::now();
+        $date = Carbon::now();
+        $frags = explode(':', $request->time);
+        $date->hour = (int) $frags[0];
+        $date->minute = (int) $frags[1];
+
+        if ($now->gte($date)) {
+            $validator->errors()->add('time', 'Please select a future timeslot');
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $user = $request->user();
@@ -68,7 +85,11 @@ class AppointmentController extends Controller
         $data['center_uuid'] = $request->medical_center;
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
-        return $appointment;
+        return response([
+            'status' => true,
+            'message' => "Appointment booked successfully",
+            'appointment' => $appointment
+        ]);
 
         /**DO NOT DELETE */
         $user->load('vendor');
@@ -91,18 +112,18 @@ class AppointmentController extends Controller
             }
             return response([
                 'msg' => 'Error while booking appointment.'
-            ], 400);
+            ]);
 
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
                 'msg' => 'Error while booking appointment.'
-            ], 400);
+            ]);
         }
 
         return response([
             'msg' => 'Error while booking appointment.'
-        ], 400);
+        ]);
     }
 
 
@@ -113,7 +134,9 @@ class AppointmentController extends Controller
             'status' => 'pending'
         ])->orderBy('created_at', 'desc')->first();
 
-        return $appointment;
+        return [
+            'appointment' => $appointment
+        ];
 
         /**DO NOT DELETE */
         $user = $request->user();
@@ -137,18 +160,18 @@ class AppointmentController extends Controller
             }
             return response([
                 'msg' => 'Error while fetching pending appointment.'
-            ], 400);
+            ]);
 
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
                 'msg' => 'Error while fetching pending appointment.'
-            ], 400);
+            ]);
         }
 
         return response([
             'msg' => 'Error while fetching pending appointment.'
-        ], 400);
+        ]);
     }
 
     /**
@@ -173,17 +196,25 @@ class AppointmentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 400);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $user = $request->user();
-        $appointment = Appointment::where('uuid', $request->uuid)->first();
+        $appointment = Appointment::with(['center'])->where('uuid', $request->uuid)->first();
         $data = $validator->validated();
 
         $appointment->update($data);
 
         $user->notify(new AppointmentUpdatedNotification($appointment));
-        return $appointment;
+
+        return [
+            'status' => true,
+            'message' => 'Appointment updated successfully',
+            'appointment' => $appointment
+        ];
 
         /**DO NOT DELETE */
         $user->load('vendor');
@@ -197,7 +228,11 @@ class AppointmentController extends Controller
             //}
 
             //return $response->getBody();
-            return ['message' => 'Appointment updated successfully'];
+            return response([
+                'status' => true,
+                'message' => 'Appointment updated successfully'
+            ]);
+
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -207,19 +242,17 @@ class AppointmentController extends Controller
                 //$str = json_encode($e, true);
             }
             return response([
-                'msg' => 'Error while updating appointment.'
-            ], 400);
+                'status' => false,
+                'message' => 'Error while updating appointment.'
+            ]);
 
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
-                'msg' => 'Error while updating appointment.'
-            ], 400);
+                'status' => false,
+                'message' => 'Error while updating appointment.'
+            ]);
         }
-
-        return response([
-            'msg' => 'Error while updating appointment.'
-        ], 400);
     }
 
     /**
@@ -234,15 +267,24 @@ class AppointmentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 400);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $user = $request->user();
-        $appointment = Appointment::where('uuid', $request->uuid)->first();
+        $appointment = Appointment::with(['center'])->where('uuid', $request->uuid)->first();
         $appointment->status = 'cancelled';
         $appointment->save();
         $user->notify(new AppointmentCancelledNotification($appointment));
-        return $appointment;
+
+        return response([
+            'status' => true,
+            'message' => 'Appointment cancelled successfully',
+            'current' => $appointment,
+            'appointment' => $this->pending($request)['appointment']
+        ]);
 
         /**DO NOT DELETE */
         $user->load('vendor');
@@ -266,18 +308,18 @@ class AppointmentController extends Controller
             }
             return response([
                 'msg' => 'Error while updating appointment.'
-            ], 400);
+            ]);
 
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
                 'msg' => 'Error while updating appointment.'
-            ], 400);
+            ]);
         }
 
         return response([
             'msg' => 'Error while updating appointment.'
-        ], 400);
+        ]);
     }
 
 
@@ -291,7 +333,7 @@ class AppointmentController extends Controller
     public function viewAppointment(Request $request)
     {
         if (empty($request->uuid)) {
-            return response(['error' => 'Query parameter uuid is missing'], 400);
+            return response(['error' => 'Query parameter uuid is missing']);
         }
         $appointment = $this->find($request->uuid);
         return $appointment;

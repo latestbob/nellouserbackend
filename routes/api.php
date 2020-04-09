@@ -47,6 +47,7 @@ Route::prefix('/admin')->group(function (){
         Route::post('/drug/view', 'Api\Admin\OrderController@drugOrders');
         Route::post('/drug/{cart_uuid}/items', 'Api\Admin\OrderController@drugOrderItems');
         Route::post('/drug/item/action', 'Api\Admin\OrderController@drugOrderItemAction');
+        Route::post('/drug/item/add-prescription', 'Api\Admin\OrderController@addPrescription');
     });
 
 });
@@ -69,6 +70,8 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     //Route::get('/reorder-drugs', 'Api\ProfileController@reorderDrugs');
 
     Route::get('/appointments', 'Api\ProfileController@appointments');
+    Route::get('/prescriptions', 'Api\ProfileController@getPrescriptions');
+    Route::post('/add-prescription', 'Api\ProfileController@addPrescription');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
