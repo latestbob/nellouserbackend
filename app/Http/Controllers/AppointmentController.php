@@ -70,16 +70,18 @@ class AppointmentController extends Controller
         $user = $request->user();
         $data = $validator->validated();
 
-        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat("Y-m-d H:i", $data['time'])->format("H:i");
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
+            "Y-m-d H:i", $data['time'])->format("H:i");
 
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
         $data['center_uuid'] = $request->medical_center;
 
-        $check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center, 'date' => $data['date'], 'time' => $data['time']])->orderByDesc('id')->first();
+        $check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center,
+            'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
 
-        if (!empty($check) && $check->status != 'cancelled') {
+        if (!empty($check)) {
             return response([
                 'status' => false,
                 'message' => [
@@ -215,11 +217,14 @@ class AppointmentController extends Controller
         $appointment = Appointment::with(['center'])->where('uuid', $request->uuid)->first();
         $data = $validator->validated();
 
-        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat("Y-m-d H:i", $data['time'])->format("H:i");
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
+            "Y-m-d H:i", $data['time'])->format("H:i");
 
-        $check = Appointment::with(['center'])->where(['center_uuid' => $appointment->center_uuid, 'date' => $data['date'], 'time' => $data['time']])->orderByDesc('id')->first();
+        $check = Appointment::with(['center'])->where(['center_uuid' => $appointment->center_uuid,
+            'date' => $data['date'], 'time' => $data['time'], ['id', '!=', $appointment->id],
+            ['status', '!=', 'cancelled']])->first();
 
-        if (!empty($check) && $check->status != 'cancelled' && $appointment->id != $check->id) {
+        if (!empty($check)) {
             return response([
                 'status' => false,
                 'message' => [
