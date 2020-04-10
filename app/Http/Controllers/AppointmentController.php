@@ -48,12 +48,16 @@ class AppointmentController extends Controller
      */
     public function bookAppointment(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'medical_center' => 'required|string',// |exists:health_centers,uuid',
+        $input = $request->all();
+
+        if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
+
+        $validator = Validator::make($input, [
+            'uuid' => 'required|string',
             'reason' => 'required|string',
             'description' => 'required|string',
-            'date' => 'required|date|after:today',
-            'time' => 'required|date_format:H:i'
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
         ]);
 
         if ($validator->fails()) {
@@ -65,6 +69,9 @@ class AppointmentController extends Controller
 
         $user = $request->user();
         $data = $validator->validated();
+
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat("Y-m-d H:i", $data['time'])->format("H:i");
+
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
@@ -173,12 +180,16 @@ class AppointmentController extends Controller
      */
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $input = $request->all();
+
+        if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
+
+        $validator = Validator::make($input, [
             'uuid' => 'required|string',
             'reason' => 'required|string',
             'description' => 'required|string',
-            'date' => 'required|date|after:today',
-            'time' => 'required|date_format:H:i'
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
         ]);
 
         if ($validator->fails()) {
@@ -191,6 +202,8 @@ class AppointmentController extends Controller
         $user = $request->user();
         $appointment = Appointment::with(['center'])->where('uuid', $request->uuid)->first();
         $data = $validator->validated();
+
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat("Y-m-d H:i", $data['time'])->format("H:i");
 
         $appointment->update($data);
 
