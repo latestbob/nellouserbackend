@@ -76,6 +76,18 @@ class AppointmentController extends Controller
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
         $data['center_uuid'] = $request->medical_center;
+
+        $check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center, 'date' => $data['date'], 'time' => $data['time']])->orderByDesc('id')->first();
+
+        if (!empty($check) && $check->status != 'cancelled') {
+            return response([
+                'status' => false,
+                'message' => [
+                    ["Sorry, an appointment has already been booked at {$check->center->name} with your selected time. Select another time and try again."]
+                ]
+            ]);
+        }
+
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
         return response([
@@ -205,9 +217,20 @@ class AppointmentController extends Controller
 
         if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat("Y-m-d H:i", $data['time'])->format("H:i");
 
+        $check = Appointment::with(['center'])->where(['center_uuid' => $appointment->center_uuid, 'date' => $data['date'], 'time' => $data['time']])->orderByDesc('id')->first();
+
+        if (!empty($check) && $check->status != 'cancelled' && $appointment->id != $check->id) {
+            return response([
+                'status' => false,
+                'message' => [
+                    ["Sorry, an appointment has already been booked at {$check->center->name} with your selected time. Select another time and try again."]
+                ]
+            ]);
+        }
+
         $appointment->update($data);
 
-        $user->notify(new AppointmentUpdatedNotification($appointment));
+//        $user->notify(new AppointmentUpdatedNotification($appointment));
 
         return [
             'status' => true,
