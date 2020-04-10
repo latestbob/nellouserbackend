@@ -230,7 +230,7 @@ class AppointmentController extends Controller
 
         $appointment->update($data);
 
-//        $user->notify(new AppointmentUpdatedNotification($appointment));
+        $user->notify(new AppointmentUpdatedNotification($appointment));
 
         return [
             'status' => true,
