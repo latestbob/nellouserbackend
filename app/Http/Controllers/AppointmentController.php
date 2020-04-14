@@ -53,7 +53,6 @@ class AppointmentController extends Controller
         if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
 
         $validator = Validator::make($input, [
-            'uuid' => 'required|string',
             'reason' => 'required|string',
             'description' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
