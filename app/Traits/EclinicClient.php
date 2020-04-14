@@ -36,7 +36,10 @@ trait EclinicClient
             'timeout'  => '15.0'
         ]);
         $options = [
-            'json' => $data
+            'json' => $data,
+            'headers' => [
+                'Accept' => 'application/json'
+            ]
         ];
 
         $response = $client->put($path, $options);
@@ -50,7 +53,10 @@ trait EclinicClient
             'timeout'  => '2.0'
         ]);
         $options = [
-            'query' => $data
+            'query' => $data,
+            'headers' => [
+                'Accept' => 'application/json'
+            ]
         ];
 
         $response = $client->get($path, $options);

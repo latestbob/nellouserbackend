@@ -219,8 +219,6 @@ class AuthController extends Controller
         ];
     }
 
-
-
     public function forgotPasswordCustomer(Request $request)
     {
 
