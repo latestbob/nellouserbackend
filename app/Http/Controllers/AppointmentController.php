@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GuzzleClient;
-use Carbon\Carbon;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -49,12 +48,15 @@ class AppointmentController extends Controller
      */
     public function bookAppointment(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'medical_center' => 'required|string',// |exists:health_centers,uuid',
+        $input = $request->all();
+
+        if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
+
+        $validator = Validator::make($input, [
             'reason' => 'required|string',
             'description' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
-            'time' => 'required|date_format:H:i'
+            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
         ]);
 
         if ($validator->fails()) {
@@ -63,26 +65,30 @@ class AppointmentController extends Controller
                 'message' => $validator->errors()
             ]);
         }
-        $now = Carbon::now();
-        $date = Carbon::now();
-        $frags = explode(':', $request->time);
-        $date->hour = (int) $frags[0];
-        $date->minute = (int) $frags[1];
-
-        if ($now->gte($date)) {
-            $validator->errors()->add('time', 'Please select a future timeslot');
-            return response([
-                'status' => false,
-                'message' => $validator->errors()
-            ]);
-        }
 
         $user = $request->user();
         $data = $validator->validated();
+
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
+            "Y-m-d H:i", $data['time'])->format("H:i");
+
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
         $data['center_uuid'] = $request->medical_center;
+
+        $check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center,
+            'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
+
+        if (!empty($check)) {
+            return response([
+                'status' => false,
+                'message' => [
+                    ["Sorry, an appointment has already been booked at {$check->center->name} with your selected time. Select another time and try again."]
+                ]
+            ]);
+        }
+
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
         return response([
@@ -187,12 +193,16 @@ class AppointmentController extends Controller
      */
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $input = $request->all();
+
+        if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
+
+        $validator = Validator::make($input, [
             'uuid' => 'required|string',
             'reason' => 'required|string',
             'description' => 'required|string',
-            'date' => 'required|date|after:today',
-            'time' => 'required|date_format:H:i'
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
         ]);
 
         if ($validator->fails()) {
@@ -205,6 +215,22 @@ class AppointmentController extends Controller
         $user = $request->user();
         $appointment = Appointment::with(['center'])->where('uuid', $request->uuid)->first();
         $data = $validator->validated();
+
+        if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
+            "Y-m-d H:i", $data['time'])->format("H:i");
+
+        $check = Appointment::with(['center'])->where(['center_uuid' => $appointment->center_uuid,
+            'date' => $data['date'], 'time' => $data['time'], ['id', '!=', $appointment->id],
+            ['status', '!=', 'cancelled']])->first();
+
+        if (!empty($check)) {
+            return response([
+                'status' => false,
+                'message' => [
+                    ["Sorry, an appointment has already been booked at {$check->center->name} with your selected time. Select another time and try again."]
+                ]
+            ]);
+        }
 
         $appointment->update($data);
 
