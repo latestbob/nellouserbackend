@@ -45,9 +45,11 @@ class ImportEclinicPatientJob implements ShouldQueue
             $body = (string) $response->getBody();
             $json = json_decode($body, true, 1000);
             $patients = $json['_embedded']['patient'];
+            print_r($patients);
             foreach($patients as $patient) {
                 $user = User::where('email', $patient['email'])->first();
                 if (empty($user)) {
+                    echo 'Create new user';
                     $data = [
                         'uuid'       => Str::uuid()->toString(),
                         'firstname'  => $patient['forename'],
@@ -76,6 +78,7 @@ class ImportEclinicPatientJob implements ShouldQueue
                     ImportEclinicMedicalHistoriesJob::dispatch($patient['medical_history'], $user);
                 } 
                 else {
+                    echo 'Update user';
                     $data = [
                         'eclinic_patient_id' => $patient['patient_id'],
                         'eclinic_upi'        => $patient['upi'],

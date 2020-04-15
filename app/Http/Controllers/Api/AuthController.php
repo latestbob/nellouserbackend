@@ -163,7 +163,7 @@ class AuthController extends Controller
         $userData['token'] = Str::random(15);
         $user = User::create($userData);
 
-//        $user->notify(new VerificationNotification());
+        $user->notify(new VerificationNotification());
 
         return $user;
 
