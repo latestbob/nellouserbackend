@@ -138,7 +138,8 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|string|min:6|confirmed',
-            'dob' => 'nullable|date'
+            'gender' => 'required|string|in:Male,Female',
+            'dob' => 'nullable|date_format:d-m-Y|before_or_equal:today'
         ]);
 
 
@@ -162,7 +163,7 @@ class AuthController extends Controller
         $userData['token'] = Str::random(15);
         $user = User::create($userData);
 
-        $user->notify(new VerificationNotification());
+//        $user->notify(new VerificationNotification());
 
         return $user;
 
