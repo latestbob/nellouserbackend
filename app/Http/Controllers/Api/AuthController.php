@@ -139,7 +139,7 @@ class AuthController extends Controller
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|string|min:6|confirmed',
             'gender' => 'required|string|in:Male,Female',
-            'dob' => 'nullable|date_format:d-m-Y|before_or_equal:today'
+            'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
 
 
