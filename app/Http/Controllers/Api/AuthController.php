@@ -137,8 +137,9 @@ class AuthController extends Controller
             'lastname' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|numeric|unique:users,phone',
-            'password' => 'required|string|min:8|confirmed',
-            'dob' => 'nullable|date'
+            'password' => 'required|string|min:6|confirmed',
+            'gender' => 'required|string|in:Male,Female',
+            'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
 
 
@@ -218,6 +219,8 @@ class AuthController extends Controller
             'message' => 'Email verified successfully'
         ];
     }
+
+
 
     public function forgotPasswordCustomer(Request $request)
     {

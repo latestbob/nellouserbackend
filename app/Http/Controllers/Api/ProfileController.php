@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
 use App\Traits\FileUpload;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
@@ -53,12 +54,12 @@ class ProfileController extends Controller
             'middlename' => 'nullable|string',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|numeric',
-            'dob' => 'nullable|date',
+            'dob' => 'required|date_format:d-m-Y|before_or_equal:today',
             'address' => 'nullable|string',
             'state' => 'nullable|string',
             'city'  => 'nullable|string',
             'religion' => 'nullable|string',
-            'gender' => 'string|in:Male,Female',
+            'gender' => 'required|string|in:Male,Female',
             'height' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'sponsor' => 'nullable|string'
@@ -73,6 +74,10 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->load('vendor');
         $data = $validator->validated();
+
+        if (!empty($data['dob'])) {
+            $data['dob'] = Carbon::parse($data['dob'])->toDateString();
+        }
         $user->update($data);
 
         return ['msg' => 'Profile updated successfully.', 'user' => $user];
