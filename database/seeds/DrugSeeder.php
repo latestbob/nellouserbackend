@@ -14,16 +14,20 @@ class DrugSeeder extends Seeder
      */
     public function run()
     {
+        PharmacyDrug::whereNotNull('name')->delete();
         $fileContent = Storage::disk('local')->get('drugs.json');
         $drugs = json_decode($fileContent, true);
+
+        echo gettype($drugs);
         
         foreach($drugs as $drug) {
             PharmacyDrug::create([
-                'name' => trim($drug['Name']),
-                'brand' => trim($drug['Brand']),
-                'category' => trim($drug['Category']),
-                'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
-                'price' => (double) $drug['Price'],
+                "drug_id" => $drug['id'],
+                'name' => trim($drug['name']),
+                //'brand' => trim($drug['Brand']),
+                'category' => trim($drug['category']),
+                //'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
+                'price' => (double) str_replace(',', '', $drug['price']),
                 'uuid' => Str::uuid()->toString()
             ]);
         }
