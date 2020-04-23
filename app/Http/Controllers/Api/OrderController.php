@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendOrderMail;
 use App\Models\Cart;
+use App\Models\Locations;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,10 +26,10 @@ class OrderController extends Controller
             'phone' => 'required|numeric',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'address1' => 'required|string',
-            'address2' => 'nullable|string',
+            'location_id' => 'required|numeric|exists:locations,id',
             'city' => 'required|string',
             'state' => 'required|string',
-            'postal_code' => 'required|string',
+//            'postal_code' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -48,7 +49,9 @@ class OrderController extends Controller
 
                 $data['order_ref'] = strtoupper(Str::uuid()->toString());
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-                $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+                $location = Locations::where('id', $data['location_id'])->first();
+//                $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+                $data['amount'] = round((($subTotal = $cart->sum('price')) + ($location->price + 500)));
 
                 $order->update($data);
 
