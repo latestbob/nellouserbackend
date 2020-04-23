@@ -52,7 +52,7 @@ class OrderController extends Controller
 
                 $order->update($data);
 
-                SendOrderMail::dispatch($order, $request->email);
+                SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_CONFIRMED);
 
                 return [
                     'message' => 'Checkout successful',
@@ -94,7 +94,7 @@ class OrderController extends Controller
 
         $order = Order::create($data);
 
-        SendOrderMail::dispatch($order, $request->email);
+        SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_CONFIRMED);
 
         return [
             'message' => 'Checkout successful',
@@ -125,6 +125,8 @@ class OrderController extends Controller
         $order->payment_confirmed = 1;
         $order->payment_method = "Paystack";
         $order->save();
+
+        SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'

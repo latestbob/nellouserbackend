@@ -12,21 +12,28 @@ use Illuminate\Queue\SerializesModels;
 
 class SendOrderMail implements ShouldQueue
 {
+    const ORDER_CONFIRMED = 1;
+    const ORDER_PAYMENT_RECEIVED = 2;
+
     use MailgunMailer;
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $order;
     private $emailAddress;
+    private $mailType;
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Order $order
+     * @param string $email
+     * @param int $mailType
      */
-    public function __construct(Order $order, string $email)
+    public function __construct(Order $order, string $email, int $mailType)
     {
         $this->order = $order;
         $this->emailAddress = $email;
+        $this->mailType = $mailType;
     }
 
     /**
@@ -37,7 +44,13 @@ class SendOrderMail implements ShouldQueue
      */
     public function handle()
     {
-        $html = view('mail.order', ['order' => $this->order])->render();
-        $this->sendMail($this->emailAddress, 'Order Confirmation', $html);
+        if ($this->mailType === self::ORDER_CONFIRMED) {
+            $html = view('mail.order-confirm', ['order' => $this->order])->render();
+        } else {
+            $html = view('mail.order-payment-received', ['order' => $this->order])->render();
+        }
+
+        $this->sendMail($this->emailAddress, $this->mailType === self::ORDER_CONFIRMED ?
+            'Order Confirmation' : 'Order Payment Received', $html);
     }
 }
