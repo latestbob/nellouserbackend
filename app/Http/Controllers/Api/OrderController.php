@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Locations;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\VerificationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -75,6 +76,12 @@ class OrderController extends Controller
                 return response(['message' => [["The email has already been taken."]]]);
             }
 
+            $check = User::where(['phone' => $request->phone])->first();
+
+            if (!empty($check)) {
+                return response(['message' => [["The phone has already been taken."]]]);
+            }
+
             $user = User::create([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
@@ -83,8 +90,11 @@ class OrderController extends Controller
                 'vendor_id' => $request->facilityID,
                 'user_type' => 'customer',
                 'uuid' => Str::uuid()->toString(),
-                'password' => Hash::make($request->password)
+                'token' => Str::random(15),
+                'password' => bcrypt($request->password)
             ]);
+
+            $user->notify(new VerificationNotification());
 
             if ($user) $userID = $user->id;
         }
