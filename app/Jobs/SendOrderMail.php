@@ -52,5 +52,14 @@ class SendOrderMail implements ShouldQueue
 
         $this->sendMail($this->emailAddress, $this->mailType === self::ORDER_CONFIRMED ?
             'Order Confirmation' : 'Order Payment Received', $html);
+
+        if ($this->mailType === self::ORDER_CONFIRMED) {
+            $html = view('mail.order-confirm-admin', ['order' => $this->order])->render();
+        } else {
+            $html = view('mail.order-payment-received-admin', ['order' => $this->order])->render();
+        }
+
+        $this->sendMail("orders@famacare.com", $this->mailType === self::ORDER_CONFIRMED ?
+            'Order Notification' : 'Order Payment Notification', $html);
     }
 }
