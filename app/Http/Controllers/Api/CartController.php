@@ -47,11 +47,13 @@ class CartController extends Controller
             $data['quantity'] = 1;
         }
 
-        $data['price'] = $drug->price * $data['quantity'];
-
         if (empty($request->cart_uuid)) {
             $request->cart_uuid = strtolower(Str::uuid()->toString());
         }
+
+        if ($data['quantity'] == 0) return $this->removeFromCart($request);
+
+        $data['price'] = $drug->price * $data['quantity'];
 
         $data['vendor_id'] = $drug->vendor_id;
 
@@ -59,13 +61,14 @@ class CartController extends Controller
 
         $data['user_id'] = Auth::check() ? $request->user()->id : 0;
 
-        $cart = Cart::where(['drug_id' => $data['drug_id'], 'cart_uuid' => $data['cart_uuid']])->first();
+        $cart = Cart::with(['drug'])->where(['drug_id' => $data['drug_id'], 'cart_uuid' => $data['cart_uuid']])->first();
 
         if (empty($cart)) {
             $cart = Cart::create($data);
+            $cart->load('drug');
         } else {
-            $cart->quantity = $cart->quantity + $data['quantity'];
-            $cart->price = $cart->price + $data['price'];
+            $cart->quantity = $data['quantity'];
+            $cart->price = $data['price'];
             $cart->save();
         }
 
@@ -113,8 +116,10 @@ class CartController extends Controller
             ]);*/
         }
 
-        if ($request->type == 'addQuantity') $cart->quantity = $cart->quantity + 1;
-        else $cart->quantity = $cart->quantity - 1;
+        if ($request->type == 'addQuantity') $cart->quantity += 1;
+        else $cart->quantity -= 1;
+
+        if ($cart->quantity < 1) return $this->removeFromCart($request);
 
         $cart->price = $drug->price * $cart->quantity;
 
@@ -144,6 +149,7 @@ class CartController extends Controller
             'cart_uuid' => $request->cart_uuid,
             'drug_id'   => $request->drug_id
         ])->delete();
+
         return ['message' => 'Removed'];
     }
 

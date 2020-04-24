@@ -10,16 +10,23 @@ class DrugController extends Controller
 {
     public function index(Request $request)
     {
-        if (empty($request->q)) {
+        if (empty($request->search)) {
 
             $drugs = PharmacyDrug::orderBy('name')->paginate();
+
         } else {
 
-            $drugs = PharmacyDrug::where('name', 'like', '%' . $request->q . '%')
-                ->orWhere('brand', 'like', '%' . $request->q . '%')
-                ->orWhere('category', 'like', '%' . $request->q . '%')
+            $drugs = PharmacyDrug::where('name', 'like', "%{$request->search}%")
+                ->orWhere('brand', 'like', "%{$request->search}%")
+                ->orWhere('category', 'like', "%{$request->search}%")
                 ->orderBy('name')->paginate();
         }
+
         return $drugs;
+    }
+
+    public function getDrug(Request $request)
+    {
+        return PharmacyDrug::where('uuid', $request->uuid)->first();
     }
 }
