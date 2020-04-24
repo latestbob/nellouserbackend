@@ -51,7 +51,7 @@ class OrderController extends Controller
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
                 $location = Locations::where('id', $data['location_id'])->first();
 //                $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
-                $data['amount'] = round((($subTotal = $cart->sum('price')) + ($location->price + 500)));
+                $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
 
                 $order->update($data);
 
