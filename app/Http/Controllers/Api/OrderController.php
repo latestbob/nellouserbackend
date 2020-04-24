@@ -93,7 +93,10 @@ class OrderController extends Controller
 
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-        $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+//        $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+        $location = Locations::where('id', $data['location_id'])->first();
+//                $data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
+        $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
 
         $order = Order::create($data);
 
