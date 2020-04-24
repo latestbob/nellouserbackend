@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Order Confirmation</title>
+    <title>Order Notification</title>
     <style>
         table {
             font-family: arial, sans-serif;
@@ -21,13 +21,12 @@
 </head>
 <body>
 
-<p>Dear {{ $order->firstname }},</p>
-<p>Thank you for your drug order on Nello. This mail is to confirm that we have received and have started processing
-    your order.</p>
+<p>Hello Admin,</p>
+<p>This mail is meant to notify you that {{ $order->firstname }} {{ $order->lastname }} has just placed an order on the Nello platform. Please response according.</p>
 <p>Order reference: {{ $order->order_ref }}</p>
 <p>We will send you a confirmatory email once payment has been made.</p>
 
-<h3>Here's a list of item(s) you've ordered</h3>
+<h3>Here's a list of item(s) they've ordered</h3>
 <table>
     <tr>
         <th>#</th>
