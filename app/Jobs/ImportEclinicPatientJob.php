@@ -69,7 +69,7 @@ class ImportEclinicPatientJob implements ShouldQueue
                     ];
     
                     $user = User::create($data);
-                    //$user->notify(new NelloAccountNotification);
+                    //SendEclinicOnboardEmail::dispatch($user);
 
                     //ExportUserJob::dispatch($user);
                     ImportEclinicMedicationsJob::dispatch($patient['medications'], $user);
