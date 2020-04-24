@@ -17,6 +17,18 @@ class DoctorController extends Controller
      * @urlParam page int optional defaults to 1
      * @urlParam specialization string optional
      */
+    public function fetchDoctor(Request $request)
+    {
+        return User::with(['vendor'])->where(['user_type' => 'doctor', 'uuid' => $request->uuid])->first();
+    }
+    /**
+     * Doctors
+     *
+     * Fetch paged list of doctors
+     *
+     * @urlParam page int optional defaults to 1
+     * @urlParam specialization string optional
+     */
     public function fetchDoctors(Request $request)
     {
         $spec = $request->specialization;

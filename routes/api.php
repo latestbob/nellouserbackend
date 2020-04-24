@@ -78,7 +78,9 @@ Route::post('/password/change', 'Api\ProfileController@changePassword')->middlew
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
 Route::get('/drugs', 'Api\DrugController@index');
+Route::get('/drug/{uuid}', 'Api\DrugController@getDrug');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
+Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
 Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations');
 Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
@@ -93,6 +95,13 @@ Route::prefix('/feedback')->group(function() {
 Route::post('/file-upload', 'FileController@fileUpload');
 Route::post('/order/drug', 'Api\OrderController@checkout');
 Route::post('/order/drug/confirm-payment', 'Api\OrderController@confirmPayment');
+Route::get('/locations', 'Api\LocationController@getLocations');
+
+Route::prefix('/wishlist')->middleware('jwt.auth')->group(function() {
+    Route::post('/items', 'Api\WishlistController@index');
+    Route::post('/add', 'Api\WishlistController@addWishlist');
+    Route::post('/remove', 'Api\WishlistController@removeWishlist');
+});
 
 Route::prefix('/cart')->group(function() {
     Route::post('/items', 'Api\CartController@getItems')->name('get_cart_items');
