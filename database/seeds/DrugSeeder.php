@@ -14,7 +14,7 @@ class DrugSeeder extends Seeder
      */
     public function run()
     {
-        PharmacyDrug::whereNotNull('name')->delete();
+        PharmacyDrug::whereNotNull('name')->update(['status' => false]);
         $fileContent = Storage::disk('local')->get('drugs.json');
         $drugs = json_decode($fileContent, true);
 

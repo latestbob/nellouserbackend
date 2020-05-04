@@ -12,11 +12,12 @@ class DrugController extends Controller
     {
         if (empty($request->search)) {
 
-            $drugs = PharmacyDrug::orderBy('name')->paginate();
+            $drugs = PharmacyDrug::where('status', true)->orderBy('name')->paginate();
 
         } else {
 
-            $drugs = PharmacyDrug::where('name', 'like', "%{$request->search}%")
+            $drugs = PharmacyDrug::where('status', true)
+                ->where('name', 'like', "%{$request->search}%")
                 ->orWhere('brand', 'like', "%{$request->search}%")
                 ->orWhere('category', 'like', "%{$request->search}%")
                 ->orderBy('name')->paginate();
