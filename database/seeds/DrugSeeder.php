@@ -25,10 +25,11 @@ class DrugSeeder extends Seeder
                 "drug_id" => $drug['id'],
                 'name' => trim($drug['name']),
                 'vendor_id' => 1,
-                //'brand' => trim($drug['Brand']),
+                'brand' => trim($drug['brand']),
                 'category' => trim($drug['category']),
                 //'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
                 'price' => (double) str_replace(',', '', $drug['price']),
+                'require_prescription' => $drug['require_prescription'] == 'YES' ? true : false,
                 'uuid' => Str::uuid()->toString()
             ]);
         }

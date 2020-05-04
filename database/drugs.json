@@ -1,0 +1,3474 @@
+[
+    {
+        "category": "SOFTGELS", 
+        "name": "AMERICAN HEALTH EVENING PRIMEROSE OIL 1300MG 120 SOFTGELS", 
+        "brand": "AMERICAN HEALTH", 
+        "id": "FAM001", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "SCHIFF MOVE FREE ADVANCED 80 COATED TABLETS", 
+        "brand": "SCHIFF", 
+        "id": "FAM002", 
+        "require_prescription": "NO", 
+        "price": "9,800.00"
+    }, 
+    {
+        "category": "SOFTGELS", 
+        "name": "NATURE MADE FISH OIL 1200MG OMEGA-3 360MG 200 SOFTGELS", 
+        "brand": "NATURE MADE", 
+        "id": "FAM003", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "SCHIFF GLUCOSAMINE 1500MG PLUS MSM 1500MG 150 TABLETS", 
+        "brand": "SCHIFF", 
+        "id": "FAM004", 
+        "require_prescription": "NO", 
+        "price": "6,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Mason Hair, Skin and Nails x 60 caps", 
+        "brand": "MASON", 
+        "id": "    ", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "L-Gluta 5 Berry plus x 30 tabs", 
+        "brand": "", 
+        "id": "912902", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Lipotraid Vision Support Plus x 60", 
+        "brand": "", 
+        "id": "CB2715", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "unit", 
+        "name": "Vasia Advance White 400gm", 
+        "brand": "", 
+        "id": "2D7826", 
+        "require_prescription": "NO", 
+        "price": "12,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITANS PRIDE VITAMIN D3 CAPSULE", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1169", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MASON CALCIM D3", 
+        "brand": "MASON", 
+        "id": "FAM1182", 
+        "require_prescription": "NO", 
+        "price": "3,400.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "SCHIFF GLUCOSAMINE 2000MG 150 TABLETS", 
+        "brand": "SCHIFF", 
+        "id": "FAM005", 
+        "require_prescription": "NO", 
+        "price": "6,900.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "MASON MELATONIN 3MG 60 TABLETS", 
+        "brand": "MASON", 
+        "id": "FAM006", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "QUALITY COQ10-SR 60VEGICAPS", 
+        "brand": "QUALITY OF LIFE", 
+        "id": "FAM007", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURES TRUST OMEGA-3 FISH OIL 1000MG 120 CAPS", 
+        "brand": "NATURE'S TRUST", 
+        "id": "FAM008", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "CAPLETS", 
+        "name": "PIPINGROCK VITAMIN C 1000MG WITH ROSE HIPS 240 CAPLETS", 
+        "brand": "PIPINGROCK", 
+        "id": "FAM009", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURE&#39;S BOUNTY Hair Skin and Nails  x80 Gummies", 
+        "brand": "NATURE'S BOUNTY", 
+        "id": "FAM686", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURE&#39;S BOUNTY Women&#39;s Multivitamin Gummies   x80", 
+        "brand": "NATURE'S BOUNTY", 
+        "id": "FAM687", 
+        "require_prescription": "NO", 
+        "price": "4,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Lil Critters GummyVites x 300", 
+        "brand": "LIL CRITTERS", 
+        "id": "FAM688", 
+        "require_prescription": "NO", 
+        "price": "10,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Lil Critters GummyVites  x70", 
+        "brand": "LIL CRITTERS", 
+        "id": "FAM689", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Major Animal Shapes Multivitamin Tablets", 
+        "brand": "MAJOR ANIMALS", 
+        "id": "FAM692", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Alive Gummies Multivitamin for Children  x90", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM725", 
+        "require_prescription": "NO", 
+        "price": "7,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR NATURAL CRANBERRY WITH VIT C", 
+        "brand": "SOLGAR", 
+        "id": "FAM1101", 
+        "require_prescription": "NO", 
+        "price": "13,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR CALCIUM MAGNESIUM PLUS ZINC", 
+        "brand": "SOLGAR", 
+        "id": "FAM1097", 
+        "require_prescription": "NO", 
+        "price": "7,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR EVENING PRIMROSE OIL", 
+        "brand": "SOLGAR", 
+        "id": "FAM1103", 
+        "require_prescription": "NO", 
+        "price": "11,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR VITAMIN B COMPLEX", 
+        "brand": "SOLGAR", 
+        "id": "FAM1100", 
+        "require_prescription": "NO", 
+        "price": "12,280.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR L-ARGININE L-ORNITHINE 500/250", 
+        "brand": "SOLGAR", 
+        "id": "FAM1098", 
+        "require_prescription": "NO", 
+        "price": "16,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR VEGAN DIGESTIVE ENZYMES", 
+        "brand": "SOLGAR", 
+        "id": "FAM1102", 
+        "require_prescription": "NO", 
+        "price": "10,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR SKIN,NAILS AND HAIR FORMULAR", 
+        "brand": "SOLGAR", 
+        "id": "FAM1099", 
+        "require_prescription": "NO", 
+        "price": "8,950.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SOLGAR MAGNESIUM WITH VIT B6", 
+        "brand": "SOLGAR", 
+        "id": "FAM1104", 
+        "require_prescription": "NO", 
+        "price": "6,700.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Natures Made Acidophilus Probiotics  x60", 
+        "brand": "NATURE'S MADE", 
+        "id": "FAM718", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature Made Vitamin C 500mg Chewable Tablets  x60", 
+        "brand": "NATURE'S MADE", 
+        "id": "FAM719", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Vitamin J Nutrition Prostate Support x 90", 
+        "brand": "VITAMIN J", 
+        "id": "FAM950", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Neocell Super Collagen + C  x120", 
+        "brand": "NEOCELL", 
+        "id": "FAM726", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW Chewable Vitam  C-500mg  x100", 
+        "brand": "NOW", 
+        "id": "FAM721", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW Vitamin C-500mg w/Rose Hips  x100", 
+        "brand": "NOW", 
+        "id": "FAM724", 
+        "require_prescription": "NO", 
+        "price": "5,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW Vitamin C Crystals  x227gm", 
+        "brand": "NOW", 
+        "id": "FAM722", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW Vitamin C-500mg w/Rose Hips  x250", 
+        "brand": "NOW", 
+        "id": "FAM723", 
+        "require_prescription": "NO", 
+        "price": "6,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW C-1000 wRose Hips  x100", 
+        "brand": "NOW", 
+        "id": "FAM720", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "American Health Evening primerose oil 500mg x 200 softgels", 
+        "brand": "AMERICAN HEALTH", 
+        "id": "FAM963", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Puritan&#39;s Pride Absorbable Calcium 1200mg plus Vit D3 25mcg x 100 softgels", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM976", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Shopko Care Absorbable Calcium 1200mg Plus D3 5000iu x 100 softgels", 
+        "brand": "SHOPKO", 
+        "id": "FAM977", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature&#39;s Truth Vitamin E 1000iu x 60", 
+        "brand": "NATURE'S TRUTH", 
+        "id": "F71997", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Piping Rock Prenatal Essential women x 100", 
+        "brand": "PIPING ROCK", 
+        "id": "FAM1208", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MAJOR DRUGS ECHINACEA &amp;GOLDENSEALPLUS 100capsules", 
+        "brand": "MAJOR DRUGS", 
+        "id": "FCLS579", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Flintstones Toddler  x80 Chewable Tablets", 
+        "brand": "BAYER", 
+        "id": "FAM691", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "FUTUREBIOTICS 30 Day Beauty Secret", 
+        "brand": "FUTUREBIOTICS", 
+        "id": "FAM690", 
+        "require_prescription": "NO", 
+        "price": "8,500.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "SOLARAY BILBERRY &amp; LUTEIN 30 CAPS", 
+        "brand": "SOLARAY", 
+        "id": "FAM010", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Mason DHEA 50mg x 30caps", 
+        "brand": "MASON", 
+        "id": "FAM996", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURAL STACKS VITAMIN C WITH ZINC 90 CAPS", 
+        "brand": "NATURAL STACKS", 
+        "id": "FAM011", 
+        "require_prescription": "NO", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "LEE CLINIC VITAMIN C", 
+        "brand": "", 
+        "id": "FAM2003", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "RETAMIN IMMUNE SUPPORT", 
+        "brand": "", 
+        "id": "FAM2000", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW-C 500 CALCIUM ASCORBATE -C", 
+        "brand": "NOW", 
+        "id": "8A5639", 
+        "require_prescription": "NO", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PROGENA VITAMIN C SUSTAINED RELEASE", 
+        "brand": "", 
+        "id": "FAM2001", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "RED DEFENSE", 
+        "brand": "", 
+        "id": "1199", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Naturelo Vitamin C x 90-caps", 
+        "brand": "NATURELO", 
+        "id": "413740", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "ESTER-C 1000MG 120 VEGETERIAN  TABLETS", 
+        "brand": "ESTER-C", 
+        "id": "FAM012", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATURE MADE ZINC 30MG 100 TABLETS", 
+        "brand": "NATURE MADE", 
+        "id": "FAM013", 
+        "require_prescription": "NO", 
+        "price": "2,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Puritan's Pride Omega 3 Fish Oil 100 softgel", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM651", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Centrum Kids Chewable Multivitamin Multimineal supplement   80 Tablets", 
+        "brand": "CENTRUM", 
+        "id": "FAM736", 
+        "require_prescription": "NO", 
+        "price": "6,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Puritan's Pride Triple Omega 3-6-9 x 120 softgels", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM652", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Retaine Vision AREDS2+ Formula 120 softgel", 
+        "brand": "", 
+        "id": "FAM653", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bio Nutrition Advanced Glucosamine/Chondroitin/MSM 90 tabs", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM654", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Centrum MultiGummies Men 70gummies", 
+        "brand": "CENTRUM", 
+        "id": "FAM655", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "ZAND ORANGE C  60 GUMMIES", 
+        "brand": "ZAND", 
+        "id": "FAM014", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "NUTRITION NOW ADULT M/VIT 70 GUMMIES", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM015", 
+        "require_prescription": "NO", 
+        "price": "5,900.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "NUTRITION NOW WOMEN M/VIT 70 GUMMIES", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM016", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "SLICE OF LIFE ORGANIC ADULT GUMMIES", 
+        "brand": "SLICE OF LIFE", 
+        "id": "FAM017", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "NUTRITION NOW CALCIUM + D3 GUMMY VITAMINS X 60", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM018", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Mama Bear Kids multivativamin Gummies  x60", 
+        "brand": "", 
+        "id": "FAM946", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "RenewLife Ultimate Flora Kids Probiotic   30 Chewable Tablets", 
+        "brand": "RENEWLIFE", 
+        "id": "FAM732", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "ZABEE'S NATURALS ELDERBERRY FOR AGE 2+", 
+        "brand": "ZARBEES", 
+        "id": "FCLS044", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ZARBEE&#39;S NATURALS Elderberry Immune Support      42 Gummies", 
+        "brand": "ZARBEES", 
+        "id": "FAM729", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "NUTRITION NOW PRENATAL  75 GUMMY VITAMINS", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM019", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "CENTRUM SILVER M/VIT WOMEN 50+", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM020", 
+        "require_prescription": "NO", 
+        "price": "8,300.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "CELLGEVITY X 30 CAPS", 
+        "brand": "", 
+        "id": "FAM021", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "SOFTGELS", 
+        "name": "SUNDANCE  VIT E 1000IU 60 SOFTGELS", 
+        "brand": "SUNDANCE", 
+        "id": "FAM022", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "SUNDANCE  VIT C 1000 100 CAPS", 
+        "brand": "SUNDANCE", 
+        "id": "FAM023", 
+        "require_prescription": "NO", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "SOFTGELS", 
+        "name": "LIFE EXTENSION SUPER OMEGA-3 PLUS 120 SOFTGELS", 
+        "brand": "LIFE EXTENSION", 
+        "id": "FAM024", 
+        "require_prescription": "NO", 
+        "price": "5,800.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATROL CARB INTERCEPT WITH PHASE 2  120 VEG CAPS", 
+        "brand": "NATROL", 
+        "id": "FAM025", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATURE MADE MULTI PRENATAL 90 TABLETS", 
+        "brand": "NATURE MADE", 
+        "id": "FAM026", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE MELATONIN NIGHTTIME SLEEP 3MG-120 Tablet", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM548", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MAJOR DRUGS ECHINACEA &GOLDENSEALPLUS 100capsules", 
+        "brand": "MAJOR", 
+        "id": "FAM547", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "EXCEL BCAA 120 TABLETS", 
+        "brand": "", 
+        "id": "FAM549", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MRM PROBIOTIC BOOSTER", 
+        "brand": "", 
+        "id": "FAM944", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "NATURES WAY ALIVE MEN&#39;S GUMMY VITAMINS 75 GUMMIES", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM669", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ULTIMATE NUTRITION VITAMIN C 120tablets", 
+        "brand": "ULTIMATE NUTRITION", 
+        "id": "FAM667", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "PERFECTIL PLATINUM X 30", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM628", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "VITADIRECT CRANDBERRY EXTRACT 90CAPSULES 500mg", 
+        "brand": "VITADIRECT", 
+        "id": "FAM671", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "TOCOSPAN VITAMIN E", 
+        "brand": "", 
+        "id": "FAM670", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "HIGH OMEGA 3 FISH OIL 1250mg   60SOFTGELS", 
+        "brand": "", 
+        "id": "FAM672", 
+        "require_prescription": "NO", 
+        "price": "3,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "DAS GESUNDE PLUS MULTIVITAMIN", 
+        "brand": "", 
+        "id": "FAM668", 
+        "require_prescription": "NO", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURES WAY ALIVE MEN&#39;S GUMMY VITAMIN 50+", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM673", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURES ANSWER HAWTHORN BERRY 90 VEG CAPS", 
+        "brand": "NATURE ANSWER", 
+        "id": "FAM027", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURES ANSWER ECHINACEA &amp; GOLDENSEAL 900MG 90 VEG CAPS", 
+        "brand": "NATURE ANSWER", 
+        "id": "FAM029", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURES ANSWER BLACK COHOSH 40MG 60 VEG CAPS", 
+        "brand": "NATURE ANSWER", 
+        "id": "FAM030", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "NATURES ANSWER FENUGREEK 600MG 90 VEG CAPS", 
+        "brand": "NATURE ANSWER", 
+        "id": "FAM031", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATURES WAY CALCIUM 1000MG 60 TABS", 
+        "brand": "NATURE WAY", 
+        "id": "FAM032", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATURES WAY WOMEN MAX POTENCY 90 TABLETS", 
+        "brand": "NATURE WAY", 
+        "id": "FAM033", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "NATURE&rsquo;S ANSWER MULTI-VITAMIN MAX POTENCY 90 TABLETS", 
+        "brand": "NATURE ANSWER", 
+        "id": "FAM034", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "BIO NUTRITION PROSTATE WELLNESS 60 VEG CAPS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM035", 
+        "require_prescription": "NO", 
+        "price": "7,800.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "BIO NUTRITION BLOOD PRESSURE WELLNESS 60 TABLETS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM036", 
+        "require_prescription": "NO", 
+        "price": "7,500.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "BIO NUTRITION MACA-MAX 30 TABLETS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM037", 
+        "require_prescription": "NO", 
+        "price": "7,500.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "BIO NUTRITION BLOOD SUGAR WELLNESS 60 VEG CAPS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM038", 
+        "require_prescription": "NO", 
+        "price": "9,700.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "GARDEN OF LIFE SLEEP WELL X 30", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM039", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURES BLEND VITAMIN C 1500MG", 
+        "brand": "NATURE'S BLEND", 
+        "id": "FAM1156", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ULTIMATE NUTRITION HAIR,SKIN AND NAILS", 
+        "brand": "ULTIMATE NUTRITION", 
+        "id": "FAM1157", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "FERTILE AID MEN", 
+        "brand": "", 
+        "id": "FAM1158", 
+        "require_prescription": "NO", 
+        "price": "15,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "COUNT BOOST", 
+        "brand": "", 
+        "id": "FAM1159", 
+        "require_prescription": "NO", 
+        "price": "13,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Alive Max6 Daily Max potency x 90 caps", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM1300", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Daylong Nutrition Male Xtreme x 60", 
+        "brand": "", 
+        "id": "FAM1305", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITANS PRIDE  GARLIC CAPSULE 500MG", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1170", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature way Urinary with Craneberry x 90", 
+        "brand": "NATURE'S WAY", 
+        "id": "9E5457", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MASON APPLE CIDAR TABLET", 
+        "brand": "MASON", 
+        "id": "FAM1160", 
+        "require_prescription": "NO", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN&#39;S PRIDE B-12 TABLET  500MCG", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1161", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "BRAIN FORCE PLUS TABLET 36 CAPSULES.", 
+        "brand": "", 
+        "id": "FAM1163", 
+        "require_prescription": "NO", 
+        "price": "5,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MALE EXTREME TABLET", 
+        "brand": "", 
+        "id": "FAM1164", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURE&#39;S WAY MEGA 3/6/9", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM1165", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "DOCTOR&#39;S BEST GLUCOSAMINE CHRONDROITIN WITH MSM", 
+        "brand": "", 
+        "id": "FAM1168", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PERFORMANCE INSPIRED MULTIVITAMIN", 
+        "brand": "", 
+        "id": "FAM1166", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "GREENS VITAMIN C 500MG CHEWABLE", 
+        "brand": "", 
+        "id": "FAM1167", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MASON VITAMIN C 500MG", 
+        "brand": "MASON", 
+        "id": "FAM1183", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "HAIR SKIN AND NAILS  Advanced formular", 
+        "brand": "", 
+        "id": "FAM1172", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITANS PRIDE ASHWANGANHA EXTRACT 300mg", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1179", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITANS PRIDE L-GLUTATHIONE", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1173", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITANS PRIDE B-6 50mg", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM1174", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MASON VIT K  100mcg  TABLET", 
+        "brand": "MASON", 
+        "id": "FAM1171", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PIPINGROCK FLAXSEED OIL", 
+        "brand": "PIPING ROCK", 
+        "id": "FAM1176", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Others", 
+        "name": "NATURES TRUTH  B-COMPLEX PLUS B-12", 
+        "brand": "NATURE'S TRUTH", 
+        "id": "FAM1184", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NATURES ORIGIN MILK THISLE EXTRACT 1000mg", 
+        "brand": "NATURE'S ORIGIN", 
+        "id": "FAM1178", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NOW C 1000mg with bioflavanoids", 
+        "brand": "NOW", 
+        "id": "fam1162", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MASON VITRUM 50+ MULTIVITAMIN", 
+        "brand": "MASON", 
+        "id": "FAM1175", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "TABLET", 
+        "name": "GARDEN OF LIFE TUMERIC TABS X 30", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM040", 
+        "require_prescription": "NO", 
+        "price": "8,500.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "RHINO MULTI-VITAMINS FOR KIDS X 70GUMMIES", 
+        "brand": "RHINO", 
+        "id": "FAM041", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "tube", 
+        "name": "PRINCIPLE VITAMIN C 1000MG EFF X 20", 
+        "brand": "", 
+        "id": "FAM313", 
+        "require_prescription": "NO", 
+        "price": "1,250.00"
+    }, 
+    {
+        "category": "GUMMIES", 
+        "name": "GARDEN OF LIFE KIDS GUMMIES X 120", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM042", 
+        "require_prescription": "NO", 
+        "price": "9,800.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "RELOAD MEN X 30 TABS", 
+        "brand": "RELOAD", 
+        "id": "FAM344", 
+        "require_prescription": "NO", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "RELOAD FOR KIDS SYRUP", 
+        "brand": "RELOAD", 
+        "id": "FAM343", 
+        "require_prescription": "NO", 
+        "price": "3,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "JARROW'S L-GLUTATHIONE 500mg X 60CAPS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM369", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bio Nutrition Black Seed Oil", 
+        "brand": "BIO NUTRITION", 
+        "id": "B94242", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bio Nutrition Caraway Seed 1000", 
+        "brand": "BIO NUTRITION", 
+        "id": "Fam532", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Pregnacare Plus", 
+        "brand": "VITABIOTICS", 
+        "id": "Fam533", 
+        "require_prescription": "NO", 
+        "price": "6,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Calcium + D3 Gummies", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM534", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "PURITAN'S PRIDE HIGH SELENIUM 200MCG", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAMD", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE VITEX 400MG X 100", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM536", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE MILK THISTLE EXTRACT 100MG X 90", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM537", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE HAWTHORN BERRIES 565MG X 100", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM538", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "puritan's pride b-complex + Vit c x 100", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM540", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE CINNAMON 500MG X 100", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM539", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "PURITAN'S PRIDE ALPHA LIPOLIC ACID 100MG X 60", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM541", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's way Chromium Picolinate 200mcg x 100", 
+        "brand": "NATURE'S WAY", 
+        "id": "C26532", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Garden of Life Turmeric Pain relief", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM544", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Garden Of Life Turmeric Joints & Mobility", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM545", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Rhino Chewy C", 
+        "brand": "RHINO", 
+        "id": "FAM570", 
+        "require_prescription": "NO", 
+        "price": "5,900.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Collagen Organic Silicon", 
+        "brand": "", 
+        "id": "FAM571", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Appetite Control Dietary Supplement 60capsules", 
+        "brand": "", 
+        "id": "FAM572", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Whole", 
+        "name": "OLLY KIDS MULTI POBIOTICS", 
+        "brand": "", 
+        "id": "FAM1090", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Puritan's Pride Probiotics Acidophilus", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM574", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "BIO NUTRITION KIDNEY BLADDER WELLNESS", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM367", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "NATURE WAY PRIMA 90 BILLION X 30", 
+        "brand": "", 
+        "id": "FAM483", 
+        "require_prescription": "NO", 
+        "price": "6,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nutrition Now Multivites (Hair, Skin & Nails)", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM444", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Jarrow formulas yum-yum 90gummies", 
+        "brand": "JARROWS", 
+        "id": "FAM443", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Grapeseed Extract 100mg", 
+        "brand": "PURITAN'S PRIDE", 
+        "id": "FAM445", 
+        "require_prescription": "NO", 
+        "price": "3,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive B-Complex 60 gummies", 
+        "brand": "NATURE'S WAY", 
+        "id": "fam446", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "BIO NUTRITION EYE WELLNESS X 30", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM366", 
+        "require_prescription": "NO", 
+        "price": "6,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Only Natural Premenstrual Support 32tablets", 
+        "brand": "", 
+        "id": "Fam448", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Now Grapeseed Standardized Extract 60mg", 
+        "brand": "NOW", 
+        "id": "Fam449", 
+        "require_prescription": "NO", 
+        "price": "4,400.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Centrum Multigummies Women 70gummies", 
+        "brand": "CENTRUM", 
+        "id": "FAM450", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nutrition Now B-Complex Gummy Vitamins", 
+        "brand": "NUTRITION NOW", 
+        "id": "FAM451", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Garden Of Life Primal Defense 90caplets", 
+        "brand": "GARDEN OF LIFE", 
+        "id": "FAM452", 
+        "require_prescription": "NO", 
+        "price": "7,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Optima Women", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM467", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Blends Fat Burner Dietary Suppliment 60 capsules", 
+        "brand": "BLENDS", 
+        "id": "099126", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Life Extension Triple Action Blood Pressure X30", 
+        "brand": "LIFE EXTENSION", 
+        "id": "FAM500", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Reproaid Men's Fertility Formula 90 capsules", 
+        "brand": "", 
+        "id": "FAM501", 
+        "require_prescription": "YES", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Blood Sugar Manager 90capsules", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM502", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Reproaid Women's Fertility Formula 90- capsules", 
+        "brand": "", 
+        "id": "FAM504", 
+        "require_prescription": "YES", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bio Nutrition Pre-biotic 1400mg", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM505", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Brain Memory Dietary Supplement", 
+        "brand": "", 
+        "id": "FAM506", 
+        "require_prescription": "NO", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Prenatal Gummy Vitamins", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM507", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Children's Chewable Multi Vitamin", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM508", 
+        "require_prescription": "NO", 
+        "price": "8,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Answer Liver Support 1500mg Blend", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM509", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Stress Less 40softgels", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM510", 
+        "require_prescription": "NO", 
+        "price": "7,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Fatigue Fighter 40softgels", 
+        "brand": "NATURE'S WAY", 
+        "id": "FAM511", 
+        "require_prescription": "YES", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Vitamon Friends Vision Vegan Gummies 60gummies", 
+        "brand": "VITAMON", 
+        "id": "FAM455", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Zand Elderberry Zinc Gummies 60gummies", 
+        "brand": "ZAND", 
+        "id": "FAM456", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Vitamon Friends Omega Vegan Gummies 60 gummies", 
+        "brand": "VITAMON", 
+        "id": "FAM457", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Natrol Cranberry Women's Health 800mg", 
+        "brand": "NATROL", 
+        "id": "FAM458", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Sunshine VS-C 100Capsules", 
+        "brand": "NATURE'S SUNSHINE ", 
+        "id": "FAM459", 
+        "require_prescription": "NO", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "BIO NUTRITION LIVER WELLNESS X 30", 
+        "brand": "BIO NUTRITION", 
+        "id": "FAM365", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Nature's Way Alive Multi Vitamin Adult Gummies 90capsules", 
+        "brand": "", 
+        "id": "FAM515", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SCHIFF MOVE FREE ADVANCED X 120 TABLETS", 
+        "brand": "SCHIFF", 
+        "id": "FAM376", 
+        "require_prescription": "NO", 
+        "price": "9,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MRM Acetyl L-Carnitine 500mg", 
+        "brand": "MRM", 
+        "id": "FAM606", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Biovea Bcaa  240 Capsules", 
+        "brand": "", 
+        "id": "89F198", 
+        "require_prescription": "NO", 
+        "price": "8,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Vigstam Forte", 
+        "brand": "", 
+        "id": "FAM609", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Organic Ageless Brain Dietary Supplement 60caps", 
+        "brand": "", 
+        "id": "FAM610", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ZARBEE'S NATURALS ELDERBERRY IMMUNE SUPPORT X 60", 
+        "brand": "ZARBEE'S", 
+        "id": "57C150", 
+        "require_prescription": "NO", 
+        "price": "7,500.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "ATORVASTATIN AVSTAT-10", 
+        "brand": "TEVA", 
+        "id": "FAM189", 
+        "require_prescription": "YES", 
+        "price": "2,650.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "combi 10", 
+        "brand": "", 
+        "id": "fam1139", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "PIONORM 30MG TABLET", 
+        "brand": "", 
+        "id": "FAM1185", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "tube", 
+        "name": "CALGOVIT VIT C X 20", 
+        "brand": "", 
+        "id": "FAM312", 
+        "require_prescription": "NO", 
+        "price": "2,400.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CALPOL INFANT PARACETAMOL", 
+        "brand": "", 
+        "id": "FAM1068", 
+        "require_prescription": "NO", 
+        "price": "2,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "NAT B CAPSULES", 
+        "brand": "MEGA LIFE", 
+        "id": "FAM1133", 
+        "require_prescription": "NO", 
+        "price": "3,150.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "ASTYFER SYRUP", 
+        "brand": "FIDSON", 
+        "id": "FAM054", 
+        "require_prescription": "NO", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Canesten Antifungal Cream", 
+        "brand": "BAYER", 
+        "id": "B1626", 
+        "require_prescription": "YES", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Eproxen 500mg tabs x 8", 
+        "brand": "", 
+        "id": "FAM1306", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "SIVO CLARITHROMYCIN TABLET", 
+        "brand": "SIVO", 
+        "id": "258745", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "IMMUNACE TABLETS", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM2010", 
+        "require_prescription": "NO", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Addyzoa Herbal Capsules", 
+        "brand": "", 
+        "id": "FAM949", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Feroglobin capsules x 30", 
+        "brand": "VITABIOTICS", 
+        "id": "771424", 
+        "require_prescription": "NO", 
+        "price": "2,450.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Prexam (Tranexamic Acid 500mg) caps x 20", 
+        "brand": "", 
+        "id": "FAM992", 
+        "require_prescription": "YES", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Dazel Kit", 
+        "brand": "", 
+        "id": "FAM802", 
+        "require_prescription": "YES", 
+        "price": "1,700.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Vazel kit (One combi-Kit)", 
+        "brand": "", 
+        "id": "FAM803", 
+        "require_prescription": "YES", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Biosea Cod liver oil 120ml", 
+        "brand": "", 
+        "id": "FAM804", 
+        "require_prescription": "NO", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bromergon 2.5mg tabs x 30", 
+        "brand": "", 
+        "id": "FAM948", 
+        "require_prescription": "YES", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Dr Hommels Cod liver oil 125ml", 
+        "brand": "DR HOMMELS", 
+        "id": "FAM1151", 
+        "require_prescription": "NO", 
+        "price": "1,900.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Clopidogrel 75mg Film coated tabs x 28", 
+        "brand": "", 
+        "id": "FAM1152", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Wellwoman Original x 30 tabs", 
+        "brand": "VITABIOTICS", 
+        "id": "F2A248", 
+        "require_prescription": "NO", 
+        "price": "3,400.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "GPO Clindamycin tabs 300mg x 10", 
+        "brand": "", 
+        "id": "F3E238", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Ova care  Tablets", 
+        "brand": "", 
+        "id": "295702", 
+        "require_prescription": "NO", 
+        "price": "1,270.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Pregnacare Original x 30", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM952", 
+        "require_prescription": "NO", 
+        "price": "4,350.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "DIOVAN VALSARTAN 160mg", 
+        "brand": "NOVARTIS", 
+        "id": "FAM681", 
+        "require_prescription": "YES", 
+        "price": "7,900.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Renerve Plus tab x 30", 
+        "brand": "", 
+        "id": "FAM1003", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "Immunovite Caps x 30", 
+        "brand": "", 
+        "id": "FAM1005", 
+        "require_prescription": "NO", 
+        "price": "4,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "KLOVINAL PESSARIES", 
+        "brand": "", 
+        "id": "17B973", 
+        "require_prescription": "NO", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "ANTHISAN CREAM--TUBE", 
+        "brand": "", 
+        "id": "FAM1008", 
+        "require_prescription": "NO", 
+        "price": "2,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLWOMAN 50+", 
+        "brand": "VITABIOTICS", 
+        "id": "6D1595", 
+        "require_prescription": "NO", 
+        "price": "3,300.00"
+    }, 
+    {
+        "category": "Tubes", 
+        "name": "MUPIROCIN OINTMENT", 
+        "brand": "", 
+        "id": "FAM1087", 
+        "require_prescription": "NO", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Piccan Teething Remedy 100ml", 
+        "brand": "PICCO", 
+        "id": "A05513", 
+        "require_prescription": "NO", 
+        "price": "5,700.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Parlodel 2.5mg tablet", 
+        "brand": "", 
+        "id": "FAM960", 
+        "require_prescription": "YES", 
+        "price": "3,400.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Mupiderm Ointment 15g", 
+        "brand": "", 
+        "id": "FAM1009", 
+        "require_prescription": "NO", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "PFIZER DOSTINEX TAB", 
+        "brand": "PFIZER", 
+        "id": "FAM682", 
+        "require_prescription": "YES", 
+        "price": "14,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Proviron tablet", 
+        "brand": "", 
+        "id": "Fam876", 
+        "require_prescription": "YES", 
+        "price": "2,850.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Ikinn ( Itaconazole) 10 caps", 
+        "brand": "", 
+        "id": "FAM820", 
+        "require_prescription": "YES", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "M2-Tone tabs x 20", 
+        "brand": "", 
+        "id": "FAM817", 
+        "require_prescription": "NO", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "DAFLON TABS", 
+        "brand": "", 
+        "id": "FAM816", 
+        "require_prescription": "YES", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Wellwoman Plus Omega 3-6-9", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM809", 
+        "require_prescription": "NO", 
+        "price": "5,200.00"
+    }, 
+    {
+        "category": "Packs", 
+        "name": "MANIX CAPSULES", 
+        "brand": "", 
+        "id": "D9C301", 
+        "require_prescription": "NO", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Packs", 
+        "name": "CANESTEN VAGINAL TAB", 
+        "brand": "BAYER", 
+        "id": "578690", 
+        "require_prescription": "YES", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Calgovit Calcium + Vit C & D3 Effervescent Tablets", 
+        "brand": "", 
+        "id": "63A554", 
+        "require_prescription": "NO", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "TRAVATAN EYE DROP", 
+        "brand": "", 
+        "id": "FAM530", 
+        "require_prescription": "YES", 
+        "price": "4,120.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "NOVASC 5MG--", 
+        "brand": "PFIZER", 
+        "id": "FAM529", 
+        "require_prescription": "YES", 
+        "price": "3,450.00"
+    }, 
+    {
+        "category": "satchet", 
+        "name": "NOVASC 5MG--", 
+        "brand": "PFIZER", 
+        "id": "FAM529", 
+        "require_prescription": "YES", 
+        "price": "1,150.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Dispersible Aspirin 300mg Tablets x16", 
+        "brand": "", 
+        "id": "FAM714", 
+        "require_prescription": "NO", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "GSK Duodart 0.5mg/0.4mg Capsules   x30", 
+        "brand": "GSK", 
+        "id": "3F3588", 
+        "require_prescription": "YES", 
+        "price": "7,700.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "ASTYMIN--SYRUP/100ML", 
+        "brand": "FIDSON", 
+        "id": "FAM055", 
+        "require_prescription": "NO", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Jopan Lamivudine 150mg tablet", 
+        "brand": "", 
+        "id": "FAM956", 
+        "require_prescription": "YES", 
+        "price": "2,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "DGF FLUCAMED CAPSULE       200MG", 
+        "brand": "DGF", 
+        "id": "FAM685", 
+        "require_prescription": "YES", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Daktacort Cream 15g", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "6EF832", 
+        "require_prescription": "YES", 
+        "price": "1,650.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLKID SOFT JELLY", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM1076", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ABIDEC MULTIVITAMIN DROPS (U.K)", 
+        "brand": "ABIDEC", 
+        "id": "FAM1085", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Alcon Tears Naturale 15ml", 
+        "brand": "ALCON", 
+        "id": "FAM463", 
+        "require_prescription": "YES", 
+        "price": "2,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "DAKTARIN POWDER", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "FAM1122", 
+        "require_prescription": "YES", 
+        "price": "2,300.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "GYNODAKTARIN VAGINAL CREAM 40G", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "FAM1123", 
+        "require_prescription": "YES", 
+        "price": "3,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "GYNODAKTARIN 400MG--OVULE", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "FAM1124", 
+        "require_prescription": "YES", 
+        "price": "3,100.00"
+    }, 
+    {
+        "category": "Tubes", 
+        "name": "NIZORAL SHAMPOO", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "1126", 
+        "require_prescription": "YES", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "KROGER IBUPROFEN 200MG TABLET x 24", 
+        "brand": "KROGER", 
+        "id": "1AD143", 
+        "require_prescription": "YES", 
+        "price": "2,350.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLKID SOFT JELLY (Orange) 4 - 12yrs", 
+        "brand": "VITABIOTICS", 
+        "id": "E97243", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLKID SOFT JELLY (Strawberry) 4-12yrs", 
+        "brand": "VITABIOTICS", 
+        "id": "B10814", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "WELLBABY MULTI_VIT LIQ 150ML (uk)", 
+        "brand": "VITABIOTICS", 
+        "id": "455721", 
+        "require_prescription": "NO", 
+        "price": "3,750.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Strepsils Honey & Lemon x 8 lozenges (uk)", 
+        "brand": "", 
+        "id": "456858", 
+        "require_prescription": "NO", 
+        "price": "1,570.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "VOLCAZONE THROAT PASTILES", 
+        "brand": "", 
+        "id": "FAM1077", 
+        "require_prescription": "NO", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "OTRIVINE ADULT NASAL SPRAY(UK)", 
+        "brand": "", 
+        "id": "FAM1072", 
+        "require_prescription": "NO", 
+        "price": "3,150.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "CANESBALANCE BACTERIAL VAGINOSIS", 
+        "brand": "BAYER", 
+        "id": "FAM1069", 
+        "require_prescription": "YES", 
+        "price": "7,600.00"
+    }, 
+    {
+        "category": "Tin", 
+        "name": "SCHOLL ATHLETE &#39;S FOOT LIQUID SPRAY", 
+        "brand": "SCHOLL", 
+        "id": "FAM1091", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "NEXIUM 40MG", 
+        "brand": "", 
+        "id": "FAM1130", 
+        "require_prescription": "YES", 
+        "price": "9,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "KROGER IBUPROFEN 200MG TABLET *50", 
+        "brand": "KROGER", 
+        "id": "FAM1108", 
+        "require_prescription": "NO", 
+        "price": "2,850.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLWOMAN 50+ (U.K)", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM1086", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLMAN ORIGINAL (U.K)", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM1129", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "WELLMAN 50+ (U.K)", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM1128", 
+        "require_prescription": "NO", 
+        "price": "3,560.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "REDOXON VIT C 1000MG", 
+        "brand": "", 
+        "id": "FAM1095", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "STREPSILS EXTRA TRIPPLE ACTION", 
+        "brand": "", 
+        "id": "FAM1079", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Sachets", 
+        "name": "FYBOGEL HI-FIBRE ORANGE", 
+        "brand": "", 
+        "id": "FAM1094", 
+        "require_prescription": "NO", 
+        "price": "2,350.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "IMODIUM IBS RELIEF", 
+        "brand": "", 
+        "id": "FAM1071", 
+        "require_prescription": "NO", 
+        "price": "3,300.00"
+    }, 
+    {
+        "category": "Sachets", 
+        "name": "BUSCOPAN IBS RELIEF", 
+        "brand": "", 
+        "id": "FAM1070", 
+        "require_prescription": "NO", 
+        "price": "3,900.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "DUCOLAX TABLET", 
+        "brand": "", 
+        "id": "FAM1089", 
+        "require_prescription": "NO", 
+        "price": "1,050.00"
+    }, 
+    {
+        "category": "satchet", 
+        "name": "HALIBORANGE M/V CALCIUM & IRON 3+", 
+        "brand": "HALIBORANGE", 
+        "id": "FAM1075", 
+        "require_prescription": "NO", 
+        "price": "3,150.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "HALIBORANGE  SOFTIES (3-12 YRS)", 
+        "brand": "HALIBORANGE", 
+        "id": "FAM1083", 
+        "require_prescription": "NO", 
+        "price": "3,250.00"
+    }, 
+    {
+        "category": "box", 
+        "name": "OMEFAST PLUS", 
+        "brand": "", 
+        "id": "FAM262", 
+        "require_prescription": "YES", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Abidec Advanced Multivitamin Syrup 150ml", 
+        "brand": "ABIDEC", 
+        "id": "FAM460", 
+        "require_prescription": "NO", 
+        "price": "4,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Panadol ActiFast Tablets   x14", 
+        "brand": "", 
+        "id": "FAM711", 
+        "require_prescription": "NO", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Panadol Extra Advance  x14", 
+        "brand": "", 
+        "id": "FAM712", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Wellkid Baby syrup 150ml", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM827", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Wellkid Multi-Vitamin smart chewable 4-12yrs", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM822", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Piece", 
+        "name": "Immunboost VIt c 1000mg x 20", 
+        "brand": "", 
+        "id": "FAM811", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Ginsomin 30 Softgel Caps", 
+        "brand": "MEGA", 
+        "id": "FAM815", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Ginsomin Eve 30 softgel Caps", 
+        "brand": "MEGA", 
+        "id": "FAM814", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Panadol ActiFast Tablets   x8", 
+        "brand": "", 
+        "id": "FAM705", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "ROCEPHIN 1G INJ--", 
+        "brand": "ROCHE", 
+        "id": "FAM970", 
+        "require_prescription": "NO", 
+        "price": "4,800.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Eurax cream 30g", 
+        "brand": "", 
+        "id": "FAM985", 
+        "require_prescription": "NO", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Strepsils Sore Throat Pain Relief x 24", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM978", 
+        "require_prescription": "NO", 
+        "price": "2,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Gaviscon  Double Action Liquid 200ml", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM973", 
+        "require_prescription": "NO", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Quality Plus Sleep Aid  x8", 
+        "brand": "", 
+        "id": "FAM713", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Nurofen 200mg", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM715", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Gaviscon Peppermint Flavour Tablets Chewable tablets   x8", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM710", 
+        "require_prescription": "NO", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Lamidat Lamivudine Tablets", 
+        "brand": "", 
+        "id": "FAM516", 
+        "require_prescription": "YES", 
+        "price": "2,300.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "STREPSILS HONEY & LEMON", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM364", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "STREPSILS INTENSIVE", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM363", 
+        "require_prescription": "NO", 
+        "price": "1,900.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "FEROGLOBIN SYRUP", 
+        "brand": "FIDSON", 
+        "id": "FAM056", 
+        "require_prescription": "NO", 
+        "price": "2,900.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "BUNTO TONIC 1LTR", 
+        "brand": "TUYIL PHARM.", 
+        "id": "FAM065", 
+        "require_prescription": "NO", 
+        "price": "1,080.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CHEMIRON BLOOD CAPS X120", 
+        "brand": "", 
+        "id": "FAM068", 
+        "require_prescription": "NO", 
+        "price": "1,400.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "CLOMID TABS", 
+        "brand": "BRUNO", 
+        "id": "FAM361", 
+        "require_prescription": "YES", 
+        "price": "3,510.00"
+    }, 
+    {
+        "category": "Suppository", 
+        "name": "ANUSOL SUPPOSITORY--", 
+        "brand": "", 
+        "id": "FAM384", 
+        "require_prescription": "YES", 
+        "price": "3,380.00"
+    }, 
+    {
+        "category": "Packs", 
+        "name": "MICROGYNON 30", 
+        "brand": "", 
+        "id": "08B480", 
+        "require_prescription": "YES", 
+        "price": "4,100.00"
+    }, 
+    {
+        "category": "Packs", 
+        "name": "CERUMOL EAR DROPS", 
+        "brand": "", 
+        "id": "FAM391", 
+        "require_prescription": "NO", 
+        "price": "1,250.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "Disposable Hand Gloves", 
+        "brand": "", 
+        "id": "Fam422", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "OTRIVIN NASAL DROPS ADULT--", 
+        "brand": "", 
+        "id": "FAMD427", 
+        "require_prescription": "NO", 
+        "price": "1,350.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "OTRIVIN NASAL DROPS CHILDREN--", 
+        "brand": "", 
+        "id": "FAM426", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Optrex Multi Eye Wash", 
+        "brand": "", 
+        "id": "FAM429", 
+        "require_prescription": "NO", 
+        "price": "3,650.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "WHITE POLLEN HONEY 35CL", 
+        "brand": "", 
+        "id": "FAM431", 
+        "require_prescription": "NO", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "DE-DEONS SYRUP 280ML", 
+        "brand": "", 
+        "id": "FAM071", 
+        "require_prescription": "NO", 
+        "price": "1,490.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ORHEPTAL TONIC 1LTR", 
+        "brand": "DR MEYER", 
+        "id": "FAM075", 
+        "require_prescription": "NO", 
+        "price": "1,120.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SAFI BLOOD PURIFER SUSPENSION", 
+        "brand": "", 
+        "id": "FAM076", 
+        "require_prescription": "NO", 
+        "price": "1,330.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NUTRAVIT SYRUP 100ML", 
+        "brand": "", 
+        "id": "FAM079", 
+        "require_prescription": "NO", 
+        "price": "1,190.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "HB12 TONIC 200ML", 
+        "brand": "", 
+        "id": "FAM080", 
+        "require_prescription": "NO", 
+        "price": "1,040.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "ORAXIN SYRUP", 
+        "brand": "", 
+        "id": "FAM198", 
+        "require_prescription": "NO", 
+        "price": "1,290.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "DGF KETOFUNG TAB", 
+        "brand": "DGF", 
+        "id": "FAM124", 
+        "require_prescription": "YES", 
+        "price": "1,260.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CHLOROQUINE--SYRUP/60ML", 
+        "brand": "EMZOR", 
+        "id": "FAM131", 
+        "require_prescription": "YES", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "MAXIQUINE CHLOROQUINE AND", 
+        "brand": "VITABIOTICS", 
+        "id": "FAM133", 
+        "require_prescription": "YES", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "LONART-DS TABS", 
+        "brand": "G-BLISS", 
+        "id": "FAM138", 
+        "require_prescription": "YES", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "COARTEM TABS 80/480", 
+        "brand": "NOVARTIS", 
+        "id": "FAM143", 
+        "require_prescription": "YES", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "FLUCONAZOLE SUSPENSION", 
+        "brand": "FLUCAMED", 
+        "id": "FAM048", 
+        "require_prescription": "NO", 
+        "price": "1,150.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "PHENOXYMETHYL PENICILLIN--TAB", 
+        "brand": "CRESCENT", 
+        "id": "FAM374", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Dogrel Clopidogrel 75mg", 
+        "brand": "", 
+        "id": "FAM519", 
+        "require_prescription": "YES", 
+        "price": "1,650.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "PRIMOLUT --DEPOT", 
+        "brand": "", 
+        "id": "FAM522", 
+        "require_prescription": "YES", 
+        "price": "1,650.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "PRIMOLUT-N--TAB 5MG", 
+        "brand": "", 
+        "id": "FAM523", 
+        "require_prescription": "YES", 
+        "price": "2,000.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "Penicillin 250mg Tablets", 
+        "brand": "", 
+        "id": "FAM440", 
+        "require_prescription": "YES", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Lamidat Lamivudine 150mg", 
+        "brand": "", 
+        "id": "461172", 
+        "require_prescription": "YES", 
+        "price": "2,100.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Gaviscon Liquid Peppermint 200ml", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM580", 
+        "require_prescription": "NO", 
+        "price": "2,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Infacol Effective Colic Relief (Simeticone) 55ml", 
+        "brand": "", 
+        "id": "FAM462", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "ABIDEC MULTIVITAMIN--ORAL DROP", 
+        "brand": "ABIDEC", 
+        "id": "FAM613", 
+        "require_prescription": "NO", 
+        "price": "1,150.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "ASTYMIN AMINO ACIDS TABS", 
+        "brand": "FIDSON", 
+        "id": "FAM373", 
+        "require_prescription": "NO", 
+        "price": "1,570.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "ARTEQUIN ADULT 600/750X6", 
+        "brand": "", 
+        "id": "FAM293", 
+        "require_prescription": "YES", 
+        "price": "1,620.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "LIVOLIN FORTE", 
+        "brand": "MEGA", 
+        "id": "FAM513", 
+        "require_prescription": "YES", 
+        "price": "2,450.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Astyfer Iron Amino Acids and B-Complex Capsules", 
+        "brand": "FIDSON", 
+        "id": "FAM601", 
+        "require_prescription": "NO", 
+        "price": "1,620.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "FLUCAMED FLUCONAZOLE 50mg capsule", 
+        "brand": "FLUCAMED", 
+        "id": "FAM987", 
+        "require_prescription": "YES", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Sustanol 250 injection", 
+        "brand": "", 
+        "id": "FAM959", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Each", 
+        "name": "DOLO META B TAB X100", 
+        "brand": "", 
+        "id": "FAM098", 
+        "require_prescription": "NO", 
+        "price": "1,365.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CHYMOTRYPSIN/TRPSIN TABLET - 50,000U CHYMORAL--", 
+        "brand": "", 
+        "id": "FAM082", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "CAPSULES", 
+        "name": "ZINNAT TABLETS 500MG", 
+        "brand": "GSK", 
+        "id": "FAM050", 
+        "require_prescription": "YES", 
+        "price": "3,700.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "ZINNAT 250MG TABS--", 
+        "brand": "GSK", 
+        "id": "FAM981", 
+        "require_prescription": "YES", 
+        "price": "2,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "ROXIRITE CEFUROXIME CAPSULE 500MG", 
+        "brand": "", 
+        "id": "FAM1120", 
+        "require_prescription": "YES", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "CIPROTAB TAB X 14", 
+        "brand": "FIDSON", 
+        "id": "FAM155", 
+        "require_prescription": "YES", 
+        "price": "2,050.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "CIPROTAB TAB X 10", 
+        "brand": "FIDSON", 
+        "id": "FAM156", 
+        "require_prescription": "YES", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Ciprotab-TN x 10", 
+        "brand": "FIDSON", 
+        "id": "FAM737", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "AMOXICILLIN/ CLAVULANIC ACID--SUSPENSION 228MG", 
+        "brand": "", 
+        "id": "FAM620", 
+        "require_prescription": "YES", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Gsk Amoxil Suspension 125mg/5ml", 
+        "brand": "GSK", 
+        "id": "FAM951", 
+        "require_prescription": "YES", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Pauco Clarithromycin 500mg tablets", 
+        "brand": "PAUCO", 
+        "id": "FAM957", 
+        "require_prescription": "YES", 
+        "price": "1,050.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Augmentin 62.5mg/ml 20ml infant drops", 
+        "brand": "GSK", 
+        "id": "FAM805", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Clavulin 625mg tabs x 14", 
+        "brand": "GSK", 
+        "id": "FAM994", 
+        "require_prescription": "YES", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "GSK Augmentin 228.5mg/ml", 
+        "brand": "GSK", 
+        "id": "FAM622", 
+        "require_prescription": "YES", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "AUGMENTIN 375MG TAB", 
+        "brand": "GSK", 
+        "id": "FAM980", 
+        "require_prescription": "YES", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "AQUACLAV (amoxicillin & clavulanic acid) 1G TAB X 14", 
+        "brand": "", 
+        "id": "FAM347", 
+        "require_prescription": "YES", 
+        "price": "1,350.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "AQUACLAV 625", 
+        "brand": "", 
+        "id": "FAM346", 
+        "require_prescription": "YES", 
+        "price": "1,220.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Orelox Suspension 40mg/5ml", 
+        "brand": "", 
+        "id": "FAM665", 
+        "require_prescription": "YES", 
+        "price": "3,000.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Orelox Tab 100mg", 
+        "brand": "", 
+        "id": "FAM666", 
+        "require_prescription": "YES", 
+        "price": "3,800.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "CEEZEX 500MG TAB X 10 (CEFUROXIME)", 
+        "brand": "", 
+        "id": "FAM345", 
+        "require_prescription": "YES", 
+        "price": "1,330.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "CEFUROXIME SUSPENSION", 
+        "brand": "FIDSON", 
+        "id": "FAM059", 
+        "require_prescription": "YES", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "AMPICLOX DROPS 8ML", 
+        "brand": "GSK", 
+        "id": "FAM103", 
+        "require_prescription": "YES", 
+        "price": "1,650.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "AMPICLOX 250MG/5ML 100ML SUSPENSION", 
+        "brand": "GSK", 
+        "id": "FAM104", 
+        "require_prescription": "YES", 
+        "price": "1,530.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "AUGMENTIN 1G TAB", 
+        "brand": "GSK", 
+        "id": "FAM117", 
+        "require_prescription": "YES", 
+        "price": "4,200.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "AUGMENTIN 625MG TAB", 
+        "brand": "GSK", 
+        "id": "FAM310", 
+        "require_prescription": "YES", 
+        "price": "3,700.00"
+    }, 
+    {
+        "category": "Packet", 
+        "name": "CEEMACIN TAB (CLARITHROMYCIN) X 14", 
+        "brand": "", 
+        "id": "FAM629", 
+        "require_prescription": "YES", 
+        "price": "1,150.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Fleming 1000mg x 14 tabs", 
+        "brand": "", 
+        "id": "FAM993", 
+        "require_prescription": "YES", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "FLEMING 228.5MG SUSPENSION", 
+        "brand": "", 
+        "id": "FAM632", 
+        "require_prescription": "YES", 
+        "price": "1,000.00"
+    }, 
+    {
+        "category": "packet", 
+        "name": "ST. RACHEAL'S CEFUROXIME 250MG TAB X 10", 
+        "brand": "", 
+        "id": "FAM119", 
+        "require_prescription": "YES", 
+        "price": "1,290.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "ZINNAT 125MG/5MLS--BOTTLE", 
+        "brand": "GSK", 
+        "id": "FAM052", 
+        "require_prescription": "YES", 
+        "price": "2,300.00"
+    }, 
+    {
+        "category": "DISKUS", 
+        "name": "SERETIDE DISKUS 250", 
+        "brand": "GSK", 
+        "id": "FAM053", 
+        "require_prescription": "NO", 
+        "price": "5,270.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "VENTOLIN INHALER", 
+        "brand": "GSK", 
+        "id": "FAM217", 
+        "require_prescription": "YES", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "tube", 
+        "name": "OLFEN GEL--", 
+        "brand": "OLFEN", 
+        "id": "FAM226", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "ANUSOL--CREAM", 
+        "brand": "", 
+        "id": "FAM658", 
+        "require_prescription": "YES", 
+        "price": "2,850.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "NEO-PRESOL LOTION", 
+        "brand": "", 
+        "id": "FAM1192", 
+        "require_prescription": "NO", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Knowit Ovulation Test Kit", 
+        "brand": "", 
+        "id": "FAM1200", 
+        "require_prescription": "NO", 
+        "price": "2,450.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Predicte Ovulation Prediction Test", 
+        "brand": "", 
+        "id": "FAM823", 
+        "require_prescription": "NO", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Schwinnng Super Strength 10capsules", 
+        "brand": "", 
+        "id": "FAM453", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Minavex Multivitamin Liquid", 
+        "brand": "", 
+        "id": "FAM454", 
+        "require_prescription": "NO", 
+        "price": "4,900.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "BRAGGS APPLE CIDER VINEGAR 473ML", 
+        "brand": "BRAGGS", 
+        "id": "FAM043", 
+        "require_prescription": "NO", 
+        "price": "3,900.00"
+    }, 
+    {
+        "category": "BOTTLE", 
+        "name": "BRAGGS APPLE CIDER VINEGAR 946ML", 
+        "brand": "BRAGGS", 
+        "id": "FAM044", 
+        "require_prescription": "NO", 
+        "price": "6,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "LA ONYX METHYLATED SPIRIT 2 LTR", 
+        "brand": "", 
+        "id": "FAM237", 
+        "require_prescription": "NO", 
+        "price": "1,100.00"
+    }, 
+    {
+        "category": "tube", 
+        "name": "NIZORAL CREAM--", 
+        "brand": "JANSSEN-CILAG", 
+        "id": "FAM275", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Pfizer Neo-Medrol Acne Lotion 25ml", 
+        "brand": "PFIZER", 
+        "id": "AA2188", 
+        "require_prescription": "NO", 
+        "price": "4,100.00"
+    }, 
+    {
+        "category": "roll", 
+        "name": "DELE ABSORBENT COTTON WOOL 450G", 
+        "brand": "", 
+        "id": "FAM307", 
+        "require_prescription": "NO", 
+        "price": "1,420.00"
+    }, 
+    {
+        "category": "Tin", 
+        "name": "Deep Heat Pain Relief Spray", 
+        "brand": "", 
+        "id": "FAM995", 
+        "require_prescription": "NO", 
+        "price": "2,100.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Ruzu Herbal Bitters 500ml", 
+        "brand": "", 
+        "id": "FAM441", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Ruzu Herbal Bitters 200ml", 
+        "brand": "", 
+        "id": "FAM442", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "DHA Plus Choline Inositol", 
+        "brand": "", 
+        "id": "FAM588", 
+        "require_prescription": "NO", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Deep Freeze Pain Relief Cold Spray 150ml", 
+        "brand": "", 
+        "id": "fam461", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Packs", 
+        "name": "GSK Seretide Evohaler 25/125", 
+        "brand": "GSK", 
+        "id": "FAM586", 
+        "require_prescription": "YES", 
+        "price": "2,100.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Deep Heat Pain Relief", 
+        "brand": "", 
+        "id": "FAM514", 
+        "require_prescription": "NO", 
+        "price": "2,600.00"
+    }, 
+    {
+        "category": "Tubes", 
+        "name": "K-Y Personal Lubricant Jelly", 
+        "brand": "", 
+        "id": "FAM524", 
+        "require_prescription": "NO", 
+        "price": "1,050.00"
+    }, 
+    {
+        "category": "Whole", 
+        "name": "Attends Underwear ( Medium size)", 
+        "brand": "", 
+        "id": "FAM958", 
+        "require_prescription": "NO", 
+        "price": "4,800.00"
+    }, 
+    {
+        "category": "Suppository", 
+        "name": "ANUSOL SUPPOSITORY--", 
+        "brand": "", 
+        "id": "FAM384", 
+        "require_prescription": "YES", 
+        "price": "3,380.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Natureplex Hydrocortisone Cream  28gm", 
+        "brand": "ROBITUSSIN", 
+        "id": "FAM694", 
+        "require_prescription": "YES", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "satchet", 
+        "name": "STREPSILS Strawberry  8 lozenges", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM698", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "satchet", 
+        "name": "STREPSIL--LOZENGES", 
+        "brand": "RECKITT'S ", 
+        "id": "FAM699", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "STREPSILS STRAWBERRY SUGAR FREE X36", 
+        "brand": "RECKITT'S ", 
+        "id": "F8B893", 
+        "require_prescription": "NO", 
+        "price": "2,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SEBA MED GENTLE WASH", 
+        "brand": "", 
+        "id": "FAM1080", 
+        "require_prescription": "NO", 
+        "price": "3,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Sebamed Liquid Face and Body Wash", 
+        "brand": "", 
+        "id": "FAM700", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Sebamed Moisturizing Body Lotion", 
+        "brand": "", 
+        "id": "FAM702", 
+        "require_prescription": "NO", 
+        "price": "3,450.00"
+    }, 
+    {
+        "category": "Piece", 
+        "name": "Sebamed Cleansing Bar", 
+        "brand": "", 
+        "id": "FAM703", 
+        "require_prescription": "NO", 
+        "price": "1,750.00"
+    }, 
+    {
+        "category": "Each", 
+        "name": "SEBAMED BUBBLE BATH", 
+        "brand": "", 
+        "id": "FAM1093", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Each", 
+        "name": "SEBAMED CHILDRENS SHAMPOO", 
+        "brand": "", 
+        "id": "FAM1092", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Oilatum Junior Cream", 
+        "brand": "", 
+        "id": "FAM704", 
+        "require_prescription": "NO", 
+        "price": "4,100.00"
+    }, 
+    {
+        "category": "Tube", 
+        "name": "Podophyllin Cream 0.15% w/w 20gm", 
+        "brand": "", 
+        "id": "FAM991", 
+        "require_prescription": "YES", 
+        "price": "2,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Wind Hand Sanitizer 500ml", 
+        "brand": "", 
+        "id": "FAM1146", 
+        "require_prescription": "NO", 
+        "price": "4,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Bio-Oil Skincare Oil 60ml", 
+        "brand": "", 
+        "id": "FAM706", 
+        "require_prescription": "NO", 
+        "price": "4,320.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "RHINATHIOL SYRUP 2%--", 
+        "brand": "SANOFI", 
+        "id": "FAM618", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "RHINATHIOL SYRUP 5%--", 
+        "brand": "SANOFI", 
+        "id": "FAM619", 
+        "require_prescription": "NO", 
+        "price": "1,300.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Robitussin Cough Syrup Cough+Chest Congestion 237ml", 
+        "brand": "ROBITUSSIN", 
+        "id": "FAM695", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Robitussin Nighttime Cough 237ml", 
+        "brand": "ROBITUSSIN", 
+        "id": "FAM697", 
+        "require_prescription": "NO", 
+        "price": "3,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Robitussin Cough Syrup Cough+Chest Congestion 118ml", 
+        "brand": "ROBITUSSIN", 
+        "id": "FAM696", 
+        "require_prescription": "NO", 
+        "price": "1,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Lemsip Cold & Flu ( Blackcurrant) x 5", 
+        "brand": "", 
+        "id": "95B388", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Lemsip Cold &amp; Flu", 
+        "brand": "", 
+        "id": "FCLS633", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Beechams Cold & Flu  x16", 
+        "brand": "BEECHAMS", 
+        "id": "5F1187", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Beechams Flu  Plus x8", 
+        "brand": "BEECHAMS", 
+        "id": "FAM708", 
+        "require_prescription": "NO", 
+        "price": "1,400.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Lemlift Immune Support x20", 
+        "brand": "", 
+        "id": "FAM717", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Lemsip Cold & Flu", 
+        "brand": "", 
+        "id": "FAM716", 
+        "require_prescription": "NO", 
+        "price": "1,500.00"
+    }, 
+    {
+        "category": "Each", 
+        "name": "OLBAS INHALER", 
+        "brand": "", 
+        "id": "FAM1082", 
+        "require_prescription": "NO", 
+        "price": "1,330.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Vicks Vapo Rub 50g", 
+        "brand": "VICK'S", 
+        "id": "FAM447", 
+        "require_prescription": "NO", 
+        "price": "2,000.00"
+    }, 
+    {
+        "category": "Bottles", 
+        "name": "Silver Bird Eucalyptus Oil B.P.", 
+        "brand": "", 
+        "id": "FAM582", 
+        "require_prescription": "NO", 
+        "price": "1,200.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "BENYLIN PAEDIATRIC SYRUP 100ML NGN", 
+        "brand": "", 
+        "id": "FAM204", 
+        "require_prescription": "NO", 
+        "price": "1,060.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CETRIZINE 5MG/5ML SYRUP 200ML UK", 
+        "brand": "", 
+        "id": "FAM214", 
+        "require_prescription": "NO", 
+        "price": "1,180.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Clarityn  Allergy 10mg  x30", 
+        "brand": "CLARITYN", 
+        "id": "FAM709", 
+        "require_prescription": "NO", 
+        "price": "7,000.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "COVONIA COUGH DROPS", 
+        "brand": "", 
+        "id": "FAM1073", 
+        "require_prescription": "NO", 
+        "price": "1,600.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "SUDAFED", 
+        "brand": "", 
+        "id": "FAM1074", 
+        "require_prescription": "NO", 
+        "price": "2,700.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Rhinathiol Promethazine syrup 125ml", 
+        "brand": "SANOFI", 
+        "id": "FAM806", 
+        "require_prescription": "NO", 
+        "price": "1,250.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "CALCOUGH INFANT SYRUP", 
+        "brand": "", 
+        "id": "FAM1067", 
+        "require_prescription": "NO", 
+        "price": "2,800.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Accu-Check Active 50 Test Strips", 
+        "brand": "", 
+        "id": "FAM607", 
+        "require_prescription": "NO", 
+        "price": "5,400.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "Secure Blood Pressure Monitor", 
+        "brand": "", 
+        "id": "Fam640", 
+        "require_prescription": "NO", 
+        "price": "10,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "On call plus II test Strips x 25", 
+        "brand": "", 
+        "id": "FAM988", 
+        "require_prescription": "NO", 
+        "price": "3,500.00"
+    }, 
+    {
+        "category": "Piece", 
+        "name": "Aneroid Sphgmanometer", 
+        "brand": "", 
+        "id": "FAM997", 
+        "require_prescription": "NO", 
+        "price": "5,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "IR-Thermometer", 
+        "brand": "", 
+        "id": "FAM1014", 
+        "require_prescription": "NO", 
+        "price": "5,000.00"
+    }, 
+    {
+        "category": "Box", 
+        "name": "Veridian Healthcare Blood Pressure Monitor", 
+        "brand": "", 
+        "id": "FAM738", 
+        "require_prescription": "NO", 
+        "price": "9,500.00"
+    }, 
+    {
+        "category": "Box", 
+        "name": "Accu Chek Device", 
+        "brand": "", 
+        "id": "DC1659", 
+        "require_prescription": "NO", 
+        "price": "10,500.00"
+    }, 
+    {
+        "category": "Pack", 
+        "name": "On-Call Plus Glucose Monitoring System", 
+        "brand": "", 
+        "id": "FAM642", 
+        "require_prescription": "NO", 
+        "price": "6,500.00"
+    }, 
+    {
+        "category": "Bottle", 
+        "name": "Tea tree Essential Oil", 
+        "brand": "", 
+        "id": "FAM707", 
+        "require_prescription": "NO", 
+        "price": "1,450.00"
+    }
+]
