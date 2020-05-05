@@ -142,38 +142,7 @@ class OrderController extends Controller
         //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
         $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
 
-        if ($data['paymentMethod'] == 'card') {
-
-            if (isset($data['customer_id'])) {
-
-                $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
-
-                if (!empty($rules) && ($data['amount'] ?? 0) > $rules['earn_point_amount']) {
-
-                    $point = CustomerPoints::where('customer_id', $data['customer_id'])->first();
-
-                    if (!empty($point)) {
-
-                        if ($point['total_points_earned_today'] < $rules['max_point_per_day']) {
-                            $point->point = ($point->point + 1);
-                            $point->total_points_earned_today = ($point->total_points_earned_today + 1);
-                            $point->save();
-                        } else {
-
-                            if (strtotime(date("Y-m-d")) > strtotime(date("Y-m-d", $point['updated_at']))) {
-
-                                $point->point = ($point->point + 1);
-                                $point->total_points_earned_today = 1;
-                                $point->save();
-                            }
-                        }
-
-                    } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1]);
-
-                }
-            }
-
-        } else {
+        if ($data['paymentMethod'] == 'point') {
 
             if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
 
@@ -240,6 +209,36 @@ class OrderController extends Controller
         $order->payment_confirmed = 1;
         $order->payment_method = "Paystack";
         $order->save();
+
+        if (is_numeric($order->customer_id)) {
+
+            $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+
+            if (!empty($rules) && ($data['amount'] ?? 0) > $rules['earn_point_amount']) {
+
+                $point = CustomerPoints::where('customer_id', $order->customer_id)->first();
+
+                if (!empty($point)) {
+
+                    if ($point['total_points_earned_today'] < $rules['max_point_per_day']) {
+                        $point->point = ($point->point + 1);
+                        $point->total_points_earned_today = ($point->total_points_earned_today + 1);
+                        $point->save();
+                    } else {
+
+                        if (strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
+                            "Y-m-d h:i:s", $point['updated_at'])->format("Y-m-d"))) {
+
+                            $point->point = ($point->point + 1);
+                            $point->total_points_earned_today = 1;
+                            $point->save();
+                        }
+                    }
+
+                } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1]);
+
+            }
+        }
 
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
