@@ -78,6 +78,7 @@ Route::post('/password/change', 'Api\ProfileController@changePassword')->middlew
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
 Route::get('/drugs', 'Api\DrugController@index');
+Route::get('/drug/categories', 'Api\DrugController@getDrugCategories');
 Route::get('/drug/{uuid}', 'Api\DrugController@getDrug');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
