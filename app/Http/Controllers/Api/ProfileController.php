@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\CustomerPointRules;
+use App\Models\CustomerPoints;
 use App\Models\Order;
 use App\Models\User;
 use App\Traits\FileUpload;
@@ -363,5 +365,33 @@ class ProfileController extends Controller
             return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
 
         } else return response(['message' => [["No prescription file uploaded"]]]);
+    }
+
+    public function getPoints(Request $request)
+    {
+        $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+
+        if (empty($rules)) return [
+            'point' => [
+                'total' => 0,
+                'value' => 0
+            ]
+        ];
+
+        $point = CustomerPoints::where('customer_id', $request->user()->id)->first();
+
+        if (empty($point)) return [
+            'point' => [
+                'total' => 0,
+                'value' => 0
+            ]
+        ];
+
+        return [
+            'point' => [
+                'total' => $point['point'],
+                'value' => ($rules['point_value'] * $point['point'])
+            ]
+        ];
     }
 }
