@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DrugCategory;
 use Illuminate\Support\Str;
 use App\Models\PharmacyDrug;
 use Illuminate\Database\Seeder;
@@ -14,6 +15,20 @@ class DrugSeeder extends Seeder
      */
     public function run()
     {
+        $categories = [
+            'Supplements',
+            'Medicines',
+            'Antibiotics',
+            'Wellness Products',
+            'Cold/Allergies',
+            'Medical Devices',
+            'Essential Oils'
+        ];
+
+        foreach ($categories as $category) {
+            DrugCategory::create(['name' => $category]);
+        }
+
         PharmacyDrug::whereNotNull('name')->update(['status' => false]);
         $fileContent = Storage::disk('local')->get('drugs.json');
         $drugs = json_decode($fileContent, true);
@@ -26,7 +41,8 @@ class DrugSeeder extends Seeder
                 'name' => trim($drug['name']),
                 'vendor_id' => 1,
                 'brand' => trim($drug['brand']),
-                'category' => trim($drug['category']),
+                'category_id' => trim($drug['category_id']),
+                'dosage_type' => trim($drug['dosage_type']),
                 //'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
                 'price' => (double) str_replace(',', '', $drug['price']),
                 'require_prescription' => $drug['require_prescription'] == 'YES' ? true : false,
