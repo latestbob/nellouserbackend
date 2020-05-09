@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendOrderMail;
 use App\Models\Cart;
+use App\Models\CustomerPointRules;
+use App\Models\CustomerPoints;
 use App\Models\Locations;
 use App\Models\Order;
 use App\Models\User;
@@ -30,7 +32,7 @@ class OrderController extends Controller
             'location_id' => 'required|numeric|exists:locations,id',
             'city' => 'required|string',
             'state' => 'required|string',
-            //'postal_code' => 'required|string',
+            'paymentMethod' => 'required|string|in:card,point'
         ]);
 
         if ($validator->fails()) {
@@ -39,6 +41,8 @@ class OrderController extends Controller
 
         $data = $validator->validated();
         $data['email'] = $request->email;
+
+        if (!empty($request->userID)) $data['customer_id'] = $request->userID;
 
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
 
@@ -54,21 +58,52 @@ class OrderController extends Controller
                 //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
                 $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
 
+                if ($data['paymentMethod'] == 'point') {
+
+                    if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
+
+                    $point = CustomerPoints::where('customer_id', $data['customer_id'])->first();
+
+                    if (empty($point)) return response(['message' => [['You have not earned any points yet']]]);
+
+                    $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+
+                    if (empty($rules)) return response(['message' => [['Point rules have not been set yet, contact system administrator']]]);
+
+                    $pointValue = ($rules['point_value'] * $point['point']);
+
+                    if ($pointValue < $data['amount']) return response(['message' => [["You don't have enough points to purchase the items in your cart"]]]);
+
+                    $remainingPoints = (($pointValue - $data['amount']) / $rules['point_value']);
+
+                    $point->point = ceil($remainingPoints);
+                    $point->save();
+
+                    $data['payment_confirmed'] = 1;
+                    $data['payment_method'] = "Point";
+
+                }
+
                 $order->update($data);
 
-                SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_CONFIRMED);
+                SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
+
+                if (($data['payment_confirmed'] ?? 0) == 1) {
+
+                    SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+                }
 
                 return [
-                    'message' => 'Checkout successful',
-                    'order' => $order
+                    'message' => ($data['payment_confirmed'] ?? 0) == 1 ?
+                        'Thank you. Your checkout was successful and payment has been made using your points' :
+                        'Checkout successful',
+                    'order' => $order,
+                    'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
                 ];
             }
         }
 
-        $userID = null;
-
-        if (!empty($request->userID)) $userID = $request->userID;
-        elseif (!empty($request->password)) {
+        if (!isset($data['customer_id']) && !empty($request->password)) {
 
             $check = User::where(['email' => $request->email])->first();
 
@@ -94,12 +129,11 @@ class OrderController extends Controller
                 'password' => bcrypt($request->password)
             ]);
 
-            $user->notify(new VerificationNotification());
-
-            if ($user) $userID = $user->id;
+            if ($user) {
+                $data['customer_id'] = $user->id;
+                $user->notify(new VerificationNotification());
+            }
         }
-
-        if ($userID) $data['customer_id'] = $userID;
 
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
@@ -108,13 +142,47 @@ class OrderController extends Controller
         //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
         $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
 
+        if ($data['paymentMethod'] == 'point') {
+
+            if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
+
+            $point = CustomerPoints::where('customer_id', $data['customer_id'])->first();
+
+            if (empty($point)) return response(['message' => [['You have not earned any points yet']]]);
+
+            $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+
+            if (empty($rules)) return response(['message' => [['Point rules have not been set yet, contact system administrator']]]);
+
+            $pointValue = ($rules['point_value'] * $point['point']);
+
+            if ($pointValue < $data['amount']) return response(['message' => [["You don't have enough points to purchase the items in your cart"]]]);
+
+            $remainingPoints = (($pointValue - $data['amount']) / $rules['point_value']);
+
+            $point->point = ceil($remainingPoints);
+            $point->save();
+
+            $data['payment_confirmed'] = 1;
+            $data['payment_method'] = "Point";
+
+        }
+
         $order = Order::create($data);
 
-        SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_CONFIRMED);
+        SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
+
+        if (($data['payment_confirmed'] ?? 0) == 1) {
+
+            SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+        }
 
         return [
-            'message' => 'Checkout successful',
-            'order' => $order
+            'message' => ($data['payment_confirmed'] ?? 0) == 1 ?
+                'Thank you. Your checkout was successful and payment has been made using your points' :
+                'Checkout successful',
+            'order' => $order,
+            'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
         ];
     }
 
@@ -142,7 +210,37 @@ class OrderController extends Controller
         $order->payment_method = "Paystack";
         $order->save();
 
-        SendOrderMail::dispatch($order, $request->email, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+        if (is_numeric($order->customer_id)) {
+
+            $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+
+            if (!empty($rules) && ($data['amount'] ?? 0) > $rules['earn_point_amount']) {
+
+                $point = CustomerPoints::where('customer_id', $order->customer_id)->first();
+
+                if (!empty($point)) {
+
+                    if ($point['total_points_earned_today'] < $rules['max_point_per_day']) {
+                        $point->point = ($point->point + 1);
+                        $point->total_points_earned_today = ($point->total_points_earned_today + 1);
+                        $point->save();
+                    } else {
+
+                        if (strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
+                            "Y-m-d h:i:s", $point['updated_at'])->format("Y-m-d"))) {
+
+                            $point->point = ($point->point + 1);
+                            $point->total_points_earned_today = 1;
+                            $point->save();
+                        }
+                    }
+
+                } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1]);
+
+            }
+        }
+
+        SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'

@@ -18,20 +18,17 @@ class SendOrderMail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $order;
-    private $emailAddress;
     private $mailType;
 
     /**
      * Create a new job instance.
      *
      * @param Order $order
-     * @param string $email
      * @param int $mailType
      */
-    public function __construct(Order $order, string $email, int $mailType)
+    public function __construct(Order $order, int $mailType)
     {
         $this->order = $order;
-        $this->emailAddress = $email;
         $this->mailType = $mailType;
     }
 
@@ -51,7 +48,7 @@ class SendOrderMail implements ShouldQueue
         }
 
         Mail::send([], [], function ($message) use ($html) {
-            $message->to($this->emailAddress);
+            $message->to($this->order->email);
             $message->setBody($html, 'text/html');
             $message->subject($this->mailType === self::ORDER_CONFIRMED ?
                 'Order Confirmation' : 'Order Payment Received');

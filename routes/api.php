@@ -72,12 +72,14 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::get('/appointments', 'Api\ProfileController@appointments');
     Route::get('/prescriptions', 'Api\ProfileController@getPrescriptions');
     Route::post('/add-prescription', 'Api\ProfileController@addPrescription');
+    Route::get('/points', 'Api\ProfileController@getPoints');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
 Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
 
 Route::get('/drugs', 'Api\DrugController@index');
+Route::get('/drug/categories', 'Api\DrugController@getDrugCategories');
 Route::get('/drug/{uuid}', 'Api\DrugController@getDrug');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
