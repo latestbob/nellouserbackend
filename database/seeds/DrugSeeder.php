@@ -30,11 +30,11 @@ class DrugSeeder extends Seeder
         }
 
         PharmacyDrug::whereNotNull('name')->update(['status' => false]);
-        $fileContent = Storage::disk('local')->get('drugs.json');
+        $fileContent = Storage::disk('local')->get('database\migrations\drugs.json');
         $drugs = json_decode($fileContent, true);
 
         echo gettype($drugs);
-        
+
         foreach($drugs as $drug) {
             PharmacyDrug::create([
                 "drug_id" => $drug['id'],
@@ -43,7 +43,7 @@ class DrugSeeder extends Seeder
                 'brand' => trim($drug['brand']),
                 'category_id' => trim($drug['category_id']),
                 'dosage_type' => trim($drug['dosage_type']),
-                //'image'   => 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png',
+                'image'   => mt_rand(0, 1) == 1 ? 'https://res.cloudinary.com/dq1zd0mue/image/upload/v1579802365/pill_ce6l0g.png' : null,
                 'price' => (double) str_replace(',', '', $drug['price']),
                 'require_prescription' => $drug['require_prescription'] == 'YES' ? true : false,
                 'uuid' => Str::uuid()->toString()
