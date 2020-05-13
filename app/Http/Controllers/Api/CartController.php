@@ -17,7 +17,7 @@ class CartController extends Controller
     use FileUpload;
 
     public function getItems(Request $request) {
-        return Cart::with(['drug'])->where(['cart_uuid' => $request->cart_uuid])->get();
+        return Cart::with(['drug', 'drug.category'])->where(['cart_uuid' => $request->cart_uuid])->get();
     }
 
     public function addToCart(Request $request)
