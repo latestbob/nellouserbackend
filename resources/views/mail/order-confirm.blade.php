@@ -43,7 +43,7 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $item->drug->name }}</td>
             <td>{{ $item->drug->brand }}</td>
-            <td>{{ $item->drug->category }}</td>
+            <td>{{ $item->drug->category->name }}</td>
             <td>{{ $item->quantity }}</td>
             <td>N{{ $item->drug->price }}</td>
             <td>N{{ $item->price }}</td>
