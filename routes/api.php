@@ -105,6 +105,12 @@ Route::prefix('/wishlist')->middleware('jwt.auth')->group(function() {
     Route::post('/remove', 'Api\WishlistController@removeWishlist');
 });
 
+Route::prefix('/review')->group(function() {
+    Route::get('/{uuid}', 'Api\ReviewController@index');
+    Route::get('/{uuid}/recent', 'Api\ReviewController@recent');
+    Route::post('/add', 'Api\ReviewController@addReview');
+});
+
 Route::prefix('/cart')->group(function() {
     Route::post('/items', 'Api\CartController@getItems')->name('get_cart_items');
     Route::post('/add', 'Api\CartController@addToCart')->name('add_to_cart');

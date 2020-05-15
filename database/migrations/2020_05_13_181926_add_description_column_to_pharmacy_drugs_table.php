@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColsToPharmacyDrugsTable extends Migration
+class AddDescriptionColumnToPharmacyDrugsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddColsToPharmacyDrugsTable extends Migration
     public function up()
     {
         Schema::table('pharmacy_drugs', function (Blueprint $table) {
-            $table->string('brand')->nullable()->change();
-            $table->string('drug_id')->nullable();
+            $table->string('description')->after('name')->nullable();
         });
     }
 
@@ -27,7 +26,7 @@ class AddColsToPharmacyDrugsTable extends Migration
     public function down()
     {
         Schema::table('pharmacy_drugs', function (Blueprint $table) {
-            $table->dropColumn(['brand', 'drug_id']);
+            $table->dropColumn(['description']);
         });
     }
 }
