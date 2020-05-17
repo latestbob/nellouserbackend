@@ -85,10 +85,14 @@ Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt
 Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
 Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations');
-Route::get('/health-tips', 'HealthTipController@index')->middleware('jwt.auth');
-Route::get('/health-tip', 'HealthTipController@lastTip')->middleware('jwt.auth');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 Route::get('/vendors', 'Api\VendorController@getAllVendors');
+
+Route::prefix('/health-tip')->middleware('jwt.auth')->group(function() {
+    Route::get('/today', 'HealthTipController@todayTip');
+    Route::get('/all', 'HealthTipController@index');
+    Route::get('/{uuid}/view', 'HealthTipController@viewTip');
+});
 
 Route::prefix('/feedback')->group(function() {
     Route::post('/create', 'Api\FeedBackController@create');

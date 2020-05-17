@@ -11,18 +11,21 @@ class HealthTipController extends Controller
 
     /**
      * Health tips
-     * 
+     *
      */
     public function index()
     {
-        $today = Carbon::today();
+//        $today = Carbon::today();
         //$tips = HealthTip::where(['day' => $today->day, 'month' => $today->month, 'year' => $today->year])->first();
-        $tips = HealthTip::all();
-        return $tips;
+//        $tips = HealthTip::all();
+        return HealthTip::orderByDesc('id')->paginate();
     }
 
-    public function lastTip() {
-        $tip = HealthTip::orderBy('created_at', 'desc')->first();
-        return $tip;
+    public function todayTip() {
+        return HealthTip::whereMonth('date', Carbon::today()->month)->orderByDesc('id')->first();
+    }
+
+    public function viewTip(Request $request) {
+        return HealthTip::where('uuid', $request->uuid)->first();
     }
 }

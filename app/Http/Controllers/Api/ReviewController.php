@@ -13,7 +13,7 @@ class ReviewController extends Controller
     public function index(Request $request)
     {
         return Reviews::with('user')->where(
-            'drug_uuid', $request->uuid)->orderByDesc('id')->paginate(3);
+            'drug_uuid', $request->uuid)->orderByDesc('id')->paginate();
     }
 
     public function recent(Request $request)
