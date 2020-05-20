@@ -31,7 +31,7 @@ class OrderController extends Controller
             'address1' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
             'location_id' => 'required|numeric|exists:locations,id',
             'city' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
-            'state' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
+//            'state' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
             'paymentMethod' => 'required|string|in:card,point'
         ]);
 
@@ -214,28 +214,25 @@ class OrderController extends Controller
 
             $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
 
-            if (!empty($rules) && ($data['amount'] ?? 0) > $rules['earn_point_amount']) {
+            if (!empty($rules) && ($order->amount ?? 0) > $rules['earn_point_amount']) {
 
                 $point = CustomerPoints::where('customer_id', $order->customer_id)->first();
 
                 if (!empty($point)) {
 
-                    if ($point['total_points_earned_today'] < $rules['max_point_per_day']) {
+                    if (!empty($point->updated_at) && strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
+                            "Y-m-d h:i:s", $point->updated_at)->format("Y-m-d"))) {
+
+                        $point->total_points_earned_today = 0;
+                    }
+
+                    if ($point->total_points_earned_today < $rules->max_point_per_day) {
                         $point->point = ($point->point + 1);
                         $point->total_points_earned_today = ($point->total_points_earned_today + 1);
                         $point->save();
-                    } else {
-
-                        if (strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
-                            "Y-m-d h:i:s", $point['updated_at'])->format("Y-m-d"))) {
-
-                            $point->point = ($point->point + 1);
-                            $point->total_points_earned_today = 1;
-                            $point->save();
-                        }
                     }
 
-                } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1]);
+                } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1, 'customer_id' => $order->customer_id]);
 
             }
         }

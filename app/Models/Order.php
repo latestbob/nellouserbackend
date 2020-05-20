@@ -11,7 +11,10 @@ class Order extends Model
         'payment_method', 'customer_id', 'cart_uuid',
         'amount', 'firstname', 'lastname', 'email', 'phone',
         'order_ref', 'company', 'address1', 'address2', 'location_id',
-        'city', 'state', 'postal_code', 'payment_confirmed'
+        'city',
+//        'state',
+//        'postal_code',
+        'payment_confirmed'
     ];
 
     public function items($id = null) {
@@ -22,7 +25,12 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo('App\User', 'customer_id');
+        return $this->belongsTo('App\User', 'customer_id', 'id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo('App\Models\Locations', 'location_id', 'id');
     }
 
 

@@ -41,11 +41,8 @@ class SendOrderMail implements ShouldQueue
     public function handle()
     {
 
-        if ($this->mailType === self::ORDER_CONFIRMED) {
-            $html = view('mail.order-confirm', ['order' => $this->order])->render();
-        } else {
-            $html = view('mail.order-payment-received', ['order' => $this->order])->render();
-        }
+        $html = view($this->mailType === self::ORDER_CONFIRMED ?
+                'mail.order-confirm' : 'mail.order-payment-received', ['order' => $this->order])->render();
 
         Mail::send([], [], function ($message) use ($html) {
             $message->to($this->order->email);
@@ -54,11 +51,9 @@ class SendOrderMail implements ShouldQueue
                 'Order Confirmation' : 'Order Payment Received');
         });
 
-        if ($this->mailType === self::ORDER_CONFIRMED) {
-            $html = view('mail.order-confirm-admin', ['order' => $this->order])->render();
-        } else {
-            $html = view('mail.order-payment-received-admin', ['order' => $this->order])->render();
-        }
+
+        $html = view($this->mailType === self::ORDER_CONFIRMED ?
+            'mail.order-confirm-admin' : 'mail.order-payment-received-admin', ['order' => $this->order])->render();
 
         Mail::send([], [], function ($message) use ($html) {
             $message->to("orders@famacare.com");

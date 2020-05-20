@@ -38,19 +38,19 @@
         <th>Single Price</th>
         <th>Total Price</th>
     </tr>
-    <tr>
-        @foreach($order->items as $key => $item)
+    @foreach($order->items as $key => $item)
+        <tr>
             <td>{{ $key + 1 }}</td>
-            <td>{{ $item->drug->name }}</td>
-            <td>{{ $item->drug->brand }}</td>
-            <td>{{ $item->drug->category->name }}</td>
-            <td>{{ $item->quantity }}</td>
-            <td>N{{ $item->drug->price }}</td>
-            <td>N{{ $item->price }}</td>
-        @endforeach
-    </tr>
+            <td>{{ $item->drug->name ?? 'Unavailable' }}</td>
+            <td>{{ $item->drug->brand ?? 'Unavailable' }}</td>
+            <td>{{ $item->drug->category->name ?? 'Unavailable' }}</td>
+            <td>{{ $item->quantity ?? 0 }}</td>
+            <td>N{{ $item->drug->price ?? 0 }}</td>
+            <td>N{{ $item->price ?? 0 }}</td>
+        </tr>
+    @endforeach
 </table>
-<h3>Total Price: N{{ $order->amount }}</h3>
+<h3>Total Price: N{{ $order->amount ?? 0 }}</h3>
 <br>
 <hr/>
 <p>From the Nello team</p>
