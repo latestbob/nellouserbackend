@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class CartController extends Controller
 {
@@ -47,7 +48,7 @@ class CartController extends Controller
             $data['quantity'] = 1;
         }
 
-        if (empty($request->cart_uuid)) {
+        if (empty($request->cart_uuid) || !Uuid::isValid($request->cart_uuid)) {
             $request->cart_uuid = strtolower(Str::uuid()->toString());
         }
 
@@ -84,7 +85,7 @@ class CartController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|string',
+            'cart_uuid' => 'required|uuid',
             'drug_id' => 'required|integer',
             'quantity'  => 'required|integer'
         ]);
@@ -137,7 +138,7 @@ class CartController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|string',
+            'cart_uuid' => 'required|uuid',
             'drug_id' => 'required|integer',
         ]);
 
@@ -156,7 +157,7 @@ class CartController extends Controller
     public function addPrescription(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|string',
+            'cart_uuid' => 'required|uuid',
             'drug_id' => 'required|integer',
             'file' => 'required|image|mimes:jpeg,jpg,png',
         ]);

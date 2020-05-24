@@ -19,13 +19,31 @@ use Illuminate\Http\Request;
 
 
 Route::prefix('/auth')->group(function (){
+
+    Route::prefix('/rider')->group(function (){
+
+        Route::post('/login', 'Api\AuthController@loginRider');
+        Route::post('/forgot-password', 'Api\AuthController@forgotPassword');
+        Route::post('/reset-password', 'Api\AuthController@resetPassword');
+        Route::get('/user', 'Api\AuthController@getUser');
+
+    });
+
+    Route::prefix('/agent')->group(function (){
+
+        Route::post('/login', 'Api\AuthController@loginAgent');
+        Route::post('/forgot-password', 'Api\AuthController@forgotPassword');
+        Route::post('/reset-password', 'Api\AuthController@resetPassword');
+        Route::get('/user', 'Api\AuthController@getUser');
+
+    });
+
     Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
     Route::post('/login', 'Api\AuthController@loginCustomer')->name('login');
-    Route::post('/forgot-password', 'Api\AuthController@forgotPasswordCustomer');
-    Route::post('/reset-password', 'Api\AuthController@resetPasswordCustomer');
+    Route::post('/forgot-password', 'Api\AuthController@forgotPassword');
+    Route::post('/reset-password', 'Api\AuthController@resetPassword');
     Route::post('/register', 'Api\AuthController@registerCustomer');
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
-
     Route::post('/verify', 'Api\AuthController@verifyToken');
 });
 

@@ -28,7 +28,7 @@ class ReviewController extends Controller
     {
 
         $validated = Validator::make($request->all(), [
-            'drug_uuid' => 'required|string|exists:pharmacy_drugs,uuid',
+            'drug_uuid' => 'required|uuid|exists:pharmacy_drugs,uuid',
             'name'  => 'required|string',
             'review'  => 'required|string',
             'rating'  => 'required|numeric|min:1|max:5',

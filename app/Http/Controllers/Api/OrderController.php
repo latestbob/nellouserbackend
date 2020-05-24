@@ -11,13 +11,14 @@ use App\Models\Locations;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\VerificationNotification;
+use App\Traits\FirebaseNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
+    use FirebaseNotification;
 
     public function checkout(Request $request)
     {
@@ -27,12 +28,14 @@ class OrderController extends Controller
             'lastname' => 'required|string',
             'company' => 'nullable|string',
             'phone' => 'required|numeric',
-            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
-            'address1' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
-            'location_id' => 'required|numeric|exists:locations,id',
-            'city' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
-//            'state' => ($request->deliveryMethod == 'pickup' ? 'nullable' : 'required') . '|string',
-            'paymentMethod' => 'required|string|in:card,point'
+            'cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
+            'delivery_method' => 'required|string|in:shipping,pickup',
+            'address1' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
+            'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
+            'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
+            'city' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
+//            'state' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
+            'payment_method' => 'required|string|in:card,point'
         ]);
 
         if ($validator->fails()) {
@@ -45,6 +48,7 @@ class OrderController extends Controller
         if (!empty($request->userID)) $data['customer_id'] = $request->userID;
 
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+        $data['order_ref'] = strtoupper(Str::uuid()->toString());
 
         if (!empty($order)) {
 
@@ -52,13 +56,15 @@ class OrderController extends Controller
                 return response(['message' => [["You already checked out and made payment for those cart items"]]]);
             else {
 
-                $data['order_ref'] = strtoupper(Str::uuid()->toString());
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-                $location = Locations::where('id', $data['location_id'])->first();
-                //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
-                $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
+                $data['amount'] = ceil(($subTotal = $cart->sum('price')));
 
-                if ($data['paymentMethod'] == 'point') {
+                if ($request->delivery_method == 'shipping') {
+                    $location = Locations::where('id', $data['location_id'] ?? 0)->first();
+                    $data['amount'] = ceil(($data['amount'] + $location->price));
+                }
+
+                if ($data['payment_method'] == 'point') {
 
                     if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
 
@@ -74,13 +80,10 @@ class OrderController extends Controller
 
                     if ($pointValue < $data['amount']) return response(['message' => [["You don't have enough points to purchase the items in your cart"]]]);
 
-                    $remainingPoints = (($pointValue - $data['amount']) / $rules['point_value']);
-
-                    $point->point = ceil($remainingPoints);
+                    $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
                     $point->save();
 
                     $data['payment_confirmed'] = 1;
-                    $data['payment_method'] = "Point";
 
                 }
 
@@ -117,6 +120,12 @@ class OrderController extends Controller
                 return response(['message' => [["The phone has already been taken."]]]);
             }
 
+            $check = User::where(['email' => $request->email])->first();
+
+            if (!empty($check)) {
+                return response(['message' => [["The email has already been taken."]]]);
+            }
+
             $user = User::create([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
@@ -135,14 +144,15 @@ class OrderController extends Controller
             }
         }
 
-        $data['order_ref'] = strtoupper(Str::uuid()->toString());
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-        //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
-        $location = Locations::where('id', $data['location_id'])->first();
-        //$data['amount'] = round((($subTotal = $cart->sum('price')) + 500 + (($subTotal / 100) * 7.5)));
-        $data['amount'] = round((($subTotal = $cart->sum('price')) + $location->price));
+        $data['amount'] = ceil(($subTotal = $cart->sum('price')));
 
-        if ($data['paymentMethod'] == 'point') {
+        if ($request->delivery_method == 'shipping') {
+            $location = Locations::where('id', $data['location_id'] ?? 0)->first();
+            $data['amount'] = ceil(($data['amount'] + $location->price));
+        }
+
+        if ($data['payment_method'] == 'point') {
 
             if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
 
@@ -158,14 +168,10 @@ class OrderController extends Controller
 
             if ($pointValue < $data['amount']) return response(['message' => [["You don't have enough points to purchase the items in your cart"]]]);
 
-            $remainingPoints = (($pointValue - $data['amount']) / $rules['point_value']);
-
-            $point->point = ceil($remainingPoints);
+            $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
             $point->save();
 
             $data['payment_confirmed'] = 1;
-            $data['payment_method'] = "Point";
-
         }
 
         $order = Order::create($data);
@@ -190,14 +196,14 @@ class OrderController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'reference' => 'required|string|exists:orders,order_ref'
+            'order_ref' => 'required|uuid|exists:orders,order_ref'
         ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()]);
         }
 
-        $order = Order::where(['order_ref' => $request->reference])->first();
+        $order = Order::where($validator->validated())->first();
 
         if (empty($order)) {
 
@@ -207,7 +213,6 @@ class OrderController extends Controller
         }
 
         $order->payment_confirmed = 1;
-        $order->payment_method = "Paystack";
         $order->save();
 
         if (is_numeric($order->customer_id)) {
@@ -238,6 +243,33 @@ class OrderController extends Controller
         }
 
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+
+        $isCleanOrder = true; $items = [];
+
+        foreach ($order->items as $item) {
+            if ($item->drug->require_prescription == 1 && empty($item->prescription)) {
+                $isCleanOrder = false;
+                break;
+            }
+            $items[] = [
+                'id' => $item->id,
+                'name' => $item->drug->name,
+                'quantity' => $item->quantity
+            ];
+        }
+
+        if ($isCleanOrder) {
+            $order->items->update(['status' => 'approved']);
+            $agents = [];
+            foreach (($order->location->pharmacies ?? []) as $pharmacy) {
+                foreach ($pharmacy->agents as $agent) $agents[] = $agent->device_token;
+            }
+            if (!empty($agents)) {
+                $this->sendNotification($agents, "New Order",
+                    "Hello there! there's been a new approved order for your location with Order REF: {$order->order_ref}",
+                    'high', ['orderId' => $order->id, 'items' => $items]);
+            }
+        }
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'

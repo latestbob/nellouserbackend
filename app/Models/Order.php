@@ -11,16 +11,14 @@ class Order extends Model
         'payment_method', 'customer_id', 'cart_uuid',
         'amount', 'firstname', 'lastname', 'email', 'phone',
         'order_ref', 'company', 'address1', 'address2', 'location_id',
-        'city',
+        'pickup_location_id', 'city', 'delivery_method',
 //        'state',
 //        'postal_code',
-        'payment_confirmed'
+        'payment_confirmed', 'delivery_status'
     ];
 
-    public function items($id = null) {
-        $items = $this->hasMany('App\Models\Cart', 'cart_uuid', 'cart_uuid');
-
-        return is_numeric($id) ? $items->where(['drug_id' => $id]) : $items;
+    public function items() {
+        return $this->hasMany('App\Models\Cart', 'cart_uuid', 'cart_uuid');
     }
 
     public function customer()
@@ -33,5 +31,9 @@ class Order extends Model
         return $this->belongsTo('App\Models\Locations', 'location_id', 'id');
     }
 
+    public function pickup_location()
+    {
+        return $this->belongsTo('App\Models\Pharmacies', 'pickup_location_id', 'id');
+    }
 
 }

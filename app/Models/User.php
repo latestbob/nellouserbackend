@@ -19,10 +19,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'vendor_id', 'token',
-        'firstname','lastname','middlename','email','phone', 
+        'firstname','lastname','middlename','email','phone',
         'user_type','aos','cwork','password','picture','dob',
         'hwg','is_seen','ufield','height','weight','gender','source',
-        'session_id','address','state','city','religion','sponsor', 'uuid', 'local_saved'];
+        'session_id','address','state','city','religion','sponsor',
+        'uuid', 'local_saved', 'pharmacy_id', 'location_id'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -50,6 +52,14 @@ class User extends Authenticatable implements JWTSubject
     public function vendor()
     {
         return $this->belongsTo('App\Models\Vendor');
+    }
+
+    public function pharmacy() {
+        return $this->belongsTo('App\Models\Pharmacies', 'pharmacy_id', 'id');
+    }
+
+    public function location() {
+        return $this->belongsTo('App\Models\Locations', 'location_id', 'id');
     }
 
     public function encounters()
@@ -93,7 +103,7 @@ class User extends Authenticatable implements JWTSubject
         $rating = DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
         return $rating;
     }
-    
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
