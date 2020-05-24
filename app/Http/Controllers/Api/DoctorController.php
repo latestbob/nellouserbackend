@@ -63,7 +63,7 @@ class DoctorController extends Controller
     {
         $data = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'doctor_uuid' => 'required|string'
+            'doctor_uuid' => 'required|uuid'
         ]);
         $data['user_uuid'] = $request->user()->uuid;
 

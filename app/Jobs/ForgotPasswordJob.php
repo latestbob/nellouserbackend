@@ -47,13 +47,13 @@ class ForgotPasswordJob implements ShouldQueue
     {
         $code = Str::random(6);
 
-        $tokens = PasswordReset::where(['email' => $this->user->email]);
+        $tokens = PasswordReset::where(['email' => $this->user->email, 'account_type' => 'user']);
 
         if ($tokens) {
             $tokens->delete();
         }
 
-        $token = PasswordReset::create(['email' => $this->user->email, 'token' => $code]);
+        $token = PasswordReset::create(['email' => $this->user->email, 'account_type' => 'user', 'token' => $code]);
 
         if ($token) {
             Mail::to($this->user->email)->queue(new ForgotPasswordMailer($this->user, $code));

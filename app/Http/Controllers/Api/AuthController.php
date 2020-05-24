@@ -119,6 +119,116 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Agent login
+     *
+     * @bodyParam email string required
+     * @bodyParam password string required
+     */
+    public function loginAgent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8'
+        ]);
+
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Validation error.',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $credentials = $request->only(['email', 'password']);
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        if ($user->user_type != 'agent') {
+
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        if (empty($user->device_token)) {
+            $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
+            $user->device_token = wordwrap($hash, 4, ":", true);
+        }
+
+        $user->save();
+
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
+    }
+
+    /**
+     * Rider login
+     *
+     * @bodyParam email string required
+     * @bodyParam password string required
+     */
+    public function loginRider(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8'
+        ]);
+
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.',
+                'type' => 'Validation error.',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $credentials = $request->only(['email', 'password']);
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        if ($user->user_type != 'rider') {
+
+            return response([
+                'status' => false,
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        if (empty($user->device_token)) {
+            $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
+            $user->device_token = wordwrap($hash, 4, ":", true);
+        }
+
+        $user->save();
+
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
+    }
+
 
     /**
      * Customer registration
@@ -154,7 +264,7 @@ class AuthController extends Controller
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
         $userData['uuid'] = Str::uuid()->toString();
-        $userData['password'] = bcrypt($userData['password']);
+        $userData['password'] = Hash::make($userData['password']);
 
         if (!empty($userData['dob'])) {
             $userData['dob'] = Carbon::parse($userData['dob'])->toDateString();
@@ -220,9 +330,7 @@ class AuthController extends Controller
         ];
     }
 
-
-
-    public function forgotPasswordCustomer(Request $request)
+    public function forgotPassword(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -245,7 +353,7 @@ class AuthController extends Controller
         ];
     }
 
-    public function resetPasswordCustomer(Request $request)
+    public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
@@ -259,7 +367,7 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $pass = PasswordReset::where('token', '=', $request->code)->first();
+        $pass = PasswordReset::where(['account_type' => 'user', 'token' => $request->code])->first();
 
         if ($pass->email != $request->email) {
             return response([
@@ -278,7 +386,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        $user->password = bcrypt($request->password);
+        $user->password = Hash::make($request->password);
         $user->save();
         ResetPasswordJob::dispatch(
             $user,
