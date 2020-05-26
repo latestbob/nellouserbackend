@@ -68,6 +68,9 @@ class Kernel extends HttpKernel
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
         'nello.auth' => \App\Http\Middleware\NelloAuthMiddleware::class,
         'api.cache' => \App\Http\Middleware\CacheMiddleware::class,
+        'auth.agent' => \App\Http\Middleware\AgentMiddleware::class,
+        'auth.admin.agent.doctor' => \App\Http\Middleware\AdminAgentAndDoctorMiddleware::class,
+        'auth.admin.agent' => \App\Http\Middleware\AdminAndAgentMiddleware::class,
 
     ];
 
