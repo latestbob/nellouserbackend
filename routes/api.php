@@ -47,26 +47,42 @@ Route::prefix('/auth')->group(function (){
     Route::post('/verify', 'Api\AuthController@verifyToken');
 });
 
+Route::get('/drugs-order', 'Api\DrugController@drugOrders')->name('drugs-order')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
+
+Route::get('/drugs-order/{uuid}/items', 'Api\DrugController@drugOrderItems')->name('drugs-order-items')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
+
+//Route::post('/drugs-order/item/action', 'Api\DrugController@drugOrderItemAction')->middleware(['jwt.auth', 'auth.admin']);
+
+Route::post('/drugs-order/item/ready', 'Api\DrugController@drugOrderItemReady')->middleware(['jwt.auth', 'auth.agent']);
+
+Route::post('/drugs-order/item/add-prescription', 'Api\DrugController@addPrescription')->name('add-prescription')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
+
+Route::prefix('/agent')->middleware(['jwt.auth', 'auth.agent'])->group(function (){
+
+    Route::get('/analysis', 'Api\AgentController@total');
+});
+
+
 Route::prefix('/admin')->group(function (){
 
-    Route::prefix('/auth')->group(function (){
-        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');
-        Route::post('/forgot-password', 'Api\Admin\AuthController@forgotPasswordAdmin');
-        Route::post('/reset-password', 'Api\Admin\AuthController@resetPasswordAdmin');
-        Route::get('/user', 'Api\Admin\AuthController@getUser');
-    });
-
-    Route::prefix('/feedback')->group(function() {
-        Route::post('/view','Api\Admin\FeedBackController@getFeedbacks');
-        Route::post('/analysis','Api\Admin\FeedBackController@getFeedbackAnalysis');
-    });
-
-    Route::prefix('/order')->group(function (){
-        Route::post('/drug/view', 'Api\Admin\OrderController@drugOrders');
-        Route::post('/drug/{cart_uuid}/items', 'Api\Admin\OrderController@drugOrderItems');
-        Route::post('/drug/item/action', 'Api\Admin\OrderController@drugOrderItemAction');
-        Route::post('/drug/item/add-prescription', 'Api\Admin\OrderController@addPrescription');
-    });
+//    Route::prefix('/auth')->group(function (){
+//        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');
+//        Route::post('/forgot-password', 'Api\Admin\AuthController@forgotPasswordAdmin');
+//        Route::post('/reset-password', 'Api\Admin\AuthController@resetPasswordAdmin');
+//        Route::get('/user', 'Api\Admin\AuthController@getUser');
+//    });
+//
+//    Route::prefix('/feedback')->group(function() {
+//        Route::post('/view','Api\Admin\FeedBackController@getFeedbacks');
+//        Route::post('/analysis','Api\Admin\FeedBackController@getFeedbackAnalysis');
+//    });
+//
+//    Route::prefix('/order')->group(function (){
+//        Route::post('/drug/view', 'Api\Admin\OrderController@drugOrders');
+//        Route::post('/drug/{cart_uuid}/items', 'Api\Admin\OrderController@drugOrderItems');
+//        Route::post('/drug/item/action', 'Api\Admin\OrderController@drugOrderItemAction');
+//        Route::post('/drug/item/add-prescription', 'Api\Admin\OrderController@addPrescription');
+//    });
 
 });
 
