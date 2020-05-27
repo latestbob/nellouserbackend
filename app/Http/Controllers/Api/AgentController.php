@@ -29,7 +29,7 @@ class AgentController extends Controller
             'message' => 'Analysis retrieved successfully',
             'analysis' => [
                 'total' => [
-                    'earnings' => $orders->sum('amount'),
+                    'earnings' => $orders->sum('price'),
                     'processed' => $orders->count()
                 ]
             ]
