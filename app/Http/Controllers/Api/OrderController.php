@@ -30,11 +30,10 @@ class OrderController extends Controller
             'phone' => 'required|numeric',
             'cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
-            'address1' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
+            'address1' => 'required_if:delivery_method,shipping|string',
             'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
             'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
-            'city' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
-//            'state' => ($request->delivery_method == 'pickup' ? 'nullable' : 'required') . '|string',
+            'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point'
         ]);
 
