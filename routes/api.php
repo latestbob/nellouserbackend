@@ -62,6 +62,8 @@ Route::prefix('/agent')->middleware(['jwt.auth', 'auth.agent'])->group(function 
     Route::get('/analysis', 'Api\AgentController@total');
 });
 
+Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.auth');
+
 
 Route::prefix('/admin')->group(function (){
 

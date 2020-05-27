@@ -466,4 +466,12 @@ class AuthController extends Controller
         $user = User::create($data);
         return $user;
     }
+
+    public function updateToken(Request $request)
+    {
+        $user = $request->user();
+        $user->device_token = $request->token;
+        $user->save();
+        return "success";
+    }
 }

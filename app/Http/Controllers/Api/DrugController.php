@@ -52,14 +52,26 @@ class DrugController extends Controller
     public function drugOrders(Request $request)
     {
 
+        $user = $request->user();
         $size = empty($request->size) ? 10 : $request->size;
 
         $locationID = null;
         $userType = '';
 
-        if (Auth::check() && ($userType = Auth::user()->user_type) == "agent") {
-            $locationID = Auth::user()->pharmacy->location_id;
+        if (Auth::check() && ($userType = $user->user_type) == "agent") {
+            $locationID = $user->pharmacy->location_id;
         }
+
+        $orders = Order::whereHas('items', function($query) use($user) {
+            $query->where('carts.vendor_id', $user->vendor_id);
+        })
+        ->withCount(['items'])->when($locationID, function($query, $loc){
+            $query->where('location_id', $loc);
+        })
+        ->where('payment_confirmed', 1)
+        ->paginate($request->limit ?? 15);
+
+        return $orders;
 
         $orders = Order::query()->join('carts', 'orders.cart_uuid', '=', 'carts.cart_uuid', 'INNER');
 
@@ -134,20 +146,35 @@ class DrugController extends Controller
     public function drugOrderItems(Request $request)
     {
         if (empty($request->uuid)) {
-            return [
+            return response([
                 'status' => false,
                 'msg' => "Cart ID is missing."
-            ];
+            ], 400);
         }
 
-        $orderItems = Cart::with(['drug', 'order'])->where(['cart_uuid' => $request->uuid,
-            'vendor_id' => $request->user()->vendor_id])->orderByDesc('id');
+        $user = $request->user();
+
+        $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id'])
+            ->whereHas('order', function($query) use($user) {
+                if ($user->user_type == 'agent') {
+                    $query->where('location_id', $user->pharmacy->location_id);
+                }
+                //$query->where('location_id', $user->location_id);
+            })
+            ->where([
+                'cart_uuid' => $request->uuid,
+                'vendor_id' => $request->user()->vendor_id
+            ])
+            ->orderByDesc('id')
+            ->get();
+
+        return $orderItems;
 
         if (empty($orderItems->first())) {
-            return [
+            return response([
                 'status' => false,
                 'msg' => "Sorry, that Cart ID either does not exist or has been deleted"
-            ];
+            ], 400);
         }
 
         if (($userType = $request->user()->user_type) == 'agent') {

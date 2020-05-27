@@ -30,7 +30,7 @@ class DrugSeeder extends Seeder
         }
 
         PharmacyDrug::whereNotNull('name')->update(['status' => false]);
-        $fileContent = Storage::disk('local')->get('database\migrations\drugs.json');
+        $fileContent = Storage::disk('local')->get('drugs.json');
         $drugs = json_decode($fileContent, true);
 
         echo gettype($drugs);
