@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'nello.auth' => \App\Http\Middleware\NelloAuthMiddleware::class,
         'api.cache' => \App\Http\Middleware\CacheMiddleware::class,
         'auth.agent' => \App\Http\Middleware\AgentMiddleware::class,
+        'auth.rider' => \App\Http\Middleware\RiderMiddleware::class,
         'auth.admin.agent.doctor' => \App\Http\Middleware\AdminAgentAndDoctorMiddleware::class,
         'auth.admin.agent' => \App\Http\Middleware\AdminAndAgentMiddleware::class,
 
