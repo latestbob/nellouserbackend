@@ -31,7 +31,8 @@ class PatientSeeder extends Seeder
                 'sponsor' => 'Father',
                 'gender' => 'Male',
                 'user_type' => 'customer',
-                'vendor_id' => 1
+                'vendor_id' => 1,
+                'uuid' => Str::uuid()->__toString()
             ],
             [
                 'firstname' => 'Rosetta',
@@ -42,7 +43,8 @@ class PatientSeeder extends Seeder
                 'sponsor' => 'Mother',
                 'gender' => 'Female',
                 'user_type' => 'customer',
-                'vendor_id' => 1
+                'vendor_id' => 1,
+                'uuid' => Str::uuid()->__toString()
             ]
         ];
 
