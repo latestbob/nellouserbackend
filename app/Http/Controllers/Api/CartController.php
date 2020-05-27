@@ -18,6 +18,15 @@ class CartController extends Controller
     use FileUpload;
 
     public function getItems(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'cart_uuid' => 'required|uuid'
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()]);
+        }
+
         return Cart::with(['drug', 'drug.category'])->where(['cart_uuid' => $request->cart_uuid])->get();
     }
 
