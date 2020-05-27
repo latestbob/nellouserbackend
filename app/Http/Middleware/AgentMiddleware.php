@@ -16,16 +16,12 @@ class AgentMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check()) {
-            if (($userType = $request->user()->user_type) == 'agent') {
-                return $next($request);
-            }
-            if ($userType == 'customer' || $userType == 'rider') Auth::logout();
-            return redirect($userType == 'customer' ? '/login' : '/')
-                ->with('error', $userType == 'customer' ?
-                    "You don't have access to that route, login and try again." :
-                    "You don't have access to that route.");
+        if (Auth::check() && $request->user()->user_type == 'agent') {
+            return $next($request);
         }
-        return redirect('/login');
+        return response()->json([
+            'status' => false,
+            'message' => "You don't have access to this route"
+        ]);
     }
 }
