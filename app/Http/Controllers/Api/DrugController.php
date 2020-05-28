@@ -12,9 +12,12 @@ use App\Models\PharmacyDrug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\FirebaseNotification;
 
 class DrugController extends Controller
 {
+    use FirebaseNotification;
+    
     public function index(Request $request)
     {
         if (empty($request->search) && empty($request->category)) {
