@@ -62,14 +62,14 @@ class DrugController extends Controller
             $locationID = $user->pharmacy->location_id;
         }
 
-        $orders = Order::whereHas('items', function($query) use($user) {
+        $orders = Order::whereHas('items', function ($query) use ($user) {
             $query->where('carts.vendor_id', $user->vendor_id);
         })
-        ->withCount(['items'])->when($locationID, function($query, $loc){
-            $query->where('location_id', $loc);
-        })
-        ->where('payment_confirmed', 1)
-        ->paginate($request->limit ?? 15);
+            ->withCount(['items'])->when($locationID, function ($query, $loc) {
+                $query->where('location_id', $loc);
+            })
+            ->where('payment_confirmed', 1)
+            ->paginate($request->limit ?? 15);
 
         return $orders;
 
@@ -155,7 +155,7 @@ class DrugController extends Controller
         $user = $request->user();
 
         $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id'])
-            ->whereHas('order', function($query) use($user) {
+            ->whereHas('order', function ($query) use ($user) {
                 if ($user->user_type == 'agent') {
                     $query->where('location_id', $user->pharmacy->location_id);
                 }
@@ -164,9 +164,13 @@ class DrugController extends Controller
             ->where([
                 'cart_uuid' => $request->uuid,
                 'vendor_id' => $request->user()->vendor_id
-            ])
-            ->orderByDesc('id')
-            ->get();
+            ]);
+
+        if ($user->user_type == 'agent') {
+            $orderItems->where('status', 'approved');
+        }
+
+        $orderItems = $orderItems->orderByDesc('id')->get();
 
         return $orderItems;
 
@@ -225,7 +229,8 @@ class DrugController extends Controller
         $item->status = $request->status;
         $item->save();
 
-        $isAllApproved = true; $items = [];
+        $isAllApproved = true;
+        $items = [];
 
         foreach ($item->order->items as $it) {
             if ($it->status != 'approved') {
@@ -305,7 +310,8 @@ class DrugController extends Controller
 
         $isAllReady = true;
 
-        $items = []; $pickup_addresses = [];
+        $items = [];
+        $pickup_addresses = [];
 
         foreach ($item->order->items as $it) {
             if ($it->is_ready != true) {
