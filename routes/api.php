@@ -65,7 +65,9 @@ Route::prefix('/agent')->middleware(['jwt.auth', 'auth.agent'])->group(function 
 Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.auth');
 
 
-Route::prefix('/admin')->group(function (){
+
+
+Route::prefix('/admin')->group(function () {
 
 //    Route::prefix('/auth')->group(function (){
 //        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');
