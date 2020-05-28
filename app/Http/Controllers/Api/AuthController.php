@@ -168,7 +168,7 @@ class AuthController extends Controller
 
         $user->save();
 
-        $user->load(['location:id,name']);
+        $user->location = $user->pharmacy->location;
 
         return [
             'token' => $token,
