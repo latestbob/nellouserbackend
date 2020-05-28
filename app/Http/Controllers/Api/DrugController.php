@@ -369,7 +369,7 @@ class DrugController extends Controller
                 break;
             }
 
-            $items[$item->is_ready_by][] = [
+            $items[] = [
                 'name' => $it->drug->name,
                 'image' => $it->drug->image,
                 'description' => $it->drug->description,
