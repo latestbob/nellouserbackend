@@ -393,7 +393,7 @@ class DrugController extends Controller
 
                 if (!empty($riders)) {
 
-                    return $this->sendNotification(
+                    $this->sendNotification(
                         $riders,
                         "New Order",
                         "Hello there! an order has been processed and is ready for pick up",
