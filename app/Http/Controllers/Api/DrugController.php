@@ -17,14 +17,15 @@ use App\Traits\FirebaseNotification;
 class DrugController extends Controller
 {
     use FirebaseNotification;
-    
+
     public function index(Request $request)
     {
         if (empty($request->search) && empty($request->category)) {
 
             $drugs = PharmacyDrug::with('category')->where(
-                'status', true)->orderBy('name')->paginate();
-
+                'status',
+                true
+            )->orderBy('name')->paginate();
         } else {
 
             $search = $request->search;
@@ -45,7 +46,8 @@ class DrugController extends Controller
     public function getDrug(Request $request)
     {
         return PharmacyDrug::with('category')->where(
-            [['uuid', '=', $request->uuid], ['status', '=', true]])->first();
+            [['uuid', '=', $request->uuid], ['status', '=', true]]
+        )->first();
     }
 
     public function getDrugCategories(Request $request)
@@ -154,15 +156,29 @@ class DrugController extends Controller
 
         $total = [
 
-            'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join('carts', 'orders.cart_uuid', '=',
-                'carts.cart_uuid', 'INNER')->where(['carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 1])->when($locationID, function ($query, $locationID) {
+            'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+                'carts',
+                'orders.cart_uuid',
+                '=',
+                'carts.cart_uuid',
+                'INNER'
+            )->where([
+                'carts.vendor_id' => $request->user()->vendor_id,
+                'orders.payment_confirmed' => 1
+            ])->when($locationID, function ($query, $locationID) {
                 $query->where('orders.location_id', $locationID);
             })->distinct()->count('orders.id') : null,
 
-            'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join('carts', 'orders.cart_uuid', '=',
-                'carts.cart_uuid', 'INNER')->where(['carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 0])->when($locationID, function ($query, $locationID) {
+            'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+                'carts',
+                'orders.cart_uuid',
+                '=',
+                'carts.cart_uuid',
+                'INNER'
+            )->where([
+                'carts.vendor_id' => $request->user()->vendor_id,
+                'orders.payment_confirmed' => 0
+            ])->when($locationID, function ($query, $locationID) {
                 $query->where('orders.location_id', $locationID);
             })->distinct()->count('orders.id') : null
 
@@ -284,9 +300,13 @@ class DrugController extends Controller
 
             if (!empty($agents)) {
 
-                $this->sendNotification($agents, "New Order",
+                $this->sendNotification(
+                    $agents,
+                    "New Order",
                     "Hello there! there's been a newly approved order for your location with Order REF: {$item->order->order_ref}",
-                    'high', ['orderId' => $item->order->id, 'items' => $items]);
+                    'high',
+                    ['orderId' => $item->order->id, 'items' => $items]
+                );
             }
         }
 
@@ -373,7 +393,8 @@ class DrugController extends Controller
 
                 if (!empty($riders)) {
 
-                    $this->sendNotification($riders,
+                    return $this->sendNotification(
+                        $riders,
                         "New Order",
                         "Hello there! an order has been processed and is ready for pick up",
                         'high',
@@ -386,9 +407,14 @@ class DrugController extends Controller
                             'pickup_address' => $pickup_addresses
                         ]
                     );
+                } else {
+
+                    return response([
+                        'status' => false,
+                        'message' => "No riders found"
+                    ]);
                 }
             }
-
         }
 
         return response([
@@ -426,7 +452,7 @@ class DrugController extends Controller
         if ($request->hasFile('file')) {
 
             $item->prescription = $prescription = $this->uploadFile($request, 'file');
-//            $item->prescription = $prescription = 'http://nelloadmin.com/images/drug-placeholder.png';
+            //            $item->prescription = $prescription = 'http://nelloadmin.com/images/drug-placeholder.png';
             $item->prescribed_by = 'vendor';
             $item->save();
 
@@ -435,7 +461,6 @@ class DrugController extends Controller
                 'message' => "Prescription uploaded and added successfully",
                 'prescription' => $prescription
             ]);
-
         } else return response([
             'status' => false,
             'message' => "No prescription file uploaded"

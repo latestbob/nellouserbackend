@@ -41,6 +41,15 @@ trait FirebaseNotification
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
+        if(($res = curl_exec($ch)) === false)
+        {
+            return 'Curl error: ' . curl_error($ch);
+        }
+        else
+        {
+            return $res;
+        }
+
         return curl_exec($ch);
     }
 }
