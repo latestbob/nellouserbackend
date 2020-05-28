@@ -403,8 +403,8 @@ class DrugController extends Controller
                             'items' => $items,
                             'customer_name' => "{$item->order->firstname} {$item->order->lastname}",
                             'customer_phone' => $item->order->phone,
-                            'delivery_address' => $item->address1,
-                            'pickup_address' => $pickup_addresses
+                            'delivery_address' => $item->order->address1,
+                            'pickup_address' => array_values($pickup_addresses)
                         ]
                     );
                 } else {
