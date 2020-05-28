@@ -168,6 +168,8 @@ class AuthController extends Controller
 
         $user->save();
 
+        $user->load(['location:id,name']);
+
         return [
             'token' => $token,
             'user' => $user
