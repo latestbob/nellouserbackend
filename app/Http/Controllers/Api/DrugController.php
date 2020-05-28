@@ -347,8 +347,10 @@ class DrugController extends Controller
             }
 
             $items[$item->is_ready_by][] = [
-                'name' => $item->drug->name,
-                'quantity' => $item->quantity
+                'name' => $it->drug->name,
+                'image' => $it->drug->image,
+                'description' => $it->drug->description,
+                'quantity' => $it->quantity
             ];
 
             $pickup_addresses[$item->is_ready_by] = [
@@ -376,6 +378,7 @@ class DrugController extends Controller
                             'orderId' => $item->order->id,
                             'items' => $items,
                             'customer_name' => "{$item->order->firstname} {$item->order->lastname}",
+                            'customer_phone' => $item->order->phone,
                             'delivery_address' => $item->address1,
                             'pickup_address' => $pickup_addresses
                         ]
