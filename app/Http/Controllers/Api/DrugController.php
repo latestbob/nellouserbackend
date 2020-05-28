@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
 use App\Models\DrugCategory;
 use App\Models\Locations;
@@ -49,6 +50,32 @@ class DrugController extends Controller
         return DrugCategory::where('name', '!=', "")->groupBy('name')->select(['id', 'name'])->get();
     }
 
+    public function fetchPendingOrders(Request $request)
+    {
+
+        $user = $request->user();
+        $size = empty($request->size) ? 10 : $request->size;
+
+        $locationID = null;
+        $userType = '';
+
+        if (Auth::check() && ($userType = $user->user_type) == "agent") {
+            $locationID = $user->pharmacy->location_id;
+        }
+
+        $orders = Order::whereHas('items', function ($query) use ($user) {
+            $query->where('carts.vendor_id', $user->vendor_id)
+                ->where('is_ready', 0);
+        })
+            ->withCount(['items'])->when($locationID, function ($query, $loc) {
+                $query->where('location_id', $loc);
+            })
+            ->where('payment_confirmed', 1)
+            ->paginate($request->limit ?? 15);
+
+        return new OrderCollection($orders);
+    }
+
     public function drugOrders(Request $request)
     {
 
@@ -71,7 +98,7 @@ class DrugController extends Controller
             ->where('payment_confirmed', 1)
             ->paginate($request->limit ?? 15);
 
-        return $orders;
+        return new OrderCollection($orders);
 
         $orders = Order::query()->join('carts', 'orders.cart_uuid', '=', 'carts.cart_uuid', 'INNER');
 
