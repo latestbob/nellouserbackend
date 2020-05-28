@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AdminAgentAndDoctorMiddleware
+class RiderMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,9 @@ class AdminAgentAndDoctorMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && (($userType = $request->user()->user_type) == 'admin'
-                || $userType == 'agent' || $userType == 'doctor')) return $next($request);
-
+        if (Auth::check() && $request->user()->user_type == 'rider') {
+            return $next($request);
+        }
         return response()->json([
             'status' => false,
             'message' => "You don't have access to this route"

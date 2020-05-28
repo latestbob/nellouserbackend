@@ -27,7 +27,7 @@ class AgentController extends Controller
         return [
             'status' => true,
             'message' => 'Analysis retrieved successfully',
-            'earnings' => $orders->sum('amount'),
+            'earnings' => $orders->sum('price'),
             'processed' => $orders->count()
         ];
     }

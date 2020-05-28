@@ -62,6 +62,18 @@ Route::prefix('/agent')->middleware(['jwt.auth', 'auth.agent'])->group(function 
     Route::get('/analysis', 'Api\AgentController@total');
 });
 
+Route::prefix('/rider')->middleware(['jwt.auth', 'auth.rider'])->group(function (){
+
+    Route::prefix('/order')->group(function () {
+
+        Route::post('/accept', 'Api\RiderController@acceptOrder');
+        Route::post('/picked-up', 'Api\RiderController@pickedUp');
+        Route::post('/delivered', 'Api\RiderController@delivered');
+        Route::get('/history', 'Api\RiderController@deliveryHistory');
+
+    });
+});
+
 Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.auth');
 
 
