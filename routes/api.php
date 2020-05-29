@@ -73,6 +73,8 @@ Route::prefix('/rider')->middleware(['jwt.auth', 'auth.rider'])->group(function 
         Route::get('/history', 'Api\RiderController@deliveryHistory');
 
     });
+
+    Route::get('/trip-analysis', 'Api\RiderController@tripAnalysis');
 });
 
 Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.auth');
