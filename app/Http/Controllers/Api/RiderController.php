@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\RiderTripLog;
 use App\Traits\FirebaseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -120,7 +121,9 @@ class RiderController extends Controller
     public function delivered(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|numeric|exists:orders,id'
+            'id' => 'required|numeric|exists:orders,id',
+            'distance' => 'required|numeric',
+            'time' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -160,6 +163,13 @@ class RiderController extends Controller
             ];
         }
 
+        RiderTripLog::create([
+            'rider_id' => $user->id,
+            'order_id' => $order->id,
+            'distance' => $request->distance,
+            'time' => $request->time
+        ]);
+
         $order->update([
             'delivery_status' => true,
             'delivered_by' => $user->id
@@ -174,5 +184,14 @@ class RiderController extends Controller
     public function deliveryHistory(Request $request)
     {
         return Order::with('items')->where('delivered_by', $request->user()->id)->paginate();
+    }
+
+    public function tripAnalysis(Request $request)
+    {
+        return [
+            'delivery' => Order::where('delivered_by', $request->user()->id)->count(),
+            'distance' => RiderTripLog::where('rider_id', $request->user()->id)->sum('distance'),
+            'time' => RiderTripLog::where('rider_id', $request->user()->id)->sum('time')
+        ];
     }
 }
