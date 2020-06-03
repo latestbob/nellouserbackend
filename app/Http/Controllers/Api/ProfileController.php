@@ -55,7 +55,7 @@ class ProfileController extends Controller
             'lastname'  => 'required|string|max:50',
             'middlename' => 'nullable|string',
             'email' => 'required|string|email|max:255',
-            'phone' => 'required|numeric',
+            'phone' => 'required|digits_between:11,16',
             'dob' => 'required|date_format:d-m-Y|before_or_equal:today',
             'address' => 'nullable|string',
             'state' => 'nullable|string',
