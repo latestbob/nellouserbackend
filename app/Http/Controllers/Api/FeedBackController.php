@@ -12,14 +12,14 @@ class FeedBackController extends Controller
     public function create(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'phone' => 'nullable|string',
-            'feedback'  => 'required|string',
+            'phone' => 'required|digits_between:11,16',
+            'feedback'  => 'nullable|string',
             'experience'  => 'required|string',
             'facilityID' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()], 400);
+            return response(['message' => $validator->errors()]);
         }
 
         $data = $validator->validated();
