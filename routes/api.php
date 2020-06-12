@@ -48,6 +48,7 @@ Route::prefix('/auth')->group(function (){
 });
 
 Route::get('/drugs-order', 'Api\DrugController@drugOrders')->name('drugs-order')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
+Route::get('/drugs-order/pending', 'Api\DrugController@fetchPendingOrders')->name('drugs-order-pending')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
 
 Route::get('/drugs-order/{uuid}/items', 'Api\DrugController@drugOrderItems')->name('drugs-order-items')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
 
@@ -79,7 +80,9 @@ Route::prefix('/rider')->middleware(['jwt.auth', 'auth.rider'])->group(function 
 Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.auth');
 
 
-Route::prefix('/admin')->group(function (){
+
+
+Route::prefix('/admin')->group(function () {
 
 //    Route::prefix('/auth')->group(function (){
 //        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');

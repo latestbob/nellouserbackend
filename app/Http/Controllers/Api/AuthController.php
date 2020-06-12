@@ -168,6 +168,8 @@ class AuthController extends Controller
 
         $user->save();
 
+        $user->location = $user->pharmacy->location;
+
         return [
             'token' => $token,
             'user' => $user

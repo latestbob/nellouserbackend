@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
 use App\Models\DrugCategory;
 use App\Models\Locations;
@@ -11,24 +12,26 @@ use App\Models\PharmacyDrug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\FirebaseNotification;
 
 class DrugController extends Controller
 {
+    use FirebaseNotification;
+
     public function index(Request $request)
     {
         if (empty($request->search) && empty($request->category)) {
 
-            $drugs = PharmacyDrug::with('category')
-//                ->where('status', true)
-                ->orderBy('name')->paginate();
-
+            $drugs = PharmacyDrug::with('category')->where(
+                'status',
+                true
+            )->orderBy('name')->paginate();
         } else {
 
             $search = $request->search;
             $category = $request->category;
 
-            $drugs = PharmacyDrug::with('category')
-//                ->where('status', true)
+            $drugs = PharmacyDrug::with('category')->where('status', true)
                 ->when($category, function ($query, $category) {
                     $query->where('category_id', '=', "{$category}");
                 })->when($search, function ($query, $search) {
@@ -43,14 +46,39 @@ class DrugController extends Controller
     public function getDrug(Request $request)
     {
         return PharmacyDrug::with('category')->where(
-            [['uuid', '=', $request->uuid]
-//                , ['status', '=', true]
-            ])->first();
+            [['uuid', '=', $request->uuid], ['status', '=', true]]
+        )->first();
     }
 
     public function getDrugCategories(Request $request)
     {
         return DrugCategory::where('name', '!=', "")->groupBy('name')->select(['id', 'name'])->get();
+    }
+
+    public function fetchPendingOrders(Request $request)
+    {
+
+        $user = $request->user();
+        $size = empty($request->size) ? 10 : $request->size;
+
+        $locationID = null;
+        $userType = '';
+
+        if (Auth::check() && ($userType = $user->user_type) == "agent") {
+            $locationID = $user->pharmacy->location_id;
+        }
+
+        $orders = Order::whereHas('items', function ($query) use ($user) {
+            $query->where('carts.vendor_id', $user->vendor_id)
+                ->where('is_ready', 0);
+        })
+            ->withCount(['items'])->when($locationID, function ($query, $loc) {
+                $query->where('location_id', $loc);
+            })
+            ->where('payment_confirmed', 1)
+            ->paginate($request->limit ?? 15);
+
+        return new OrderCollection($orders);
     }
 
     public function drugOrders(Request $request)
@@ -75,7 +103,7 @@ class DrugController extends Controller
             ->where('payment_confirmed', 1)
             ->paginate($request->limit ?? 15);
 
-        return $orders;
+        return new OrderCollection($orders);
 
         $orders = Order::query()->join('carts', 'orders.cart_uuid', '=', 'carts.cart_uuid', 'INNER');
 
@@ -128,15 +156,29 @@ class DrugController extends Controller
 
         $total = [
 
-            'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join('carts', 'orders.cart_uuid', '=',
-                'carts.cart_uuid', 'INNER')->where(['carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 1])->when($locationID, function ($query, $locationID) {
+            'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+                'carts',
+                'orders.cart_uuid',
+                '=',
+                'carts.cart_uuid',
+                'INNER'
+            )->where([
+                'carts.vendor_id' => $request->user()->vendor_id,
+                'orders.payment_confirmed' => 1
+            ])->when($locationID, function ($query, $locationID) {
                 $query->where('orders.location_id', $locationID);
             })->distinct()->count('orders.id') : null,
 
-            'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join('carts', 'orders.cart_uuid', '=',
-                'carts.cart_uuid', 'INNER')->where(['carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 0])->when($locationID, function ($query, $locationID) {
+            'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+                'carts',
+                'orders.cart_uuid',
+                '=',
+                'carts.cart_uuid',
+                'INNER'
+            )->where([
+                'carts.vendor_id' => $request->user()->vendor_id,
+                'orders.payment_confirmed' => 0
+            ])->when($locationID, function ($query, $locationID) {
                 $query->where('orders.location_id', $locationID);
             })->distinct()->count('orders.id') : null
 
@@ -258,9 +300,13 @@ class DrugController extends Controller
 
             if (!empty($agents)) {
 
-                $this->sendNotification($agents, "New Order",
+                $this->sendNotification(
+                    $agents,
+                    "New Order",
                     "Hello there! there's been a newly approved order for your location with Order REF: {$item->order->order_ref}",
-                    'high', ['orderId' => $item->order->id, 'items' => $items]);
+                    'high',
+                    ['orderId' => $item->order->id, 'items' => $items]
+                );
             }
         }
 
@@ -323,9 +369,11 @@ class DrugController extends Controller
                 break;
             }
 
-            $items[$item->is_ready_by][] = [
-                'name' => $item->drug->name,
-                'quantity' => $item->quantity
+            $items[] = [
+                'name' => $it->drug->name,
+                'image' => $it->drug->image,
+                'description' => $it->drug->description,
+                'quantity' => $it->quantity
             ];
 
             $pickup_addresses[$item->is_ready_by] = [
@@ -345,7 +393,8 @@ class DrugController extends Controller
 
                 if (!empty($riders)) {
 
-                    $this->sendNotification($riders,
+                    $this->sendNotification(
+                        $riders,
                         "New Order",
                         "Hello there! an order has been processed and is ready for pick up",
                         'high',
@@ -353,13 +402,19 @@ class DrugController extends Controller
                             'orderId' => $item->order->id,
                             'items' => $items,
                             'customer_name' => "{$item->order->firstname} {$item->order->lastname}",
-                            'delivery_address' => $item->address1,
-                            'pickup_address' => $pickup_addresses
+                            'customer_phone' => $item->order->phone,
+                            'delivery_address' => $item->order->address1,
+                            'pickup_address' => array_values($pickup_addresses)
                         ]
                     );
+                } else {
+
+                    return response([
+                        'status' => false,
+                        'message' => "No riders found"
+                    ]);
                 }
             }
-
         }
 
         return response([
@@ -397,7 +452,7 @@ class DrugController extends Controller
         if ($request->hasFile('file')) {
 
             $item->prescription = $prescription = $this->uploadFile($request, 'file');
-//            $item->prescription = $prescription = 'http://nelloadmin.com/images/drug-placeholder.png';
+            //            $item->prescription = $prescription = 'http://nelloadmin.com/images/drug-placeholder.png';
             $item->prescribed_by = 'vendor';
             $item->save();
 
@@ -406,7 +461,6 @@ class DrugController extends Controller
                 'message' => "Prescription uploaded and added successfully",
                 'prescription' => $prescription
             ]);
-
         } else return response([
             'status' => false,
             'message' => "No prescription file uploaded"

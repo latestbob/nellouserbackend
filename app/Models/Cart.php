@@ -27,4 +27,9 @@ class Cart extends Model
 
         return $this->belongsTo('App\Models\Pharmacies', 'is_ready_by', 'id');
     }
+
+    public function accepted_by()
+    {
+        return $this->is_ready_by();
+    }
 }
