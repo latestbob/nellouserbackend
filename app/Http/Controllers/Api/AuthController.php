@@ -476,4 +476,42 @@ class AuthController extends Controller
         $user->save();
         return "success";
     }
+
+    public function verifyEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|unique:users,email'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        return [
+            'status' => true,
+            'message' => [['Great! you can use that email.']]
+        ];
+    }
+
+    public function verifyPhone(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|string|unique:users,phone'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        return [
+            'status' => true,
+            'message' => [['Great! you can use that phone number.']]
+        ];
+    }
 }

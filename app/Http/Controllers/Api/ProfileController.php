@@ -342,27 +342,32 @@ class ProfileController extends Controller
             return response(['message' => $validator->errors()]);
         }
 
-        $item = Cart::where(['cart_uuid' => $request->cart_uuid, 'drug_id' => $request->drug_id])->first();
+        $cart = Cart::where(['cart_uuid' => $request->cart_uuid, 'drug_id' => $request->drug_id])->first();
 
-        if (empty($item)) {
+        if (empty($cart)) {
 
             return response(['message' => [["Failed to add prescription, item not found"]]]);
         }
 
-        if ($item->user_id && $item->user_id != $request->user()->id) {
+        if ($cart->user_id && $cart->user_id != $request->user()->id) {
 
             return response(['message' => [["Failed to add prescription, item does not belong to you"]]]);
         }
 
         if ($request->hasFile('file')) {
 
-            $item->prescription = $prescription = $this->uploadFile($request, 'file');
-//            $item->prescription = $prescription = 'http://localhost:3000/static/media/drug-placeholder.d504dfec.png';
-            $item->prescribed_by = 'customer';
-            if (!$item->user_id) $item->user_id = $request->user()->id;
-            $item->save();
+            $cart->prescription = $prescription = $this->uploadFile($request, 'file');
+//            $cart->prescription = $prescription = 'http://localhost:3000/static/media/drug-placeholder.d504dfec.png';
+            $cart->prescribed_by = 'customer';
+            if (!$cart->user_id) $cart->user_id = $request->user()->id;
+            $cart->save();
 
-            return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
+            return response([
+                'message' => "Prescription uploaded and added successfully",
+                'cart_uuid' => $cart->cart_uuid,
+                'drug_id' => $cart->drug_id,
+                'prescription' => $prescription
+            ]);
 
         } else return response(['message' => [["No prescription file uploaded"]]]);
     }
