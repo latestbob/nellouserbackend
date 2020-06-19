@@ -45,6 +45,8 @@ Route::prefix('/auth')->group(function (){
     Route::post('/register', 'Api\AuthController@registerCustomer');
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
     Route::post('/verify', 'Api\AuthController@verifyToken');
+    Route::post('/verify/email', 'Api\AuthController@verifyEmail');
+    Route::post('/verify/phone', 'Api\AuthController@verifyPhone');
 });
 
 Route::get('/drugs-order', 'Api\DrugController@drugOrders')->name('drugs-order')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
@@ -151,9 +153,14 @@ Route::prefix('/feedback')->group(function() {
     Route::post('/create', 'Api\FeedBackController@create');
 });
 
+Route::prefix('/order')->group(function() {
+    Route::post('/drug', 'Api\OrderController@checkout');
+    Route::post('/drug/confirm-payment', 'Api\OrderController@confirmPayment');
+    Route::post('/merge', 'Api\OrderController@mergeOrder');
+    Route::post('/cancel', 'Api\OrderController@cancelOrder');
+});
+
 Route::post('/file-upload', 'FileController@fileUpload');
-Route::post('/order/drug', 'Api\OrderController@checkout');
-Route::post('/order/drug/confirm-payment', 'Api\OrderController@confirmPayment');
 Route::get('/locations', 'Api\LocationController@getLocations');
 
 Route::prefix('/wishlist')->middleware('jwt.auth')->group(function() {
