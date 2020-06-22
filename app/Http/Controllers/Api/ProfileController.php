@@ -327,7 +327,7 @@ class ProfileController extends Controller
     }
 
     public function getPrescriptions(Request $request) {
-        return Order::with(['items', 'items.drug', 'items.vendor'])->where(['customer_id' => $request->user()->id])->orderByDesc('id')->paginate(10);
+        return Order::with(['items', 'items.drug', 'items.vendor'])->where(['customer_id' => $request->user()->id])->whereHas('items')->orderByDesc('id')->paginate(10);
     }
 
     public function addPrescription(Request $request) {
