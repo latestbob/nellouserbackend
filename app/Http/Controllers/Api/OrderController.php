@@ -37,7 +37,8 @@ class OrderController extends Controller
             'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
             'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
-            'payment_method' => 'required|string|in:card,point'
+            'payment_method' => 'required|string|in:card,point',
+            'customer_id' => 'required_if:checkout_type,user|numeric|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -52,8 +53,7 @@ class OrderController extends Controller
 
         if (!empty($order)) {
 
-            if ($order->payment_confirmed == 1)
-                return response(['message' => [["You already checked out and made payment for those cart items"]]]);
+            if ($order->payment_confirmed == 1) return response(['message' => [["You already checked out and made payment for those cart items"]]]);
             else {
 
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
