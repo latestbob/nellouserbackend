@@ -249,7 +249,8 @@ class AuthController extends Controller
             'lastname' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|digits_between:11,16|unique:users,phone',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'same:password',
             'gender' => 'required|string|in:Male,Female',
             'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
@@ -259,7 +260,7 @@ class AuthController extends Controller
             return response($validator->errors(), 400);
         }
 
-        $vendor = Vendor::find($request->facilityID ?: 1);
+//        $vendor = Vendor::find($request->facilityID ?: 1);
 
         $userData = $validator->validated();
 
@@ -481,6 +482,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|unique:users,email'
+        ], [
+            'email.unique' => 'Sorry, that email has already been taken. Please enter another email.'
         ]);
 
         if ($validator->fails()) {
@@ -500,6 +503,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|unique:users,phone'
+        ], [
+            'phone.unique' => 'Sorry, that phone number has already been taken. Please enter another phone number.'
         ]);
 
         if ($validator->fails()) {
