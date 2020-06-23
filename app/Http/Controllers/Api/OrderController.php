@@ -91,7 +91,7 @@ class OrderController extends Controller
 
                 $order->update($data);
 
-//                SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
+                SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
 
                 if (($data['payment_confirmed'] ?? 0) == 1) {
 
