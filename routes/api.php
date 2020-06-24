@@ -131,7 +131,7 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');
-Route::post('/contact/message', 'ContactController@sendMessage')->middleware('jwt.auth');
+Route::post('/contact/message', 'ContactController@sendMessage');
 
 Route::get('/drugs', 'Api\DrugController@index');
 Route::get('/drug/categories', 'Api\DrugController@getDrugCategories');
