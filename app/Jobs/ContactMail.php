@@ -36,8 +36,7 @@ class ContactMail implements ShouldQueue
     {
         $html = view('mail.contact-message', ['contact' => $this->contactMessage])->render();
         Mail::send([], [], function ($message) use ($html) {
-//            $message->to("hello@asknello.com");
-            $message->to("wisdomemenike70@gmail.com");
+            $message->to("hello@asknello.com");
             $message->setBody($html, 'text/html');
             $message->subject($this->contactMessage->subject);
         });
