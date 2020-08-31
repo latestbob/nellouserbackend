@@ -14,7 +14,7 @@ class AddDeliveryMethodColumnToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->enum('delivery_method', ['shipping', 'pickup'])->after('location_id');
+            $table->enum('delivery_method', ['shipping', 'pickup']);
         });
     }
 
