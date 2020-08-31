@@ -22,16 +22,16 @@ class DrugController extends Controller
     {
         if (empty($request->search) && empty($request->category)) {
 
-            $drugs = PharmacyDrug::with('category')->where(
-                'status',
-                true
-            )->orderBy('name')->paginate();
+            $drugs = PharmacyDrug::with('category')
+//                ->where('status', true)
+                ->orderBy('name')->paginate();
         } else {
 
             $search = $request->search;
             $category = $request->category;
 
-            $drugs = PharmacyDrug::with('category')->where('status', true)
+            $drugs = PharmacyDrug::with('category')
+//                ->where('status', true)
                 ->when($category, function ($query, $category) {
                     $query->where('category_id', '=', "{$category}");
                 })->when($search, function ($query, $search) {
@@ -46,7 +46,9 @@ class DrugController extends Controller
     public function getDrug(Request $request)
     {
         return PharmacyDrug::with('category')->where(
-            [['uuid', '=', $request->uuid], ['status', '=', true]]
+            [['uuid', '=', $request->uuid]
+//                , ['status', '=', true]
+            ]
         )->first();
     }
 

@@ -24,10 +24,12 @@ class OrderController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
+            'checkout_type' => 'required|string|in:user,guest,register',
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'company' => 'nullable|string',
             'email' => 'required|email',
+            'password' => 'required_if:checkout_type,register|string',
             'phone' => 'required|digits_between:11,16',
             'cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
@@ -35,7 +37,8 @@ class OrderController extends Controller
             'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
             'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
-            'payment_method' => 'required|string|in:card,point'
+            'payment_method' => 'required|string|in:card,point',
+            'customer_id' => 'required_if:checkout_type,user|numeric|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -45,24 +48,23 @@ class OrderController extends Controller
         $data = $validator->validated();
         $data['email'] = $request->email;
 
-        if (!empty($request->userID)) $data['customer_id'] = $request->userID;
-
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
 
         if (!empty($order)) {
 
-            if ($order->payment_confirmed == 1)
-                return response(['message' => [["You already checked out and made payment for those cart items"]]]);
+            if ($order->payment_confirmed == 1) return response(['message' => [["You already checked out and made payment for those cart items"]]]);
             else {
 
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-                $data['amount'] = ceil(($subTotal = $cart->sum('price')));
+                $data['amount'] = $cart->sum('price');
 
                 if ($request->delivery_method == 'shipping') {
                     $location = Locations::where('id', $data['location_id'] ?? 0)->first();
-                    $data['amount'] = ceil(($data['amount'] + $location->price));
+                    $data['amount'] = ($data['amount'] + $location->price);
                 }
+
+                $data['amount'] = ceil($data['amount']);
 
                 if ($data['payment_method'] == 'point') {
 
@@ -106,7 +108,7 @@ class OrderController extends Controller
             }
         }
 
-        if (!isset($data['customer_id']) && !empty($request->password)) {
+        if ($data['checkout_type'] == 'register') {
 
             $check = User::where(['email' => $request->email])->first();
 
@@ -118,12 +120,6 @@ class OrderController extends Controller
 
             if (!empty($check)) {
                 return response(['message' => [["The phone has already been taken."]]]);
-            }
-
-            $check = User::where(['email' => $request->email])->first();
-
-            if (!empty($check)) {
-                return response(['message' => [["The email has already been taken."]]]);
             }
 
             $user = User::create([
@@ -145,12 +141,14 @@ class OrderController extends Controller
         }
 
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
-        $data['amount'] = ceil(($subTotal = $cart->sum('price')));
+        $data['amount'] = $cart->sum('price');
 
         if ($request->delivery_method == 'shipping') {
             $location = Locations::where('id', $data['location_id'] ?? 0)->first();
-            $data['amount'] = ceil(($data['amount'] + $location->price));
+            $data['amount'] = ($data['amount'] + $location->price);
         }
+
+        $data['amount'] = ceil($data['amount']);
 
         if ($data['payment_method'] == 'point') {
 
@@ -273,6 +271,60 @@ class OrderController extends Controller
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'
+        ];
+    }
+
+    public function mergeOrder(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_cart_uuid' => 'required|uuid|exists:orders,cart_uuid',
+            'new_cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $cart = Cart::where('cart_uuid', $request->new_cart_uuid);
+        $cart->update([
+            'cart_uuid' => $request->old_cart_uuid
+        ]);
+
+        Order::where('cart_uuid', $request->new_cart_uuid)->delete();
+
+        return [
+            'status' => true,
+            'cart_uuid' => $request->old_cart_uuid,
+            'message' => 'Cart merged successfully'
+        ];
+    }
+
+    public function cancelOrder(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'cart_uuid' => 'required|uuid|exists:orders,cart_uuid'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $order = Order::where($validator->validated())->first();
+        if (!empty($order)) {
+            foreach ($order->items as $item) $item->delete();
+            $order->delete();
+        } else Cart::where($validator->validated())->delete();
+
+        return [
+            'status' => true,
+            'order_ref' => $order->order_ref,
+            'message' => 'Order cancelled successfully'
         ];
     }
 }
