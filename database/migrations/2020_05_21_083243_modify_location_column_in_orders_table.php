@@ -14,9 +14,9 @@ class ModifyLocationColumnInOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->unsignedBigInteger('pickup_location_id')->nullable();
-            $table->foreign('pickup_location_id', 'orders_pickup_location_id_foreign')->references('id')
-                ->on('pharmacies')->onDelete('cascade')->onUpdate('cascade');
+            //$table->unsignedBigInteger('pickup_location_id')->nullable();
+            //$table->foreign('pickup_location_id', 'orders_pickup_location_id_foreign')->references('id')
+            //    ->on('pharmacies')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -29,8 +29,8 @@ class ModifyLocationColumnInOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
 
-            $table->dropForeign('orders_pickup_location_id_foreign');
-            $table->dropColumn('pickup_location_id');
+           // $table->dropForeign('orders_pickup_location_id_foreign');
+            //$table->dropColumn('pickup_location_id');
         });
     }
 }
