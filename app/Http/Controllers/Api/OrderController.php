@@ -243,12 +243,14 @@ class OrderController extends Controller
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
         $isCleanOrder = true; $items = [];
+        $itemIds = [];
 
         foreach ($order->items as $item) {
             if ($item->drug->require_prescription == 1 && empty($item->prescription)) {
                 $isCleanOrder = false;
                 break;
             }
+            $itemIds[] = $item->id;
             $items[] = [
                 'id' => $item->id,
                 'name' => $item->drug->name,
@@ -257,7 +259,8 @@ class OrderController extends Controller
         }
 
         if ($isCleanOrder) {
-            $order->items->update(['status' => 'approved']);
+            Cart::whereIn('id', $itemIds)->update(['status' => 'approved']);
+            //$order->items->update(['status' => 'approved']); throws an error: collection doesn't have an update method
             $agents = [];
             foreach (($order->location->pharmacies ?? []) as $pharmacy) {
                 foreach ($pharmacy->agents as $agent) $agents[] = $agent->device_token;
