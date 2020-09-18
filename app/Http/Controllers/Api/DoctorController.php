@@ -31,10 +31,12 @@ class DoctorController extends Controller
      */
     public function fetchDoctors(Request $request)
     {
-        $spec = $request->specialization;
         $doctors = User::with(['vendor'])->where('user_type', 'doctor')
-            ->when($spec, function($query, $spec){
-                $query->where('aos', 'LIKE', "%$spec%");
+            ->when($request->search, function($query, $search){
+                $query->whereRaw('(firstname LIKE ? or middlename LIKE ? or lastname LIKE ?)',
+                    ["%{$search}%", "%{$search}%", "%{$search}%"]);
+            })->when($request->specialization, function($query, $spec){
+                $query->where('aos', 'LIKE', "%{$spec}%");
             })->paginate();
 
         return $doctors;
