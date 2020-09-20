@@ -186,7 +186,7 @@ class AuthController extends Controller
     public function loginRider(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'password' => 'required|string|min:8'
         ]);
 
@@ -200,7 +200,7 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $credentials = $request->only(['name', 'password']);
+        $credentials = $request->only(['username', 'password']);
 
         if (!$token = JWTAuth::attempt($credentials)) {
             return response([
