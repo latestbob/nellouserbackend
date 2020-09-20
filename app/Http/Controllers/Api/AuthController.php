@@ -21,6 +21,7 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -260,7 +261,7 @@ class AuthController extends Controller
             return response($validator->errors(), 400);
         }
 
-//        $vendor = Vendor::find($request->facilityID ?: 1);
+        //$vendor = Vendor::find($request->facilityID ?: 1);
 
         $userData = $validator->validated();
 
@@ -518,5 +519,39 @@ class AuthController extends Controller
             'status' => true,
             'message' => [['Great! you can use that phone number.']]
         ];
+    }
+
+
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+        $data = $request->validate([
+            'first_name' => 'required|string',
+            'middle_name' => 'nullable|string',
+            'last_name' => 'required|string',
+            'gender' => 'required|string|in:Male,Female',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'phone' => ['required', 'numeric', Rule::unique('users')->ignore($user->id)]
+        ]);
+
+        $user->update($data);
+        return ['status' => true, 'message' => 'Profile updated successfully'];
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = $request->user();
+        $data = $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        if (Hash::check($data['current_password'], $user->password)) {
+            $user->password = bcrypt($data['password']);
+            $user->save();
+            return ['status' => true, 'message' => 'Password changed successfully'];
+        }
+
+        return response(['errors' => ['current_password' => ['Current password is in correct.']]], 422);
     }
 }

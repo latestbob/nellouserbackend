@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,10 @@ use Illuminate\Http\Request;
 //});
 
 
-Route::prefix('/auth')->group(function (){
+Route::prefix('/auth')->group(function () {
+
+    Route::post('profile', 'Api\AuthController@updateProfile')->middleware('jwt.auth');
+    Route::post('password', 'Api\AuthController@changePassword')->middleware('jwt.auth');
 
     Route::prefix('/rider')->group(function (){
 
