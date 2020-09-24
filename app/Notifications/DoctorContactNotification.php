@@ -48,8 +48,7 @@ class DoctorContactNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->greeting("Hi $notifiable->firstname")
             ->line("This is to notify you that one '{$name}' has contacted you on the nello platform.")
-            ->line("Please respond to them using the button below")
-            ->action('Respond', '');
+            ->line("Please login to your nello account to view their messages");
     }
 
     /**
