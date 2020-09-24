@@ -88,7 +88,7 @@ Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.a
 
 
 
-Route::prefix('/admin')->group(function () {
+//Route::prefix('/admin')->group(function () {
 
 //    Route::prefix('/auth')->group(function (){
 //        Route::post('/login', 'Api\Admin\AuthController@loginAdmin')->name('login');
@@ -109,7 +109,7 @@ Route::prefix('/admin')->group(function () {
 //        Route::post('/drug/item/add-prescription', 'Api\Admin\OrderController@addPrescription');
 //    });
 
-});
+//});
 
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
@@ -142,6 +142,7 @@ Route::get('/drug/categories', 'Api\DrugController@getDrugCategories');
 Route::get('/drug/{uuid}', 'Api\DrugController@getDrug');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
+Route::post('/doctor/contact', 'Api\DoctorController@contactDoctor'); //->middleware('jwt.auth');
 Route::post('/doctor/rate', 'Api\DoctorController@rateDoctor')->middleware('jwt.auth');
 Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecializations');
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
@@ -166,6 +167,7 @@ Route::prefix('/order')->group(function() {
 
 Route::post('/file-upload', 'FileController@fileUpload');
 Route::get('/locations', 'Api\LocationController@getLocations');
+Route::get('/prescription-fee', 'Api\PrescriptionFeeController@getPrescriptionFee');
 
 Route::prefix('/wishlist')->middleware('jwt.auth')->group(function() {
     Route::post('/items', 'Api\WishlistController@index');
