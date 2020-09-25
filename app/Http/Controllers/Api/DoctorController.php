@@ -38,8 +38,8 @@ class DoctorController extends Controller
     {
         $doctors = User::with(['vendor'])->where('user_type', 'doctor')
             ->when($request->search, function($query, $search){
-                $query->whereRaw('(firstname LIKE ? or middlename LIKE ? or lastname LIKE ?)',
-                    ["%{$search}%", "%{$search}%", "%{$search}%"]);
+                $query->whereRaw('(firstname LIKE ? or middlename LIKE ? or lastname LIKE ? or hospital like ?)',
+                    ["%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%"]);
             })->when($request->specialization, function($query, $spec){
                 $query->where('aos', 'LIKE', "%{$spec}%");
             })->paginate();

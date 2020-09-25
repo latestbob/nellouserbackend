@@ -261,6 +261,9 @@ class OrderController extends Controller
         $itemIds = [];
 
         foreach ($order->items as $item) {
+
+            $item->drug->update(['quantity' => (int) ($item->drug->quantity - $item->quantity)]);
+
             if ($item->drug->require_prescription == 1 && empty($item->prescription)) {
                 $isCleanOrder = false;
                 break;
