@@ -287,10 +287,10 @@ class OrderController extends Controller
                 $resp = $this->sendNotification($agents, "New Order",
                     "Hello there! there's been a new approved order for your location with Order REF: {$order->order_ref}",
                     'high', ['orderId' => $order->id, 'items' => $items]);
-                return response($resp, 400); 
+                //return response($resp, 400); 
             }
         }
-        return response('No agents', 400); 
+        //return response('No agents', 400); 
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'
