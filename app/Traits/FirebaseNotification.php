@@ -34,6 +34,8 @@ trait FirebaseNotification
             'Content-Type: application/json',
         ];
 
+        return $headers;
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, true);
