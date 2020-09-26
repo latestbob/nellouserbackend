@@ -528,9 +528,9 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $data = $request->validate([
-            'first_name' => 'required|string',
-            'middle_name' => 'nullable|string',
-            'last_name' => 'required|string',
+            'firstname' => 'required|string',
+            'middlename' => 'nullable|string',
+            'lastname' => 'required|string',
             'gender' => 'required|string|in:Male,Female',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'phone' => ['required', 'numeric', Rule::unique('users')->ignore($user->id)]
