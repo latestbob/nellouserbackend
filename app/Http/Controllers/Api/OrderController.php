@@ -9,6 +9,7 @@ use App\Models\CustomerPointRules;
 use App\Models\CustomerPoints;
 use App\Models\Locations;
 use App\Models\Order;
+use App\Models\PrescriptionFee;
 use App\Models\User;
 use App\Notifications\VerificationNotification;
 use App\Traits\FirebaseNotification;
@@ -61,7 +62,14 @@ class OrderController extends Controller
 
                 if ($request->delivery_method == 'shipping') {
                     $location = Locations::where('id', $data['location_id'] ?? 0)->first();
-                    $data['amount'] = ($data['amount'] + $location->price);
+                    $data['amount'] += $location->price;
+                }
+
+                foreach ($cart->get() as $item) {
+                    if ($item->drug->require_prescription == true && empty($item->prescription)) {
+                        $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+                        break;
+                    }
                 }
 
                 $data['amount'] = ceil($data['amount']);
@@ -145,7 +153,14 @@ class OrderController extends Controller
 
         if ($request->delivery_method == 'shipping') {
             $location = Locations::where('id', $data['location_id'] ?? 0)->first();
-            $data['amount'] = ($data['amount'] + $location->price);
+            $data['amount'] +=  $location->price;
+        }
+
+        foreach ($cart->get() as $item) {
+            if ($item->drug->require_prescription == true && empty($item->prescription)) {
+                $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+                break;
+            }
         }
 
         $data['amount'] = ceil($data['amount']);
@@ -246,6 +261,9 @@ class OrderController extends Controller
         $itemIds = [];
 
         foreach ($order->items as $item) {
+
+            $item->drug->update(['quantity' => (int) ($item->drug->quantity - $item->quantity)]);
+
             if ($item->drug->require_prescription == 1 && empty($item->prescription)) {
                 $isCleanOrder = false;
                 break;

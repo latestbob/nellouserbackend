@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DoctorContact;
 use App\Models\DoctorRating;
 use App\Models\User;
+use App\Notifications\DoctorContactNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DoctorController extends Controller
 {
     /**
      * Doctors
      *
-     * Fetch paged list of doctors
+     * Fetch specific doctor
      *
      * @urlParam page int optional defaults to 1
      * @urlParam specialization string optional
@@ -28,13 +32,16 @@ class DoctorController extends Controller
      *
      * @urlParam page int optional defaults to 1
      * @urlParam specialization string optional
+     * @urlParam search string optional
      */
     public function fetchDoctors(Request $request)
     {
-        $spec = $request->specialization;
         $doctors = User::with(['vendor'])->where('user_type', 'doctor')
-            ->when($spec, function($query, $spec){
-                $query->where('aos', 'LIKE', "%$spec%");
+            ->when($request->search, function($query, $search){
+                $query->whereRaw('(firstname LIKE ? or middlename LIKE ? or lastname LIKE ? or hospital like ?)',
+                    ["%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%"]);
+            })->when($request->specialization, function($query, $spec){
+                $query->where('aos', 'LIKE', "%{$spec}%");
             })->paginate();
 
         return $doctors;
@@ -67,13 +74,50 @@ class DoctorController extends Controller
         ]);
         $data['user_uuid'] = $request->user()->uuid;
 
-        $rating = DoctorRating::create($data);
-        return $rating;
+        return DoctorRating::create($data);
     }
 
-    public function importDoctor(Request $request)
+    public function contactDoctor(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name'  => 'required_without:user_id|string',
+            'email'  => 'required_without:user_id|email',
+            'subject'  => 'required|string|min:10',
+            'message'  => 'required|string|min:30',
+            'user_id' => 'nullable|integer|exists:users,id',
+            'doctor_id' => 'required|integer'
+        ], [
+            'name.required_without' => 'The name field is required',
+            'email.required_without' => 'The email field is required',
+        ]);
 
+        if ($validator->fails()) return [
+            'status' => false,
+            'message' => $validator->errors()
+        ];
+
+        $doctor = User::where(['user_type' => 'doctor', 'id' => $request->doctor_id])->first();
+
+        if (empty($doctor)) return [
+            'status' => false,
+            'message' => "That doctor was not found on the nello platform"
+        ];
+
+        $data = $validator->validated();
+
+        $contact = DoctorContact::create($data);
+
+        if (empty($contact)) return [
+            'status' => false,
+            'message' => "Sorry, we couldn't contact that doctor at this time"
+        ];
+
+        $doctor->notify(new DoctorContactNotification($contact));
+
+        return [
+            'status' => true,
+            'message' => 'Your message has been sent successfully'
+        ];
     }
 
 }
