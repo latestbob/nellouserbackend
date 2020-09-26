@@ -353,7 +353,8 @@ class AuthController extends Controller
 
         return [
             'email' => $user->email,
-            'msg' => "A password reset code has been sent to your mail box at {$user->email}",
+            'status' => true,
+            'message' => "A password reset code has been sent to your mail box at {$user->email}",
         ];
     }
 
@@ -362,31 +363,31 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|exists:users,email',
             'code' => 'required|string|max:255|exists:password_resets,token',
-            'password' => 'required|string|min:8'
+            'password' => 'required|string|min:8|confirmed'
         ]);
 
         if ($validator->fails()) {
             return response([
-                'msg' => $validator->errors()
-            ], 400);
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         $pass = PasswordReset::where(['account_type' => 'user', 'token' => $request->code])->first();
 
         if ($pass->email != $request->email) {
             return response([
-                'msg' => [
+                'errors' => [
                     'code' => ['That code was not generated for the specified account']
                 ]
-            ], 400);
+            ], 422);
         }
 
         if (time() > (strtotime($pass->created_at) + (60 * 60))) {
             return response([
-                'msg' => [
+                'errors' => [
                     'code' => ['Sorry that code has expired']
                 ]
-            ], 400);
+            ], 422);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -400,7 +401,8 @@ class AuthController extends Controller
         $pass->delete();
 
         return [
-            'msg' => "Your password has been reset successfully",
+            'status' => true,
+            'message' => "Your password has been reset successfully",
         ];
 
         /**DO NOT DELETE */
@@ -554,4 +556,6 @@ class AuthController extends Controller
 
         return response(['errors' => ['current_password' => ['Current password is in correct.']]], 422);
     }
+
+
 }
