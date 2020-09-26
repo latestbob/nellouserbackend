@@ -284,11 +284,13 @@ class OrderController extends Controller
                 foreach ($pharmacy->agents as $agent) $agents[] = $agent->device_token;
             }
             if (!empty($agents)) {
-                $this->sendNotification($agents, "New Order",
+                $resp = $this->sendNotification($agents, "New Order",
                     "Hello there! there's been a new approved order for your location with Order REF: {$order->order_ref}",
                     'high', ['orderId' => $order->id, 'items' => $items]);
+                return response($resp, 400); 
             }
         }
+        return response('No agents', 400); 
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'

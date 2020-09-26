@@ -50,6 +50,6 @@ trait FirebaseNotification
             return $res;
         }
 
-        return curl_exec($ch);
+        //return curl_exec($ch);
     }
 }
