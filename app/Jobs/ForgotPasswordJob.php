@@ -45,7 +45,8 @@ class ForgotPasswordJob implements ShouldQueue
      */
     public function handle()
     {
-        $code = Str::random(6);
+        $code = random_int(100000, 999999);
+        $code = "$code";
 
         $tokens = PasswordReset::where(['email' => $this->user->email, 'account_type' => 'user']);
 
