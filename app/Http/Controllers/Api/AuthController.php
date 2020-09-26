@@ -537,6 +537,7 @@ class AuthController extends Controller
         ]);
 
         $user->update($data);
+        return $user;
         return ['status' => true, 'message' => 'Profile updated successfully'];
     }
 
