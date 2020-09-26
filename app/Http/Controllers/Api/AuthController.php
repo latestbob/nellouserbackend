@@ -537,6 +537,8 @@ class AuthController extends Controller
         ]);
 
         $user->update($data);
+
+        $user->location = $user->pharmacy->location;
         return $user;
         return ['status' => true, 'message' => 'Profile updated successfully'];
     }
