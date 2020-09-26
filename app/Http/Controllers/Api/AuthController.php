@@ -523,6 +523,21 @@ class AuthController extends Controller
         ];
     }
 
+    public function changePicture(Request $request)
+    {
+        $user = $request->user();
+        $data = $request->validate([
+            'picture' => 'required|url',
+        ]);
+
+        $user->update($data);
+
+        if ($user->user_type == 'agent') {
+            $user->location = $user->pharmacy->location;
+        }
+
+        return $user;
+    }
 
     public function updateProfile(Request $request)
     {
