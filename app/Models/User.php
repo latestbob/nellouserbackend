@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'vendor_id', 'token',
+        'vendor_id', 'token', 'active',
         'firstname','lastname','middlename','email','phone',
         'user_type','aos','cwork','password','picture','dob',
         'hwg','is_seen','ufield','height','weight','gender','source',
@@ -45,7 +45,8 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'central_saved' => 'boolean',
-        'local_saved' => 'boolean'
+        'local_saved' => 'boolean',
+        'active' => 'boolean',
     ];
 
 
