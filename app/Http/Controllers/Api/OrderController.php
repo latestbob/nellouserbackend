@@ -49,6 +49,10 @@ class OrderController extends Controller
         $data = $validator->validated();
         $data['email'] = $request->email;
 
+        if (empty($data['location_id'])) {
+            $data['location_id'] = $data['pickup_location_id'];
+        }
+
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
 
