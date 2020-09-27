@@ -35,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
-    protected $appends = ['rating'];
+    protected $appends = ['rating', 'title'];
 
     /**
      * The attributes that should be cast to native types.
@@ -101,8 +101,15 @@ class User extends Authenticatable implements JWTSubject
 
     public function getRatingAttribute()
     {
-        $rating = DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
-        return $rating;
+        return DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
+    }
+
+    public function getTitleAttribute()
+    {
+        if ($this->user_type == 'doctor') {
+            return 'Dr.';
+        }
+        return '';
     }
 
     /**
