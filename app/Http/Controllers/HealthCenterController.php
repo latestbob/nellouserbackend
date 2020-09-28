@@ -17,14 +17,14 @@ class HealthCenterController extends Controller
 
     /**
      * Health centers
-     * 
+     *
      * Fetch paged list of health centers
-     * 
+     *
      * @urlParam page int optional defaults to 1
      */
     public function index(Request $request) {
-        $centers = HealthCenter::orderBy('name')->get(); //->paginate();
-        return $centers;
+        //->paginate();
+        return HealthCenter::orderBy('name')->where('is_active', true)->get();
 
         /**DO NOT DELETE */
         $user = $request->user();
