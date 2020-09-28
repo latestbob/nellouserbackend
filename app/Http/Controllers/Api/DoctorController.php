@@ -55,7 +55,7 @@ class DoctorController extends Controller
      */
     public function fetchSpecializations()
     {
-        $specs = User::where('user_type', 'doctor')->whereNotNull('aos')->select('aos')->distinct()->get();
+        $specs = User::where(['user_type' => 'doctor', 'active' => true])->whereNotNull('aos')->select('aos')->distinct()->get();
         return $specs;
     }
 
