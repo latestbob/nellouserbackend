@@ -23,7 +23,8 @@ class DrugController extends Controller
         if (empty($request->search) && empty($request->category)) {
 
             $drugs = PharmacyDrug::with('category')
-//                ->where('status', true)
+                ->where('status', true)
+                ->where('quantity', '>', 0)
                 ->orderBy('name')->paginate();
         } else {
 
@@ -31,7 +32,8 @@ class DrugController extends Controller
             $category = $request->category;
 
             $drugs = PharmacyDrug::with('category')
-//                ->where('status', true)
+                ->where('status', true)
+                ->where('quantity', '>', 0)
                 ->when($category, function ($query, $category) {
                     $query->where('category_id', '=', "{$category}");
                 })->when($search, function ($query, $search) {
