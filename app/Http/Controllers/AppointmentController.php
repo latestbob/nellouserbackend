@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendAppointmentEmail;
 use App\Models\Appointment;
 use App\Models\HealthCenter;
 use App\Notifications\AppointmentBookedNotification;
@@ -91,6 +92,7 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create($data);
         $user->notify(new AppointmentBookedNotification($appointment));
+        SendAppointmentEmail::dispatch($appointment);
         return response([
             'status' => true,
             'message' => "Appointment booked successfully",
