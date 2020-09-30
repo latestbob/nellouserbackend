@@ -45,7 +45,7 @@ class ImportEclinicPatientJob implements ShouldQueue
             $body = (string) $response->getBody();
             $json = json_decode($body, true, 1000);
             $patients = $json['_embedded']['patient'];
-            print_r($patients);
+            //print_r($patients);
             foreach($patients as $patient) {
                 $user = User::where('email', $patient['email'])->first();
                 if (empty($user)) {

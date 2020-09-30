@@ -49,6 +49,10 @@ class OrderController extends Controller
         $data = $validator->validated();
         $data['email'] = $request->email;
 
+        if (empty($data['location_id'])) {
+            $data['location_id'] = $data['pickup_location_id'];
+        }
+
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
         $data['order_ref'] = strtoupper(Str::uuid()->toString());
 
@@ -258,6 +262,7 @@ class OrderController extends Controller
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
         $isCleanOrder = true; $items = [];
+        $itemIds = [];
 
         foreach ($order->items as $item) {
 
@@ -267,6 +272,7 @@ class OrderController extends Controller
                 $isCleanOrder = false;
                 break;
             }
+            $itemIds[] = $item->id;
             $items[] = [
                 'id' => $item->id,
                 'name' => $item->drug->name,
@@ -275,17 +281,20 @@ class OrderController extends Controller
         }
 
         if ($isCleanOrder) {
-            $order->items->update(['status' => 'approved']);
+            Cart::whereIn('id', $itemIds)->update(['status' => 'approved']);
+            //$order->items->update(['status' => 'approved']); throws an error: collection doesn't have an update method
             $agents = [];
             foreach (($order->location->pharmacies ?? []) as $pharmacy) {
                 foreach ($pharmacy->agents as $agent) $agents[] = $agent->device_token;
             }
             if (!empty($agents)) {
-                $this->sendNotification($agents, "New Order",
+                $resp = $this->sendNotification($agents, "New Order",
                     "Hello there! there's been a new approved order for your location with Order REF: {$order->order_ref}",
                     'high', ['orderId' => $order->id, 'items' => $items]);
+                //return response($resp, 400); 
             }
         }
+        //return response('No agents', 400); 
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'

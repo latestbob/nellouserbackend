@@ -213,7 +213,7 @@ class DrugController extends Controller
             })
             ->where([
                 'cart_uuid' => $request->uuid,
-                'vendor_id' => $request->user()->vendor_id
+                //'vendor_id' => $request->user()->vendor_id
             ]);
 
         if ($user->user_type == 'agent') {
