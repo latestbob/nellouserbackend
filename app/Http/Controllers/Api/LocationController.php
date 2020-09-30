@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Locations;
-use App\Models\Pharmacies;
+use App\Models\Location;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -13,11 +13,10 @@ class LocationController extends Controller
     {
         return [
             'locations' => [
-                'shipping' => Locations::all(['id', 'name', 'price']),
-                /*'shipping' => Locations::join('pharmacies', 'locations.id', '=', 'pharmacies.location_id', 'inner')->havingRaw(
+                'shipping' => Location::join('pharmacies', 'locations.id', '=', 'pharmacies.location_id', 'inner')->havingRaw(
                     "count(pharmacies.id) > ?", [0]
-                )->groupBy('locations.name')->get(['locations.id', 'locations.name', 'price']),*/
-                'pickup' => Pharmacies::where('is_pick_up_location', true)->select(['id', 'name', 'address'])->get()
+                )->groupBy('locations.name')->get(['locations.id', 'locations.name', 'price']),
+                'pickup' => Pharmacy::where('is_pick_up_location', true)->select(['id', 'name', 'address'])->get()
             ]
         ];
     }

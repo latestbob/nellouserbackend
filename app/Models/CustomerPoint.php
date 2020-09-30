@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CustomerPoints extends Model
+class CustomerPoint extends Model
 {
     protected $fillable = ['point', 'total_points_earned_today', 'customer_id'];
 

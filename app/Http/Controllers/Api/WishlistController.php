@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Wishlists;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,7 +11,7 @@ class WishlistController extends Controller
 {
     public function index(Request $request)
     {
-        return Wishlists::with(['drug'])->where('user_id', $request->user()->id)->get();
+        return Wishlist::with(['drug'])->where('user_id', $request->user()->id)->get();
     }
 
     public function addWishlist(Request $request)
@@ -31,7 +31,7 @@ class WishlistController extends Controller
         $data = $validator->validated();
         $data['user_id'] = $request->user()->id;
 
-        $wishlist = Wishlists::where($data)->first();
+        $wishlist = Wishlist::where($data)->first();
 
         if (!empty($wishlist)) {
 
@@ -45,7 +45,7 @@ class WishlistController extends Controller
 
         }
 
-        $wishlist = Wishlists::create($data);
+        $wishlist = Wishlist::create($data);
 
         $wishlist->load('drug');
 
@@ -73,7 +73,7 @@ class WishlistController extends Controller
         $data = $validator->validated();
         $data['user_id'] = $request->user()->id;
 
-        $wishlist = Wishlists::where($data)->first();
+        $wishlist = Wishlist::where($data)->first();
 
         if (empty($wishlist)) {
 

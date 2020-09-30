@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Locations;
-use App\Models\Pharmacies;
+use App\Models\Location;
+use App\Models\Pharmacy;
 use App\Models\PrescriptionFee;
 use Illuminate\Http\Request;
 

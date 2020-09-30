@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
-use App\Models\Feedbacks;
+use App\Models\Feedback;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -38,7 +38,7 @@ class FeedBackController extends Controller
         }
 
         $size = empty($request->size) ? 1 : $request->size;
-        $feedbacks = Feedbacks::where(['vendor_id' => $admin->vendor_id])
+        $feedbacks = Feedback::where(['vendor_id' => $admin->vendor_id])
             ->orderBy('created_at', 'desc')->paginate($size);
         return $feedbacks;
     }
@@ -58,9 +58,9 @@ class FeedBackController extends Controller
         }
 
         return [
-            'happy' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'happy'])->count('id'),
-            'sad' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'sad'])->count('id'),
-            'neutral' => Feedbacks::where(['vendor_id' => $admin->vendor_id, 'experience' => 'neutral'])->count('id')
+            'happy' => Feedback::where(['vendor_id' => $admin->vendor_id, 'experience' => 'happy'])->count('id'),
+            'sad' => Feedback::where(['vendor_id' => $admin->vendor_id, 'experience' => 'sad'])->count('id'),
+            'neutral' => Feedback::where(['vendor_id' => $admin->vendor_id, 'experience' => 'neutral'])->count('id')
         ];
     }
 }
