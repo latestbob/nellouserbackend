@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class HealthCenter extends Model
 {
 
-    protected $fillable = ['name', 'logo','address1','center_type','phone','email','address2','state','city','is_active', 'uuid', 'vendor_id'];  
+    protected $fillable = ['name', 'logo','address1','center_type','phone','email','address2','state','city','is_active', 'uuid', 'vendor_id'];
 
+    protected $casts = ['is_active' => 'bool'];
 }

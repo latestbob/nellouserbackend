@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'vendor_id', 'token',
+        'vendor_id', 'token', 'active', 'title',
         'firstname','lastname','middlename','email','phone',
         'user_type','aos','cwork','password','picture','dob',
         'hwg','is_seen','ufield','height','weight','gender','source',
@@ -45,7 +45,8 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'central_saved' => 'boolean',
-        'local_saved' => 'boolean'
+        'local_saved' => 'boolean',
+        'active' => 'boolean',
     ];
 
 
@@ -100,8 +101,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getRatingAttribute()
     {
-        $rating = DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
-        return $rating;
+        return DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
     }
 
     /**
