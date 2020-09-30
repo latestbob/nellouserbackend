@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendOrderMail;
 use App\Models\Cart;
-use App\Models\CustomerPointRules;
-use App\Models\CustomerPoints;
-use App\Models\Locations;
+use App\Models\CustomerPointRule;
+use App\Models\CustomerPoint;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\PrescriptionFee;
 use App\Models\User;
@@ -61,7 +61,7 @@ class OrderController extends Controller
                 $data['amount'] = $cart->sum('price');
 
                 if ($request->delivery_method == 'shipping') {
-                    $location = Locations::where('id', $data['location_id'] ?? 0)->first();
+                    $location = Location::where('id', $data['location_id'] ?? 0)->first();
                     $data['amount'] += $location->price;
                 }
 
@@ -78,11 +78,11 @@ class OrderController extends Controller
 
                     if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
 
-                    $point = CustomerPoints::where('customer_id', $data['customer_id'])->first();
+                    $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
                     if (empty($point)) return response(['message' => [['You have not earned any points yet']]]);
 
-                    $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+                    $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
                     if (empty($rules)) return response(['message' => [['Point rules have not been set yet, contact system administrator']]]);
 
@@ -152,7 +152,7 @@ class OrderController extends Controller
         $data['amount'] = $cart->sum('price');
 
         if ($request->delivery_method == 'shipping') {
-            $location = Locations::where('id', $data['location_id'] ?? 0)->first();
+            $location = Location::where('id', $data['location_id'] ?? 0)->first();
             $data['amount'] +=  $location->price;
         }
 
@@ -169,11 +169,11 @@ class OrderController extends Controller
 
             if (!isset($data['customer_id'])) return response(['message' => [['You must be logged in to pay with points']]]);
 
-            $point = CustomerPoints::where('customer_id', $data['customer_id'])->first();
+            $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
             if (empty($point)) return response(['message' => [['You have not earned any points yet']]]);
 
-            $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+            $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
             if (empty($rules)) return response(['message' => [['Point rules have not been set yet, contact system administrator']]]);
 
@@ -230,11 +230,11 @@ class OrderController extends Controller
 
         if (is_numeric($order->customer_id)) {
 
-            $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+            $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
             if (!empty($rules) && ($order->amount ?? 0) > $rules['earn_point_amount']) {
 
-                $point = CustomerPoints::where('customer_id', $order->customer_id)->first();
+                $point = CustomerPoint::where('customer_id', $order->customer_id)->first();
 
                 if (!empty($point)) {
 
@@ -250,7 +250,7 @@ class OrderController extends Controller
                         $point->save();
                     }
 
-                } else CustomerPoints::create(['point' => 1, 'total_points_earned_today' => 1, 'customer_id' => $order->customer_id]);
+                } else CustomerPoint::create(['point' => 1, 'total_points_earned_today' => 1, 'customer_id' => $order->customer_id]);
 
             }
         }

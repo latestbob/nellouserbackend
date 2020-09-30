@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
-use App\Models\CustomerPointRules;
-use App\Models\CustomerPoints;
+use App\Models\CustomerPointRule;
+use App\Models\CustomerPoint;
 use App\Models\Order;
 use App\Models\User;
 use App\Traits\FileUpload;
@@ -374,7 +374,7 @@ class ProfileController extends Controller
 
     public function getPoints(Request $request)
     {
-        $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+        $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
         if (empty($rules)) return [
             'point' => [
@@ -383,7 +383,7 @@ class ProfileController extends Controller
             ]
         ];
 
-        $point = CustomerPoints::where('customer_id', $request->user()->id)->first();
+        $point = CustomerPoint::where('customer_id', $request->user()->id)->first();
 
         if (empty($point)) return [
             'point' => [

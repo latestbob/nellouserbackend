@@ -3,22 +3,22 @@
 namespace App\Observers;
 
 use App\Jobs\SendPointMail;
-use App\Models\CustomerPoints;
+use App\Models\CustomerPoint;
 
 class CustomerPointsObserver
 {
 
-    public function creating(CustomerPoints $customerPoints)
+    public function creating(CustomerPoint $customerPoints)
     {
     }
 
     /**
      * Handle the user "created" event.
      *
-     * @param  \App\Models\CustomerPoints  $customerPoints
+     * @param  \App\Models\CustomerPoint  $customerPoints
      * @return void
      */
-    public function created(CustomerPoints $customerPoints)
+    public function created(CustomerPoint $customerPoints)
     {
         SendPointMail::dispatch($customerPoints);
     }
@@ -26,10 +26,10 @@ class CustomerPointsObserver
     /**
      * Handle the user "updated" event.
      *
-     * @param  \App\Models\CustomerPoints  $customerPoints
+     * @param  \App\Models\CustomerPoint  $customerPoints
      * @return void
      */
-    public function updated(CustomerPoints $customerPoints)
+    public function updated(CustomerPoint $customerPoints)
     {
         SendPointMail::dispatch($customerPoints);
     }
@@ -37,10 +37,10 @@ class CustomerPointsObserver
     /**
      * Handle the user "saved" event.
      *
-     * @param  \App\Models\CustomerPoints  $customerPoints
+     * @param  \App\Models\CustomerPoint  $customerPoints
      * @return void
      */
-    public function saved(CustomerPoints $customerPoints)
+    public function saved(CustomerPoint $customerPoints)
     {
 //        SendPointMail::dispatch($customerPoints);
     }
@@ -48,10 +48,10 @@ class CustomerPointsObserver
     /**
      * Handle the user "deleted" event.
      *
-     * @param  \App\Models\CustomerPoints  $customerPoints
+     * @param  \App\Models\CustomerPoint  $customerPoints
      * @return void
      */
-    public function deleted(CustomerPoints $customerPoints)
+    public function deleted(CustomerPoint $customerPoints)
     {
     }
     /**
@@ -60,7 +60,7 @@ class CustomerPointsObserver
      * @param  \App\CustomerPoints  $customerPoints
      * @return void
      */
-    public function restored(CustomerPoints $customerPoints)
+    public function restored(CustomerPoint $customerPoints)
     {
         //
     }
@@ -71,7 +71,7 @@ class CustomerPointsObserver
      * @param  \App\CustomerPoints  $customerPoints
      * @return void
      */
-    public function forceDeleted(CustomerPoints $customerPoints)
+    public function forceDeleted(CustomerPoint $customerPoints)
     {
         //
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Feedbacks;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class FeedBackController extends Controller
@@ -26,7 +26,7 @@ class FeedBackController extends Controller
         $data['vendor_id'] = $data['facilityID'];
         unset($data['facilityID']);
 
-        $feedback = Feedbacks::create($data);
+        $feedback = Feedback::create($data);
         return [
             'message' => 'Feedback sent successfully',
             'data' => [$feedback]

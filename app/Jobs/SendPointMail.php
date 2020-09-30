@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\CustomerPointRules;
-use App\Models\CustomerPoints;
+use App\Models\CustomerPointRule;
+use App\Models\CustomerPoint;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,7 +22,7 @@ class SendPointMail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(CustomerPoints $point)
+    public function __construct(CustomerPoint $point)
     {
         $this->point = $point;
     }
@@ -35,7 +35,7 @@ class SendPointMail implements ShouldQueue
      */
     public function handle()
     {
-        $rules = CustomerPointRules::orderByDesc('id')->limit(1)->first();
+        $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
         if ($rules) {
             $html = view('mail.earned-point', ['rules' => $rules, 'point' => $this->point])->render();
