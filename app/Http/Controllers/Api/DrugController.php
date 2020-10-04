@@ -7,7 +7,7 @@ use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
 use App\Models\DoctorsPrescription;
 use App\Models\DrugCategory;
-use App\Models\Locations;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\PharmacyDrug;
 use Illuminate\Http\Request;
@@ -189,7 +189,7 @@ class DrugController extends Controller
 
         ];
 
-        $locations = $locationID ? Locations::where('id', $locationID)->get() : Locations::all();
+        $locations = $locationID ? Location::where('id', $locationID)->get() : Location::all();
 
         return compact('orders', 'size', 'total', 'search', 'payment', 'dateStart', 'dateEnd', 'locations', 'location', 'userType');
     }

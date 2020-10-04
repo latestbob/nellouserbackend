@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\CustomerPoints;
+use App\Models\CustomerPoint;
 use App\Models\User;
 use App\Observers\CustomerPointsObserver;
 use App\Observers\UserObserver;
@@ -29,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
 
 //        User::observe(UserObserver::class);
-        CustomerPoints::observe(CustomerPointsObserver::class);
+        CustomerPoint::observe(CustomerPointsObserver::class);
     }
 }

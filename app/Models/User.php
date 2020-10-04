@@ -56,11 +56,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function pharmacy() {
-        return $this->belongsTo('App\Models\Pharmacies', 'pharmacy_id', 'id');
+        return $this->belongsTo('App\Models\Pharmacy', 'pharmacy_id', 'id');
     }
 
     public function location() {
-        return $this->belongsTo('App\Models\Locations', 'location_id', 'id');
+        return $this->belongsTo('App\Models\Location', 'location_id', 'id');
     }
 
     public function encounters()

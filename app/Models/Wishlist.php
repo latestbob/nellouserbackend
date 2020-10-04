@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wishlists extends Model
+class Wishlist extends Model
 {
     protected $fillable = ['id', 'drug_id', 'user_id'];
 

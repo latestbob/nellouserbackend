@@ -61,5 +61,12 @@ class SendOrderMail implements ShouldQueue
             $message->subject($this->mailType === self::ORDER_CONFIRMED ?
                 'Order Notification' : 'Order Payment Notification');
         });
+
+        Mail::send([], [], function ($message) use ($html) {
+            $message->to("hello@asknello.com");
+            $message->setBody($html, 'text/html');
+            $message->subject($this->mailType === self::ORDER_CONFIRMED ?
+                'Order Notification' : 'Order Payment Notification');
+        });
     }
 }
