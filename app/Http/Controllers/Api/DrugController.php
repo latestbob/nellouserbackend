@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
+use App\Models\DoctorsPrescription;
 use App\Models\DrugCategory;
 use App\Models\Locations;
 use App\Models\Order;
@@ -204,7 +205,7 @@ class DrugController extends Controller
 
         $user = $request->user();
 
-        $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id'])
+        $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id,require_prescription'])
             ->whereHas('order', function ($query) use ($user) {
                 if ($user->user_type == 'agent') {
                     $query->where('location_id', $user->pharmacy->location_id);
@@ -221,6 +222,24 @@ class DrugController extends Controller
         }
 
         $orderItems = $orderItems->orderByDesc('id')->get();
+        if ($user->user_type == 'agent') {
+            $ids = [];
+            foreach ($orderItems as $item) {
+                $ids[] = $item->drug->id;
+            }
+
+            $prescriptions = DoctorsPrescription::whereIn('drug_id', $ids)
+                ->where('cart_uuid', $item->cart_uuid)
+                ->get()->keyBy('drug_id');
+
+            $orderItems = $orderItems->map(function($item) use ($prescriptions) {
+                if ($item->drug->require_prescription && isset($prescriptions[$item->drug->id])) {
+                    $item->prescription = $prescriptions[$item->drug->id];
+                }
+
+                return $item;
+            });
+        }
 
         return $orderItems;
 
