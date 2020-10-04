@@ -222,7 +222,7 @@ class DrugController extends Controller
         }
 
         $orderItems = $orderItems->orderByDesc('id')->get();
-        if ($user->user_type == 'agent') {
+        /*if ($user->user_type == 'agent') {
             $ids = [];
             foreach ($orderItems as $item) {
                 $ids[] = $item->drug->id;
@@ -239,7 +239,7 @@ class DrugController extends Controller
 
                 return $item;
             });
-        }
+        }*/
 
         return $orderItems;
 
