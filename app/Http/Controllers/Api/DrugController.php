@@ -229,7 +229,7 @@ class DrugController extends Controller
             }
 
             $prescriptions = DoctorsPrescription::whereIn('drug_id', $ids)
-                ->where('cart_uuid', $item->cart_uuid)
+                ->where('cart_uuid', $request->uuid)
                 ->get()->keyBy('drug_id');
 
             $orderItems = $orderItems->map(function($item) use ($prescriptions) {
