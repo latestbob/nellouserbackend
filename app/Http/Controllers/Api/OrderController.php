@@ -243,7 +243,7 @@ class OrderController extends Controller
                 if (!empty($point)) {
 
                     if (!empty($point->updated_at) && strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
-                            "Y-m-d h:i:s", $point->updated_at)->format("Y-m-d"))) {
+                            "Y-m-d H:i:s", $point->updated_at)->format("Y-m-d"))) {
 
                         $point->total_points_earned_today = 0;
                     }
@@ -291,10 +291,10 @@ class OrderController extends Controller
                 $resp = $this->sendNotification($agents, "New Order",
                     "Hello there! there's been a new approved order for your location with Order REF: {$order->order_ref}",
                     'high', ['orderId' => $order->id, 'items' => $items]);
-                //return response($resp, 400); 
+                //return response($resp, 400);
             }
         }
-        //return response('No agents', 400); 
+        //return response('No agents', 400);
 
         return [
             'message' => 'Thank you. Your payment has been confirmed'
