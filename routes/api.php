@@ -184,7 +184,7 @@ Route::prefix('/review')->group(function() {
 });
 
 Route::prefix('/cart')->group(function() {
-    Route::post('/items', 'Api\CartController@getItems')->name('get_cart_items');
+    Route::get('/items', 'Api\CartController@getItems')->name('get_cart_items');
     Route::post('/add', 'Api\CartController@addToCart')->name('add_to_cart');
     Route::post('/remove', 'Api\CartController@removeFromCart')->name('remove_from_cart');
     Route::post('/update', 'Api\CartController@updateCart')->name('update_cart');
