@@ -24,7 +24,10 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         return Cart::with(['drug', 'drug.category'])->where(['cart_uuid' => $request->cart_uuid])->get();
@@ -39,7 +42,10 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $data = $validator->validated();
@@ -100,7 +106,10 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $data = $validator->validated();
@@ -126,8 +135,7 @@ class CartController extends Controller
             ]);*/
         }
 
-        if ($request->type == 'addQuantity') $cart->quantity += 1;
-        else $cart->quantity -= 1;
+        $cart->quantity = $request->quantity;
 
         if ($cart->quantity < 1) return $this->removeFromCart($request);
 
@@ -152,7 +160,10 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         Cart::where([
@@ -160,7 +171,10 @@ class CartController extends Controller
             'drug_id'   => $request->drug_id
         ])->delete();
 
-        return ['message' => 'Removed'];
+        return [
+            'status' => true,
+            'message' => 'Removed'
+        ];
     }
 
     public function addPrescription(Request $request) {
@@ -172,14 +186,17 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => $validator->errors()]);
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
         }
 
         $item = Cart::where(['cart_uuid' => $request->cart_uuid, 'drug_id' => $request->drug_id])->first();
 
         if (empty($item)) {
 
-            return response(['message' => [["Failed to add prescription, item not found"]]]);
+            return response(['status' => false, 'message' => [["Failed to add prescription, item not found"]]]);
         }
 
         if ($request->hasFile('file')) {
@@ -188,8 +205,8 @@ class CartController extends Controller
             $item->prescribed_by = 'customer';
             $item->save();
 
-            return response(['message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
+            return response(['status' => true, 'message' => "Prescription uploaded and added successfully", 'prescription' => $prescription]);
 
-        } else return response(['message' => [["No prescription file uploaded"]]]);
+        } else return response(['status' => false, 'message' => [["No prescription file uploaded"]]]);
     }
 }
