@@ -53,7 +53,7 @@
 <h3>Total Price: N{{ $order->amount ?? 0 }}</h3>
 <br>
 <hr/>
-<p>From the Nello team</p>
+<p>From the Nello team on {{ \Carbon\Carbon::parse($order->created_at)->format('h:ia F dS, Y') }}</p>
 <p>www.asknello.com</p>
 
 </body>
