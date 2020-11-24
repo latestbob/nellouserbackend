@@ -9,7 +9,7 @@
 <p>{{ $order->delivery_method == 'shipping' ? 'You may now begin processing delivery of the ordered item(s).' : "You may now begin processing the order as the customer has been notified to come pick it up at {$order->location->name} - {$order->location->address}." }}</p>
 <p>Order reference: {{ $order->order_ref }}</p>
 <hr/>
-<p>From the Nello team</p>
+<p>From the Nello team on {{ \Carbon\Carbon::parse($order->created_at)->format('h:ia F dS, Y') }}</p>
 <p>www.asknello.com</p>
 
 </body>
