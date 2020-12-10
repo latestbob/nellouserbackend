@@ -56,6 +56,7 @@ class AppointmentController extends Controller
         $validator = Validator::make($input, [
             'reason' => 'required|string',
             'description' => 'required|string',
+            'type' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
         ]);
@@ -202,6 +203,7 @@ class AppointmentController extends Controller
         $validator = Validator::make($input, [
             'uuid' => 'required|string',
             'reason' => 'required|string',
+            'type' => 'required|string',
             'description' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
@@ -366,4 +368,5 @@ class AppointmentController extends Controller
         $appointment = $this->find($request->uuid);
         return $appointment;
     }
+    
 }

@@ -206,7 +206,6 @@ Route::get('/users/{user:uuid}/appointments', 'AppointmentController@fetchUserAp
 Route::prefix('/nello')->middleware('nello.auth')->group(function() {
     Route::post('/users/create', 'Api\AuthController@nelloCreateUser');
 
-
     Route::put('/profile/update', 'Api\ProfileController@updateCustomer');
     Route::post('/profile/picture', 'Api\ProfileController@uploadPicture');
 });

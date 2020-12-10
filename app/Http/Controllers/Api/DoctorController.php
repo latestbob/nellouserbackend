@@ -83,6 +83,7 @@ class DoctorController extends Controller
         $validator = Validator::make($request->all(), [
             'name'  => 'required_without:user_id|string',
             'email'  => 'required_without:user_id|email',
+            'phone'  => 'required_without:user_id|numeric',
             'subject'  => 'required|string|min:10',
             'message'  => 'required|string|min:30',
             'user_id' => 'nullable|integer|exists:users,id',
@@ -90,6 +91,7 @@ class DoctorController extends Controller
         ], [
             'name.required_without' => 'The name field is required',
             'email.required_without' => 'The email field is required',
+            'phone.required_without' => 'The phone field is required',
         ]);
 
         if ($validator->fails()) return [
