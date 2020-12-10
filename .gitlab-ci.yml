@@ -1,0 +1,26 @@
+#We have 2 stages for now; test and deploy
+stages:
+  - deploy
+
+cache:
+  paths:
+  - node_modules/
+
+deploy:
+  type: deploy
+  stage: deploy
+  tags:
+    - nello-mw-shell-runner
+  script:
+    # Only copy changed files to project folder
+    - sudo cp -r -u * $PROJECT_DIR
+    - cd $PROJECT_DIR
+    - sudo composer install
+    - sudo php artisan config:clear
+    - sudo php artisan cache:clear
+    - sudo php artisan config:cache
+    - sudo nginx -s reload
+  only:
+    - master
+  
+
