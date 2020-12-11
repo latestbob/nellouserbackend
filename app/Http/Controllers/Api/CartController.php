@@ -182,7 +182,7 @@ class CartController extends Controller
         $validator = Validator::make($request->all(), [
             'cart_uuid' => 'required|uuid',
             'drug_id' => 'required|integer',
-            'file' => 'required|image|mimes:jpeg,jpg,png',
+            'file' => 'required|file|mimes:jpeg,jpg,png,pdf',
         ]);
 
         if ($validator->fails()) {
