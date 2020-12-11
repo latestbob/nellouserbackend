@@ -9,22 +9,24 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-curl": "*",
+        "ext-gd": "*",
         "ext-json": "*",
-        "fruitcake/laravel-cors": "^1.0",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.5",
         "jrm2k6/cloudder": "^0.6.0",
         "kriswallsmith/buzz": "^1.1",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
+        "lcobucci/jwt": "3.3.3",
         "maatwebsite/excel": "^3.1",
         "mailgun/mailgun-php": "^3.0",
         "mpociot/laravel-apidoc-generator": "^4.0",
         "nyholm/psr7": "^1.2",
-        "tymon/jwt-auth": "1.0.0",
-        "wildbit/swiftmailer-postmark": "^3.1",
-        "ext-curl": "*"
+        "tymon/jwt-auth": "^1.0",
+        "wildbit/swiftmailer-postmark": "^3.1"
     },
     "require-dev": {
         "symfony/console": "^5.0",
