@@ -37,7 +37,7 @@ class DoctorController extends Controller
     public function fetchDoctors(Request $request)
     {
         $doctors = User::with(['vendor'])->where(['user_type' => 'doctor', 'active' => true])
-            ->whereNotNull('hospital')
+//            ->whereNotNull('hospital')
             ->when($request->search, function($query, $search){
                 $query->whereRaw('(firstname LIKE ? or middlename LIKE ? or lastname LIKE ? or hospital like ?)',
                     ["%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%"]);
