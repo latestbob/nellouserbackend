@@ -253,6 +253,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'same:password',
             'gender' => 'required|string|in:Male,Female',
+            'weight' => 'required|numeric',
+            'height' => 'required|numeric',
             'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
 
