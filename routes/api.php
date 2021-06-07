@@ -22,6 +22,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/auth')->group(function () {
 
+    Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
+    Route::post('/login', 'Api\AuthController@loginCustomer')->name('login');
+    Route::post('/forgot-password', 'Api\AuthController@forgotPassword');
+    Route::post('/reset-password', 'Api\AuthController@resetPassword');
+    Route::post('/register', 'Api\AuthController@registerCustomer');
+    Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
+    Route::post('/verify', 'Api\AuthController@verifyToken');
+    Route::post('/verify/email', 'Api\AuthController@verifyEmail');
+    Route::post('/verify/phone', 'Api\AuthController@verifyPhone');
+
+
     Route::post('profile', 'Api\AuthController@updateProfile')->middleware('jwt.auth');
     Route::post('password', 'Api\AuthController@changePassword')->middleware('jwt.auth');
     Route::post('picture', 'Api\AuthController@changePicture')->middleware('jwt.auth');
@@ -44,15 +55,6 @@ Route::prefix('/auth')->group(function () {
 
     });
 
-    Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
-    Route::post('/login', 'Api\AuthController@loginCustomer')->name('login');
-    Route::post('/forgot-password', 'Api\AuthController@forgotPassword');
-    Route::post('/reset-password', 'Api\AuthController@resetPassword');
-    Route::post('/register', 'Api\AuthController@registerCustomer');
-    Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
-    Route::post('/verify', 'Api\AuthController@verifyToken');
-    Route::post('/verify/email', 'Api\AuthController@verifyEmail');
-    Route::post('/verify/phone', 'Api\AuthController@verifyPhone');
 });
 
 Route::get('/drugs-order', 'Api\DrugController@drugOrders')->name('drugs-order')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
