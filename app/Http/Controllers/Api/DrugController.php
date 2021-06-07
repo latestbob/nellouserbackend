@@ -26,7 +26,7 @@ class DrugController extends Controller
             $drugs = PharmacyDrug::with('category')
                 ->where('status', true)
                 ->where('quantity', '>', 0)
-                ->orderBy('name')->paginate();
+                ->orderBy('name')->paginate(16);
         } else {
 
             $search = $request->search;
@@ -40,7 +40,7 @@ class DrugController extends Controller
                 })->when($search, function ($query, $search) {
                     $query->where('name', 'like', "%{$search}%")
                         ->orWhere('brand', 'like', "%{$search}%");
-                })->orderBy('name')->paginate();
+                })->orderBy('name')->paginate(16);
         }
 
         return $drugs;
@@ -452,7 +452,7 @@ class DrugController extends Controller
         $validator = Validator::make($request->all(), [
             'uuid' => 'required|uuid|exists:carts,cart_uuid',
             'id' => 'required|integer',
-            'file' => 'required|image|mimes:jpeg,jpg,png',
+            'file' => 'required|file|mimes:jpeg,jpg,png,pdf',
         ]);
 
         if ($validator->fails()) {
