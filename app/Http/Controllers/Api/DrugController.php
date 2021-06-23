@@ -21,27 +21,32 @@ class DrugController extends Controller
 
     public function index(Request $request)
     {
-        if (empty($request->search) && empty($request->category)) {
+        $search = $request->search;
+        $category = $request->category;
 
-            $drugs = PharmacyDrug::with('category')
-                ->where('status', true)
-                ->where('quantity', '>', 0)
-                ->orderBy('name')->paginate(16);
-        } else {
-
-            $search = $request->search;
-            $category = $request->category;
-
-            $drugs = PharmacyDrug::with('category')
-                ->where('status', true)
-                ->where('quantity', '>', 0)
-                ->when($category, function ($query, $category) {
-                    $query->where('category_id', '=', "{$category}");
-                })->when($search, function ($query, $search) {
-                    $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('brand', 'like', "%{$search}%");
-                })->orderBy('name')->paginate(16);
-        }
+        $drugs = PharmacyDrug::with('category')
+            ->where('status', true)
+            ->where('quantity', '>', 0)
+            ->when($category, function ($query, $category) {
+                $categories = explode(',', $category);
+                $query->whereIn('category_id', $categories);
+            })
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->when($request->price_min, function ($query, $price) {
+                $query->where('price', '>=', $price);
+            })
+            ->when($request->price_max, function ($query, $price) {
+                $query->where('price', '<=', $price);
+            })
+            ->when($request->require_prescription, function ($query, $pres) {
+                $query->where('require_prescription', strtolower($pres) === 'yes' ? 1 : 0);
+            })
+            ->orderBy('name')
+            ->paginate(16);
 
         return $drugs;
     }
@@ -49,8 +54,9 @@ class DrugController extends Controller
     public function getDrug(Request $request)
     {
         return PharmacyDrug::with('category')->where(
-            [['uuid', '=', $request->uuid]
-//                , ['status', '=', true]
+            [
+                ['uuid', '=', $request->uuid]
+                //                , ['status', '=', true]
             ]
         )->first();
     }
