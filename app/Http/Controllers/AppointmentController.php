@@ -16,6 +16,7 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
@@ -58,7 +59,13 @@ class AppointmentController extends Controller
             'description' => 'required|string',
             'type' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
-            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes"))
+            'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
+            'doctor_id' => [
+                'required', 
+                Rule::exists('users', 'id')->where(function($query){
+                    $query->where('user_type', 'doctor');
+                })
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -77,16 +84,22 @@ class AppointmentController extends Controller
         $data['uuid'] = Str::uuid()->toString();
         $data['status'] = 'pending';
         $data['user_uuid'] = $user->uuid;
-        $data['center_uuid'] = $request->medical_center;
+        if ($request->medical_center) {
+            $data['center_uuid'] = $request->medical_center;
+        }
 
-        $check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center,
+        $check = Appointment::with(['doctor'])->where(['doctor_id' => $request->doctor_id,
             'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
+
+        /*$check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center,
+            'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
+        */
 
         if (!empty($check)) {
             return response([
                 'status' => false,
                 'message' => [
-                    ["Sorry, an appointment has already been booked at {$check->center->name} with your selected time. Select another time and try again."]
+                    ["Sorry, an appointment has already been booked at Dr. {$check->doctor->firstname} with your selected time. Select another time and try again."]
                 ]
             ]);
         }
