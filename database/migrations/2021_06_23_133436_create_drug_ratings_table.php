@@ -15,6 +15,10 @@ class CreateDrugRatingsTable extends Migration
     {
         Schema::create('drug_ratings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('drug_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedInteger('rating');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

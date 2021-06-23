@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DrugRating;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
@@ -42,8 +43,11 @@ class DrugController extends Controller
             ->when($request->price_max, function ($query, $price) {
                 $query->where('price', '<=', $price);
             })
-            ->when($request->require_prescription, function ($query, $pres) {
+            ->when($request->prescription, function ($query, $pres) {
                 $query->where('require_prescription', strtolower($pres) === 'yes' ? 1 : 0);
+            })
+            ->when($request->rating, function($query, $rating){
+                $query->where('rating', '>=', $rating);
             })
             ->orderBy('name')
             ->paginate(16);
@@ -494,5 +498,24 @@ class DrugController extends Controller
             'status' => false,
             'message' => "No prescription file uploaded"
         ]);
+    }
+
+    public function rateDrug(Request $request)
+    {
+        $data = $request->validate([
+            'drug_id' => 'required|exists:pharmacy_drugs,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string'
+        ]);
+
+        $data['user_id'] = Auth::user()->id;
+        DrugRating::create($data);
+        $count = DrugRating::where('drug_id', $request->drug_id)->count();
+        $sum = DrugRating::where('drug_id', $request->drug_id)->sum('rating');
+        PharmacyDrug::where('id', $request->drug_id)->update([
+            'rating' => (int) ($sum/$count)
+        ]);
+
+        return ['msg' => 'Rating saved'];
     }
 }

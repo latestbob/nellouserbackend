@@ -143,6 +143,7 @@ Route::post('/contact/message', 'ContactController@sendMessage');
 
 Route::get('/drugs', 'Api\DrugController@index');
 Route::get('/drug/categories', 'Api\DrugController@getDrugCategories');
+Route::post('/drug/rate', 'Api\DrugController@rateDrug')->middleware('jwt.auth');
 Route::get('/drug/{uuid}', 'Api\DrugController@getDrug');
 Route::get('/doctors', 'Api\DoctorController@fetchDoctors'); //->middleware('jwt.auth');
 Route::get('/doctor/{uuid}', 'Api\DoctorController@fetchDoctor'); //->middleware('jwt.auth');
