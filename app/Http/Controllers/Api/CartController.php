@@ -38,7 +38,8 @@ class CartController extends Controller
 
         $validator = Validator::make($request->all(), [
             'drug_id' => 'required|integer',
-            'quantity' => 'nullable|integer'
+            'quantity' => 'nullable|integer',
+            'cart_uuid' => 'nullable|exists:carts'
         ]);
 
         if ($validator->fails()) {
