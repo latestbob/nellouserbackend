@@ -248,3 +248,4 @@ Route::prefix('/blogs')->group(function(){
     Route::delete('/{id}/delete', 'Api\BlogController@delete')->middleware('jwt.auth');
 });
 
+Route::get('packages', 'Api\PackageController@index');

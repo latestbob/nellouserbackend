@@ -13,4 +13,10 @@ class Package extends Model
         'is_active',
         'price'
     ];
+
+
+    public function benefits()
+    {
+        return $this->belongsToMany('App\Models\Benefit', 'package_benefit');
+    }
 }

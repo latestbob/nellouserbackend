@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Package;
+use App\Models\Package;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
@@ -14,7 +14,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        return Package::with(['benefits'])->get();
     }
 
     /**
