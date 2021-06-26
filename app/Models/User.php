@@ -35,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
-    protected $appends = ['rating'];
+    protected $appends = ['rating', 'subscription'];
 
     /**
      * The attributes that should be cast to native types.
@@ -98,10 +98,23 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Models\PaystackPayment', 'user_uuid', 'uuid');
     }
 
+    public function fitness()
+    {
+        return $this->hasOne('App\Models\FitnessForm');
+    }
 
     public function getRatingAttribute()
     {
         return DoctorRating::where('doctor_uuid', $this->uuid)->sum('rating');
+    }
+
+    public function getSubscriptionAttribute()
+    {
+        return [
+            'drug' => 1,
+            'fitness' => !empty($this->fitness),
+            'doctor' => 0
+        ];
     }
 
     /**
