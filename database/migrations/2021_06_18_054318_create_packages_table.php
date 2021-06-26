@@ -19,7 +19,7 @@ class CreatePackagesTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->float('price');
-            $table->bolean('is_active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
