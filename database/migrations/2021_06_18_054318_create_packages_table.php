@@ -15,8 +15,10 @@ class CreatePackagesTable extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->string('name');
             $table->text('description');
+            $table->float('price');
             $table->bolean('is_active')->default(true);
             $table->timestamps();
         });

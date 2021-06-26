@@ -16,7 +16,7 @@ class CreateBenefitsTable extends Migration
         Schema::create('benefits', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->bolean('is_active')->default(true);
 
             $table->timestamps();
