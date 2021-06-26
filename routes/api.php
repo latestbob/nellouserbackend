@@ -249,3 +249,7 @@ Route::prefix('/blogs')->group(function(){
 });
 
 Route::get('packages', 'Api\PackageController@index');
+
+Route::prefix('service')->middleware('jwt.auth')->namespace('Api')->group(function(){
+    Route::post('fitness', 'FitnessController@create');
+});
