@@ -34,7 +34,7 @@ class OrderController extends Controller
             'phone' => 'required|digits_between:11,16',
             'cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
-            'address1' => 'required_if:delivery_method,shipping|string',
+            'shipping_address' => 'required_if:delivery_method,shipping|string',
             'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
             'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
@@ -46,11 +46,13 @@ class OrderController extends Controller
             return response([
                 'status' => false,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $data = $validator->validated();
         $data['email'] = $request->email;
+        $data['address1'] = $data['shipping_address'];
+        unset($data['shipping_address']);
 
         if (empty($data['location_id'])) {
             $data['location_id'] = $data['pickup_location_id'];
