@@ -23,23 +23,23 @@ class RiderController extends Controller
             return response([
                 'status' => false,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $order = Order::where('id', $request->id)->first();
 
         if ($order->location_id != ($user = $request->user())->location_id) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you're not assigned to that order's location"
-            ];
+            ], 422);
         }
 
         if ($order->accepted_pick_up == true) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, a rider has already accepted to pick up this order"
-            ];
+            ], 422);
         }
 
         $order->update([
@@ -87,24 +87,24 @@ class RiderController extends Controller
         }
 
         if ($order->accepted_pick_up != true) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you have to accept this order before picking it up"
-            ];
+            ], 422);
         }
 
         if ($order->is_picked_up == true) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, this order has already been picked up"
-            ];
+            ], 422);
         }
 
         if ($order->accepted_pick_up_by != $user->id) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you can't pick up an order you did not accept"
-            ];
+            ], 422);
         }
 
         $order->update([
@@ -127,40 +127,40 @@ class RiderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return [
+            return response([
                 'status' => false,
                 'message' => $validator->errors()
-            ];
+            ], 422);
         }
 
         $order = Order::where('id', $request->id)->first();
 
         if ($order->location_id != ($user = $request->user())->location_id) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you're not assigned to that order's location"
-            ];
+            ], 422);
         }
 
         if ($order->is_picked_up != true) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you can't deliver an order that has not been picked up"
-            ];
+            ], 422);
         }
 
         if ($order->picked_up_by != $user->id) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, you can't deliver an order you did not pick up"
-            ];
+            ], 422);
         }
 
         if ($order->delivery_status == true) {
-            return [
+            return response([
                 'status' => false,
                 'message' => "Sorry, this order has already been delivered"
-            ];
+            ], 422);
         }
 
         RiderTripLog::create([
@@ -183,7 +183,9 @@ class RiderController extends Controller
 
     public function deliveryHistory(Request $request)
     {
-        return Order::with('items')->where('delivered_by', $request->user()->id)->paginate();
+        return Order::with('items')
+            ->where('delivered_by', $request->user()->id)
+            ->paginate();
     }
 
     public function tripAnalysis(Request $request)

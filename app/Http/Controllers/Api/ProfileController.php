@@ -229,7 +229,8 @@ class ProfileController extends Controller
     }
 
 
-    public function inBrief(Request $request) {
+    public function inBrief(Request $request) 
+    {
         $user = $request->user();
         $appointment = Appointment::where('user_uuid', $user->uuid)->orderBy('created_at','desc')->first();
         $medication = Medication::where('user_uuid', $user->uuid)->orderBy('created_at', 'desc')->first();

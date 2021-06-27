@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    protected $fillable = ['cart_uuid', 'drug_id', 'quantity', 'price', 'prescription', 'prescribed_by', 'user_id', 'vendor_id', 'status', 'is_ready'];
+    protected $fillable = [
+        'cart_uuid', 
+        'drug_id', 
+        'quantity', 
+        'price', 
+        'prescription', 
+        'prescribed_by', 
+        'user_id', 
+        'vendor_id', 
+        'status', 
+        'is_ready'
+    ];
 
     public function order()
     {

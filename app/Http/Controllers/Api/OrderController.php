@@ -32,7 +32,7 @@ class OrderController extends Controller
             'email' => 'required|email',
             'password' => 'required_if:checkout_type,register|string',
             'phone' => 'required|digits_between:11,16',
-            'cart_uuid' => 'required|uuid|exists:carts,cart_uuid',
+            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
             'shipping_address' => 'required_if:delivery_method,shipping|string',
             'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
@@ -219,6 +219,21 @@ class OrderController extends Controller
         ];
     }
 
+    public function checkoutSummary(Request $request)
+    {
+        $request->validate([
+            'cart_uuid' => 'required|exists:carts'
+        ]);
+
+        $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
+
+        return [
+            'sub_total' => $subTotal,
+            'delivery' => 0,
+            'total' => 0
+        ];
+    }
+
     public function confirmPayment(Request $request)
     {
 
@@ -234,41 +249,14 @@ class OrderController extends Controller
 
         if (empty($order)) {
 
-            return [
+            return response([
                 'status' => false,
                 'message' => 'Sorry, no order was found with that reference code'
-            ];
+            ], 422);
         }
 
         $order->payment_confirmed = 1;
         $order->save();
-
-//        if (is_numeric($order->customer_id)) {
-//
-//            $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
-//
-//            if (!empty($rules) && ($order->amount ?? 0) > $rules['earn_point_amount']) {
-//
-//                $point = CustomerPoint::where('customer_id', $order->customer_id)->first();
-//
-//                if (!empty($point)) {
-//
-//                    if (!empty($point->updated_at) && strtotime(date("Y-m-d")) > strtotime(\DateTime::createFromFormat(
-//                            "Y-m-d H:i:s", $point->updated_at)->format("Y-m-d"))) {
-//
-//                        $point->total_points_earned_today = 0;
-//                    }
-//
-//                    if ($point->total_points_earned_today < $rules->max_point_per_day) {
-//                        $point->point = ($point->point + 1);
-//                        $point->total_points_earned_today = ($point->total_points_earned_today + 1);
-//                        $point->save();
-//                    }
-//
-//                } else CustomerPoint::create(['point' => 1, 'total_points_earned_today' => 1, 'customer_id' => $order->customer_id]);
-//
-//            }
-//        }
 
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
 
@@ -324,7 +312,7 @@ class OrderController extends Controller
             return response([
                 'status' => false,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $cart = Cart::where('cart_uuid', $request->new_cart_uuid);
@@ -351,7 +339,7 @@ class OrderController extends Controller
             return response([
                 'status' => false,
                 'message' => $validator->errors()
-            ]);
+            ], 422);
         }
 
         $order = Order::where($validator->validated())->first();

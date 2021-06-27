@@ -19,14 +19,15 @@ class ReviewController extends Controller
     public function recent(Request $request)
     {
         return [
-            'recent' => Review::with('user')->where(
-                'drug_uuid', $request->uuid)->orderByDesc('id')->limit(4)->get()
+            'recent' => Review::with('user')
+                ->where('drug_uuid', $request->uuid)
+                ->orderByDesc('id')
+                ->limit(4)->get()
         ];
     }
 
     public function addReview(Request $request)
     {
-
         $validated = Validator::make($request->all(), [
             'drug_uuid' => 'required|uuid|exists:pharmacy_drugs,uuid',
             'name'  => 'required|string',
@@ -35,7 +36,7 @@ class ReviewController extends Controller
         ]);
 
         if ($validated->fails()) {
-            return response(['message' => $validated->errors()]);
+            return response(['message' => $validated->errors()], 422);
         }
 
         $validated = $validated->validated();

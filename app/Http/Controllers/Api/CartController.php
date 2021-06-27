@@ -37,7 +37,7 @@ class CartController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'drug_id' => 'required|integer',
+            'drug_id' => 'required|integer|exists:pharmacy_drugs,id',
             'quantity' => 'nullable|integer',
             'cart_uuid' => 'required|string'
         ]);
@@ -51,14 +51,7 @@ class CartController extends Controller
 
         $data = $validator->validated();
 
-        $drug = PharmacyDrug::where(['id' => $data['drug_id']])->first();
-
-        if (empty($drug)) {
-            return response([
-                'status' => false,
-                'message' => 'Failed to add to cart. Drug not found'
-            ], 422);
-        }
+        $drug = PharmacyDrug::find(['id' => $data['drug_id']]);
 
         if (!isset($data['quantity'])) {
             $data['quantity'] = 1;
