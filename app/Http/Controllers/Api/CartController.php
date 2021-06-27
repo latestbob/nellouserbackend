@@ -20,7 +20,7 @@ class CartController extends Controller
     public function getItems(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|uuid'
+            'cart_uuid' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -89,6 +89,8 @@ class CartController extends Controller
             $cart->save();
         }
 
+        return Cart::with(['drug:id,name,price,brand,image,require_prescription'])
+            ->where(['cart_uuid' => $request->cart_uuid])->get();
         return response()->json([
             'status' => true,
             'message' => 'Added to cart successfully',
