@@ -165,7 +165,7 @@ Route::prefix('/feedback')->group(function() {
 
 Route::prefix('/order')->group(function() {
     Route::post('/checkout', 'Api\OrderController@checkout');
-    Route::match(['get', 'post'], '/checkout/summary', 'Api\OrderController@checkoutSummary');
+    Route::post('/checkout/summary', 'Api\OrderController@checkoutSummary');
     Route::post('/drug/confirm-payment', 'Api\OrderController@confirmPayment');
     Route::post('/merge', 'Api\OrderController@mergeOrder');
     Route::post('/cancel', 'Api\OrderController@cancelOrder');
