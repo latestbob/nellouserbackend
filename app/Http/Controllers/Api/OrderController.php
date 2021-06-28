@@ -222,15 +222,22 @@ class OrderController extends Controller
     public function checkoutSummary(Request $request)
     {
         $request->validate([
-            'cart_uuid' => 'required|exists:carts'
+            'cart_uuid' => 'required|exists:carts',
+            'delivery_method' => 'required|string|in:shipping,pickup',
+            'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
         ]);
 
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
+        $deliveryCost = 0;
+        if ($request->location_id && $request->delivery_method === 'shipping') {
+            $deliveryCost = Location::find($request->location_id)->price;
+        }
+        $total = $subTotal + $deliveryCost;
 
         return [
             'sub_total' => $subTotal,
-            'delivery' => 0,
-            'total' => 0
+            'delivery' => $deliveryCost,
+            'total' => $total
         ];
     }
 
