@@ -173,6 +173,7 @@ Route::prefix('/order')->group(function() {
 
 Route::post('/file-upload', 'FileController@fileUpload');
 Route::get('/locations', 'Api\LocationController@getLocations');
+Route::get('/pickup-locations', 'Api\LocationController@getPickupLocations');
 Route::get('/prescription-fee', 'Api\PrescriptionFeeController@getPrescriptionFee');
 
 Route::prefix('/wishlist')->middleware('jwt.auth')->group(function() {

@@ -11,6 +11,8 @@ class LocationController extends Controller
 {
     public function getLocations(Request $request)
     {
+        return Location::get(['id', 'name', 'price']);
+
         return [
             'locations' => [
 //                'shipping' => Location::join('pharmacies', 'locations.id', '=', 'pharmacies.location_id', 'inner')->havingRaw(
@@ -20,5 +22,11 @@ class LocationController extends Controller
                 'pickup' => Pharmacy::where('is_pick_up_location', true)->select(['id', 'name', 'address'])->get()
             ]
         ];
+    }
+
+
+    public function getPickupLocations()
+    {
+        return Pharmacy::where('is_pick_up_location', true)->select(['id', 'name', 'address'])->get();
     }
 }

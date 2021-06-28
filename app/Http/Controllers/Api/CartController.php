@@ -51,7 +51,7 @@ class CartController extends Controller
 
         $data = $validator->validated();
 
-        $drug = PharmacyDrug::find(['id' => $data['drug_id']]);
+        $drug = PharmacyDrug::find($data['drug_id']);
 
         if (!isset($data['quantity'])) {
             $data['quantity'] = 1;
