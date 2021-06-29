@@ -35,7 +35,6 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'drug_id' => 'required|integer|exists:pharmacy_drugs,id',
             'quantity' => 'nullable|integer',
@@ -94,9 +93,8 @@ class CartController extends Controller
 
     public function updateCart(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|uuid',
+            'cart_uuid' => 'required|string|exists:carts',
             'drug_id' => 'required|integer',
             'quantity'  => 'required|integer'
         ]);
@@ -151,7 +149,7 @@ class CartController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|uuid',
+            'cart_uuid' => 'required|string|exists:carts',
             'drug_id' => 'required|integer',
         ]);
 
@@ -167,6 +165,9 @@ class CartController extends Controller
             'drug_id'   => $request->drug_id
         ])->delete();
 
+        return Cart::with(['drug:id,name,price,brand,image,require_prescription'])
+            ->where(['cart_uuid' => $request->cart_uuid])->get();
+
         return [
             'status' => true,
             'message' => 'Removed'
@@ -176,7 +177,7 @@ class CartController extends Controller
     public function addPrescription(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'cart_uuid' => 'required|uuid',
+            'cart_uuid' => 'required|string|exists:carts',
             'drug_id' => 'required|integer',
             'file' => 'required|file|mimes:jpeg,jpg,png,pdf',
         ]);
