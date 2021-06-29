@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\VerificationNotification;
 use App\Traits\FirebaseNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,22 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
+        $data = $request->validate([
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'company' => 'nullable|string',
+            'email' => 'nullable|email',
+            'phone' => 'required|digits_between:11,16',
+            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
+            'delivery_method' => 'required|string|in:shipping,pickup',
+            'shipping_address' => 'required_if:delivery_method,shipping|string',
+            'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
+            'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
+            'city' => 'required_if:delivery_method,shipping|string',
+            'payment_method' => 'required|string|in:card,point',
+        ]);
+
+        /*
 
         $validator = Validator::make($request->all(), [
             'checkout_type' => 'required|string|in:user,guest,register',
@@ -50,7 +67,11 @@ class OrderController extends Controller
         }
 
         $data = $validator->validated();
-        $data['email'] = $request->email;
+        */
+
+        $user = Auth::user();
+
+        $data['email'] = $request->email ?? $user->email;
         $data['address1'] = $data['shipping_address'];
         unset($data['shipping_address']);
 

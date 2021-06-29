@@ -163,7 +163,7 @@ Route::prefix('/feedback')->group(function() {
     Route::post('/create', 'Api\FeedBackController@create');
 });
 
-Route::prefix('/order')->group(function() {
+Route::prefix('/order')->middleware('jwt.auth')->group(function() {
     Route::post('/checkout', 'Api\OrderController@checkout');
     Route::post('/checkout/summary', 'Api\OrderController@checkoutSummary');
     Route::post('/drug/confirm-payment', 'Api\OrderController@confirmPayment');
