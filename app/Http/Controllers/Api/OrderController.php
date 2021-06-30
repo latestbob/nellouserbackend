@@ -40,7 +40,6 @@ class OrderController extends Controller
         ]);
 
         /*
-
         $validator = Validator::make($request->all(), [
             'checkout_type' => 'required|string|in:user,guest,register',
             'firstname' => 'required|string',
@@ -147,7 +146,7 @@ class OrderController extends Controller
             }
         }
 
-        if ($data['checkout_type'] == 'register') {
+        /*if ($data['checkout_type'] == 'register') {
 
             $check = User::where(['email' => $request->email])->first();
 
@@ -180,7 +179,7 @@ class OrderController extends Controller
                 $data['customer_id'] = $user->id;
                 $user->notify(new VerificationNotification());
             }
-        }
+        }*/
 
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
         $data['amount'] = $cart->sum('price');
