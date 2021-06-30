@@ -6,7 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pharmacy extends Model
 {
-    protected $fillable = ['uuid', 'name', 'address', 'email', 'phone', 'picture', 'password', 'location_id', 'is_pick_up_location'];
+    protected $fillable = [
+        'uuid', 
+        'name', 
+        'address', 
+        'email', 
+        'phone', 
+        'picture', 
+        'password', 
+        'location_id', 
+        'is_pick_up_location'
+    ];
 
     public function location() {
         return $this->belongsTo('App\Models\Location', 'location_id', 'id');

@@ -27,6 +27,8 @@ class LocationController extends Controller
 
     public function getPickupLocations()
     {
-        return Pharmacy::where('is_pick_up_location', true)->select(['id', 'name', 'address'])->get();
+        return Pharmacy::with(['location'])
+            ->where('is_pick_up_location', true)
+            ->select(['id', 'name', 'address', 'location_id'])->get();
     }
 }
