@@ -25,11 +25,11 @@ class OrderController extends Controller
     public function checkout(Request $request)
     {
         $data = $request->validate([
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
+            'firstname' => 'nullable|string',
+            'lastname' => 'nullable|string',
             'company' => 'nullable|string',
             'email' => 'nullable|email',
-            'phone' => 'required|digits_between:11,16',
+            'phone' => 'nullable|digits_between:11,16',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
             'shipping_address' => 'required_if:delivery_method,shipping|string',
@@ -71,6 +71,9 @@ class OrderController extends Controller
         $user = Auth::user();
 
         $data['email'] = $request->email ?? $user->email;
+        $data['phone'] = $request->phone ?? $user->phone;
+        $data['firstname'] = $request->firstname ?? $user->firstname;
+        $data['lastname'] = $request->lastname ?? $user->lastname;
 
         if (isset($data['shipping_address'])) {
             $data['address1'] = $data['shipping_address'];
