@@ -71,8 +71,11 @@ class OrderController extends Controller
         $user = Auth::user();
 
         $data['email'] = $request->email ?? $user->email;
-        $data['address1'] = $data['shipping_address'];
-        unset($data['shipping_address']);
+        
+        if (isset($data['shipping_address'])) {
+            $data['address1'] = $data['shipping_address'];
+            unset($data['shipping_address']);    
+        }
 
         if (empty($data['location_id'])) {
             $data['location_id'] = $data['pickup_location_id'];
