@@ -38,7 +38,7 @@ class OrderController extends Controller
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
-            'payment_reference' => 'required|string'
+            'payment_reference' => 'required_if:payment_method,card|string'
         ]);
 
         /*
