@@ -17,10 +17,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Traits\Paystack;
 
 class OrderController extends Controller
 {
-    use FirebaseNotification;
+    use FirebaseNotification, Paystack;
 
     public function checkout(Request $request)
     {
@@ -37,7 +38,7 @@ class OrderController extends Controller
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
-            'payment_reference' => ''
+            'payment_reference' => 'required|string'
         ]);
 
         /*
@@ -205,6 +206,8 @@ class OrderController extends Controller
 
         $data['amount'] = ceil($data['amount']);
 
+        $respMsg = "";
+
         if ($data['payment_method'] == 'point') {
 
             if (!isset($data['customer_id'])) return response(['status' => false, 'message' => [['You must be logged in to pay with points']]]);
@@ -225,6 +228,16 @@ class OrderController extends Controller
             $point->save();
 
             $data['payment_confirmed'] = 1;
+            $respMsg = 'Thank you. Your checkout was successful and payment has been made using your points.';
+
+        } elseif($data['payment_method'] == 'card') {
+            $check = $this->verify($data['payment_reference'], $data['amount']);
+            if ($check['status']) {
+                $data['payment_confirmed'] = 1;
+                $respMsg = 'Thank you. Your checkout was successful and payment confirmed.';
+            } else {
+                $respMsg = "Checkout successful. Payment error: {$check['message']}";
+            }
         }
 
         $order = Order::create($data);
@@ -238,9 +251,7 @@ class OrderController extends Controller
 
         return [
             'status' => true,
-            'message' => ($data['payment_confirmed'] ?? 0) == 1 ?
-                'Thank you. Your checkout was successful and payment has been made using your points' :
-                'Checkout successful',
+            'message' => $respMsg,
             'order' => $order,
             'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
         ];
