@@ -257,24 +257,26 @@ class OrderController extends Controller
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
 
         $return = ['sub_total' => $subTotal];
+        $total = $subTotal;
 
         if ($request->location_id && $request->delivery_method === 'shipping') {
             $deliveryCost = Location::find($request->location_id)->price;
             $total = $subTotal + $deliveryCost;
             $return['delivery'] = $deliveryCost;
-            $return['total'] = $total;
-
-            $charges = $return['total'] * 0.015;
-            if ($return['total'] > 2500) {
-                $charges = $charges + 100;
-            }
-            if ($charges > 2000) {
-                $charges = 2000;
-            }
-
-            $return['transaction_charge'] = $charges;
-            $return['total'] = $return['total'] + $charges;
         }
+        
+        $return['total'] = $total;
+
+        $charges = $return['total'] * 0.015;
+        if ($return['total'] > 2500) {
+            $charges = $charges + 100;
+        }
+        if ($charges > 2000) {
+            $charges = 2000;
+        }
+
+        $return['transaction_charge'] = $charges;
+        $return['total'] = $return['total'] + $charges;
 
         return $return;
     }
