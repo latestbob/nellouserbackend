@@ -37,6 +37,7 @@ class OrderController extends Controller
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
+            'payment_reference' => ''
         ]);
 
         /*
@@ -249,22 +250,33 @@ class OrderController extends Controller
     {
         $request->validate([
             'cart_uuid' => 'required|exists:carts',
-            'delivery_method' => 'required|string|in:shipping,pickup',
-            'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
+            'delivery_method' => 'nullable|string|in:shipping,pickup',
+            'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
         ]);
 
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
-        $deliveryCost = 0;
+
+        $return = ['sub_total' => $subTotal];
+
         if ($request->location_id && $request->delivery_method === 'shipping') {
             $deliveryCost = Location::find($request->location_id)->price;
-        }
-        $total = $subTotal + $deliveryCost;
+            $total = $subTotal + $deliveryCost;
+            $return['delivery'] = $deliveryCost;
+            $return['total'] = $total;
 
-        return [
-            'sub_total' => $subTotal,
-            'delivery' => $deliveryCost,
-            'total' => $total
-        ];
+            $charges = $return['total'] * 0.015;
+            if ($return['total'] > 2500) {
+                $charges = $charges + 100;
+            }
+            if ($charges > 2000) {
+                $charges = 2000;
+            }
+
+            $return['transaction_charge'] = $charges;
+            $return['total'] = $return['total'] + $charges;
+        }
+
+        return $return;
     }
 
     public function confirmPayment(Request $request)
