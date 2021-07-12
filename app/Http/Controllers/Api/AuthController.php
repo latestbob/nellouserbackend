@@ -253,8 +253,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'same:password',
             'gender' => 'required|string|in:Male,Female',
-            'weight' => 'required|numeric',
-            'height' => 'required|numeric',
+            'weight' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
             'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
 
@@ -281,7 +281,20 @@ class AuthController extends Controller
 
         $user->notify(new VerificationNotification());
 
-        return $user;
+        $credentials = $request->only(['email', 'password']);
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response([
+                'msg' => 'Invalid Credentials.'
+            ], 400);
+        }
+
+        $user = Auth::user();
+
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
 
         /**DO NOT DELETE */
         try {
