@@ -9,12 +9,4 @@ use Illuminate\Support\Facades\Auth;
 
 class FitnessController extends Controller
 {
-    public function create(FitnessRequest $request)
-    {
-        $data = $request->validated();
-        $data['user_id'] = Auth::user()->id;
-        FitnessForm::create($data);
-
-        return ['msg' => 'success'];
-    }
 }

@@ -257,6 +257,7 @@ Route::prefix('packages')->namespace('Api')->group(function(){
 
 
 Route::prefix('service')->middleware('jwt.auth')->namespace('Api')->group(function(){
-    Route::post('fitness', 'FitnessController@create');
-    Route::post('doctor', 'DoctorServiceController@create');
+    Route::get('/', 'SubscriptionController@index');
+    Route::post('fitness', 'SubscriptionController@fitnessSubscribe');
+    Route::post('doctor', 'SubscriptionController@doctorSubscribe');
 });

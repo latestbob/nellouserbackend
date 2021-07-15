@@ -55,7 +55,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo('App\Models\Vendor');
     }
 
-    public function pharmacy() {
+    public function pharmacy() 
+    {
         return $this->belongsTo('App\Models\Pharmacy', 'pharmacy_id', 'id');
     }
 
@@ -98,10 +99,20 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Models\PaystackPayment', 'user_uuid', 'uuid');
     }
 
-    public function fitness()
+    public function fitnessSubscription()
     {
         return $this->hasOne('App\Models\FitnessForm');
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Models\Subscription');
+    }
+
+    public function doctorSubscription()
+    {
+        return $this->hasOne('App\Models\DoctorServiceForm');
+    } 
 
     public function getRatingAttribute()
     {
@@ -112,8 +123,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'drug' => 1,
-            'fitness' => !empty($this->fitness),
-            'doctor' => 0
+            'fitness' => !empty($this->fitnessSubscription) && !empty($this->subscriptions),
+            'doctor' => !empty($this->doctorSubscription) && !empty($this->subscriptions)
         ];
     }
 

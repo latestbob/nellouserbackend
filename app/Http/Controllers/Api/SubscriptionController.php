@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DoctorServiceRequest;
+use App\Http\Requests\FitnessRequest;
+use App\Models\DoctorServiceForm;
+use App\Models\FitnessForm;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
@@ -15,7 +20,34 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $user->load([
+            'fitnessSubscription',
+            'doctorSubscription'
+        ]);
+
+        return [
+            'fitness' => $user->fitnessSubscription,
+            'doctor' => $user->doctorSubscription
+        ];
+    }
+
+    public function doctorSubscribe(DoctorServiceRequest $request)
+    {
+        $data = $request->validated();
+        $data['user_id'] = Auth::user()->id;
+        DoctorServiceForm::create($data);
+
+        return ['msg' => 'success'];
+    }
+
+    public function fitnessSubscribe(FitnessRequest $request)
+    {
+        $data = $request->validated();
+        $data['user_id'] = Auth::user()->id;
+        FitnessForm::create($data);
+
+        return ['msg' => 'success'];
     }
 
     /**
