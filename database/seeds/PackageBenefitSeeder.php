@@ -79,7 +79,7 @@ class PackageBenefitSeeder extends Seeder
                     'description' => $benefit,
                     'is_active' => true
                 ]);
-                $plan->attach($ben->id, ['quantity' => $qty]);
+                $plan->benefits()->attach($ben->id, ['quantity' => $qty]);
             }
         }
     }
