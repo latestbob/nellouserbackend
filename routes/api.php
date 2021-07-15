@@ -250,7 +250,11 @@ Route::prefix('/blogs')->group(function(){
     Route::delete('/{id}/delete', 'Api\BlogController@delete')->middleware('jwt.auth');
 });
 
-Route::get('packages', 'Api\PackageController@index');
+Route::prefix('packages')->namespace('Api')->group(function(){
+    Route::get('/', 'PackageController@index');
+    Route::post('subscribe', 'PackageController@subscribe')->middleware('jwt.auth');
+});
+
 
 Route::prefix('service')->middleware('jwt.auth')->namespace('Api')->group(function(){
     Route::post('fitness', 'FitnessController@create');

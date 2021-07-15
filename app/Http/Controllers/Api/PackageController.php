@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Subscription;
+use App\Models\TransactionLog;
+use App\Traits\Paystack;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PackageController extends Controller
 {
+    use Paystack;
+
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +23,47 @@ class PackageController extends Controller
     public function index()
     {
         return Package::with(['benefits'])->get();
+    }
+
+
+    public function subscribe(Request $request)
+    {
+        $data = $request->validate([
+            'package_id' => 'required|exists:packages,id',
+            'payment_reference' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+
+        $plan = Package::find($request->package_id);
+        $check = $this->verify($data['payment_reference'], $plan->price);
+        if ($check['status']) {
+            $ref = random_int(10000000, 99999999);
+            $tranx = TransactionLog::create([
+                'gateway_reference' => $data['payment_reference'],
+                'system_reference' => "$ref",
+                'reason' => 'Subscription payment',
+                'amount' => $plan->price,
+                'email' => $user->email
+            ]);
+
+            $sub = Subscription::create([
+                'user_id' => $user->id,
+                'reference' => "$ref",
+                'package_id' => $request->package_id,
+                'transaction_id' => $tranx->id,
+                'start_date' => Carbon::today(),
+                'expiration_date' => Carbon::today()->addMonth(),        
+            ]);
+
+            return $sub;
+        }
+
+        return response(['errors' => [
+            'payment_reference' => [
+                $check['message']
+            ]
+        ]], 422);
     }
 
     /**

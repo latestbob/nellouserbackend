@@ -12,6 +12,7 @@ class TransactionLog extends Model
         'email', 
         'gateway_reference', 
         'system_reference', 
+        'reason'
         //'source'
     ];
 

@@ -10,6 +10,7 @@ use App\Models\CustomerPoint;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\PrescriptionFee;
+use App\Models\TransactionLog;
 use App\Models\User;
 use App\Notifications\VerificationNotification;
 use App\Traits\FirebaseNotification;
@@ -233,6 +234,13 @@ class OrderController extends Controller
         } elseif($data['payment_method'] == 'card') {
             $check = $this->verify($data['payment_reference'], $data['amount']);
             if ($check['status']) {
+                TransactionLog::create([
+                    'gateway_reference' => $data['payment_reference'],
+                    'system_reference' => $data['order_ref'],
+                    'reason' => 'Order payment',
+                    'amount' => $data['amount'],
+                    'email' => $data['email']
+                ]);
                 $data['payment_confirmed'] = 1;
                 $respMsg = 'Thank you. Your checkout was successful and payment confirmed.';
             } else {
