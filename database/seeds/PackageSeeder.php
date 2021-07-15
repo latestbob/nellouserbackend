@@ -17,21 +17,34 @@ class PackageSeeder extends Seeder
             [
                 'uuid' => Str::uuid()->toString(),
                 'name' => 'Single Plan',
-                'price' => 3000,
+                'price' => 20000,
                 'description' => 'Recommended for individuals',
             ],
             [
                 'uuid' => Str::uuid()->toString(),
                 'name' => 'Family Plan',
-                'price' => 4000,
+                'price' => 100000,
                 'description' => 'Recommended for families',
             ],
             [
                 'uuid' => Str::uuid()->toString(),
-                'name' => 'Enterprise Plan',
-                'price' => 8000,
+                'name' => 'Basic Enterprise Plan',
+                'price' => 200000,
                 'description' => 'Supersized plan for the special ones',
             ],
+            [
+                'uuid' => Str::uuid()->toString(),
+                'name' => 'Premium Enterprise Plan',
+                'price' => 1100000,
+                'description' => 'Supersized plan for the special ones',
+            ],
+            [
+                'uuid' => Str::uuid()->toString(),
+                'name' => 'Executive Enterprise Plan',
+                'price' => 1700000,
+                'description' => 'Supersized plan for the special ones',
+            ],
+
         ];
 
         foreach($plans as $plan) {
