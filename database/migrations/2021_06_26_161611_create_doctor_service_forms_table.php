@@ -22,6 +22,7 @@ class CreateDoctorServiceFormsTable extends Migration
             $table->json('diagnosis');
             $table->json('medication');
             $table->json('allergies');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
