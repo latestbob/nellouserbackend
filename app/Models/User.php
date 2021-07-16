@@ -35,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
-    protected $appends = ['rating', 'subscription'];
+    protected $appends = ['rating', 'subscription', 'hasSub'];
 
     /**
      * The attributes that should be cast to native types.
@@ -123,9 +123,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'drug' => 1,
-            'fitness' => !empty($this->fitnessSubscription) && !empty($this->subscriptions),
-            'doctor' => !empty($this->doctorSubscription) && !empty($this->subscriptions)
+            'fitness' => !empty($this->fitnessSubscription),
+            'doctor' => !empty($this->doctorSubscription)
         ];
+    }
+
+    public function getHasSubAttribute()
+    {
+        return Subscription::where('user_id', $this->getAttribute('id'))->exists();
     }
 
     /**
