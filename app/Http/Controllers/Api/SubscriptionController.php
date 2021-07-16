@@ -36,18 +36,20 @@ class SubscriptionController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
-        DoctorServiceForm::create($data);
-
-        return ['msg' => 'success'];
+        $sub = DoctorServiceForm::create($data);
+        
+        return $sub;
+        //return ['msg' => 'success'];
     }
 
     public function fitnessSubscribe(FitnessRequest $request)
     {
         $data = $request->validated();
         $data['user_id'] = Auth::user()->id;
-        FitnessForm::create($data);
+        $sub = FitnessForm::create($data);
 
-        return ['msg' => 'success'];
+        return $sub;
+        //return ['msg' => 'success'];
     }
 
     /**
