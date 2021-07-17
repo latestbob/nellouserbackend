@@ -244,6 +244,11 @@ class OrderController extends Controller
                 $data['payment_confirmed'] = 1;
                 $respMsg = 'Thank you. Your checkout was successful and payment confirmed.';
             } else {
+                return response([
+                    'errors' => [
+                        'payment_reference' => [$check['message']]
+                    ]
+                ], 422);
                 $respMsg = "Checkout successful. Payment error: {$check['message']}";
             }
         }
