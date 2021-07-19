@@ -17,7 +17,7 @@ trait Paystack {
     {
         //$user = Auth::user();
         // initiate the Library's Paystack Object
-        $paystack = new \Yabacon\Paystack(env('PAYSTACK_SECRET'));
+        $paystack = new \Yabacon\Paystack(config('paystack.secret'));
         try {
             // verify using the library
             $tranx = $paystack->transaction->verify([

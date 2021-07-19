@@ -24,6 +24,7 @@ class OrderController extends Controller
 {
     use FirebaseNotification, Paystack;
 
+
     public function checkout(Request $request)
     {
         $data = $request->validate([
