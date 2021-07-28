@@ -35,6 +35,7 @@ class OrderController extends Controller
             'phone' => 'nullable|digits_between:11,16',
             'cart_uuid' => 'required|string|exists:carts,cart_uuid',
             'delivery_method' => 'required|string|in:shipping,pickup',
+            'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
             'shipping_address' => 'required_if:delivery_method,shipping|string',
             'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
@@ -101,7 +102,8 @@ class OrderController extends Controller
 
                 if ($request->delivery_method == 'shipping') {
                     $location = Location::where('id', $data['location_id'] ?? 0)->first();
-                    $data['amount'] += $location->price;
+                    $delType = "{$request->delivery_type}_price";
+                    $data['amount'] +=  $location->{$delType};
                 }
 
                 foreach ($cart->get() as $item) {
@@ -196,7 +198,8 @@ class OrderController extends Controller
 
         if ($request->delivery_method == 'shipping') {
             $location = Location::where('id', $data['location_id'] ?? 0)->first();
-            $data['amount'] +=  $location->price;
+            $delType = "{$request->delivery_type}_price";
+            $data['amount'] +=  $location->{$delType};
         }
 
         foreach ($cart->get() as $item) {

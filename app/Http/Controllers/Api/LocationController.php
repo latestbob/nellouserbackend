@@ -11,7 +11,13 @@ class LocationController extends Controller
 {
     public function getLocations(Request $request)
     {
-        return Location::get(['id', 'name', 'price']);
+        return Location::get([
+            'id', 
+            'name', 
+            'standard_price', 
+            'same_day_price', 
+            'next_day_price'
+        ]);
 
         return [
             'locations' => [
