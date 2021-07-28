@@ -279,6 +279,7 @@ class OrderController extends Controller
         $request->validate([
             'cart_uuid' => 'required|exists:carts',
             'delivery_method' => 'nullable|string|in:shipping,pickup',
+            'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
             'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
         ]);
 
@@ -288,7 +289,10 @@ class OrderController extends Controller
         $total = $subTotal;
 
         if ($request->location_id && $request->delivery_method === 'shipping') {
-            $deliveryCost = Location::find($request->location_id)->price;
+            $location = Location::find($request->location_id);
+            $delType = "{$request->delivery_type}_price";
+            $deliveryCost =  $location->{$delType};
+
             $total = $subTotal + $deliveryCost;
             $return['delivery'] = $deliveryCost;
         }
