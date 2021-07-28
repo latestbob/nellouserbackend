@@ -23,7 +23,7 @@ class DrugController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
-        $category = $request->category;
+        $category = $request->categories;
 
         $drugs = PharmacyDrug::with('category')
             ->where('status', true)
