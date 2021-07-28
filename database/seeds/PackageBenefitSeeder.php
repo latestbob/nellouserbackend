@@ -34,7 +34,7 @@ class PackageBenefitSeeder extends Seeder
                 'Personalized health tips' => -1,
                 'Annual health check' => 1
             ],
-            'Enterprise Plan' => [
+            'Basic Enterprise Plan' => [
                 'Allows 10 accounts' => 10,
                 "1 offline doctor's consultation per member" => 1,
                 '6 online consultations per member per month' => 6,
