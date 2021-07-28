@@ -33,9 +33,9 @@ class DrugController extends Controller
                 $query->whereIn('category_id', $categories);
             })
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('brand', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('brand', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
             })
             ->when($request->price_min, function ($query, $price) {
                 $query->where('price', '>=', $price);
