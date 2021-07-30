@@ -54,29 +54,25 @@ class AppointmentController extends Controller
 
         if (isset($input['time'])) $input['time'] = date('Y-m-d H:i', strtotime("{$input['date']} {$input['time']}"));
 
-        $validator = Validator::make($input, [
+        $data = $request->validate([
             'reason' => 'required|string',
             'description' => 'required|string',
             'type' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
+            'medical_center' => [
+                Rule::requiredIf(empty($request->doctor_id)),
+                'exists:health_centers,uuid'
+            ],
             'doctor_id' => [
-                'required', 
+                Rule::requiredIf(empty($request->medical_center)),
                 Rule::exists('users', 'id')->where(function($query){
                     $query->where('user_type', 'doctor');
                 })
             ]
         ]);
 
-        if ($validator->fails()) {
-            return response([
-                'status' => false,
-                'message' => $validator->errors()
-            ]);
-        }
-
         $user = $request->user();
-        $data = $validator->validated();
 
         if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
             "Y-m-d H:i", $data['time'])->format("H:i");
