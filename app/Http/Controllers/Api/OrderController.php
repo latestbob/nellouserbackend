@@ -19,10 +19,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Traits\Paystack;
+use App\Traits\CouponCode;
 
 class OrderController extends Controller
 {
-    use FirebaseNotification, Paystack;
+    use FirebaseNotification, Paystack, CouponCode;
 
 
     public function checkout(Request $request)
@@ -41,37 +42,9 @@ class OrderController extends Controller
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
             'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
-            'payment_reference' => 'required_if:payment_method,card|string'
+            'payment_reference' => 'required_if:payment_method,card|string',
+            'coupon_code' => 'nullable|exists:coupons,code'
         ]);
-
-        /*
-        $validator = Validator::make($request->all(), [
-            'checkout_type' => 'required|string|in:user,guest,register',
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'company' => 'nullable|string',
-            'email' => 'required|email',
-            'password' => 'required_if:checkout_type,register|string',
-            'phone' => 'required|digits_between:11,16',
-            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
-            'delivery_method' => 'required|string|in:shipping,pickup',
-            'shipping_address' => 'required_if:delivery_method,shipping|string',
-            'location_id' => 'required_without:pickup_location_id|numeric|exists:locations,id',
-            'pickup_location_id' => 'required_without:location_id|numeric|exists:pharmacies,id',
-            'city' => 'required_if:delivery_method,shipping|string',
-            'payment_method' => 'required|string|in:card,point',
-            'customer_id' => 'required_if:checkout_type,user|numeric|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response([
-                'status' => false,
-                'message' => $validator->errors()
-            ], 422);
-        }
-
-        $data = $validator->validated();
-        */
 
         $user = Auth::user();
 
@@ -100,6 +73,11 @@ class OrderController extends Controller
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
                 $data['amount'] = $cart->sum('price');
 
+                if ($request->coupon_code) {
+                    $discount = $this->computeValue($request->coupon_code, $data['amount']);
+                    $data['amount'] = $data['amount'] - $discount;
+                }
+        
                 if ($request->delivery_method == 'shipping') {
                     $location = Location::where('id', $data['location_id'] ?? 0)->first();
                     $delType = "{$request->delivery_type}_price";
@@ -196,6 +174,11 @@ class OrderController extends Controller
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
         $data['amount'] = $cart->sum('price');
 
+        if ($request->coupon_code) {
+            $discount = $this->computeValue($request->coupon_code, $data['amount']);
+            $data['amount'] = $data['amount'] - $discount;
+        }
+
         if ($request->delivery_method == 'shipping') {
             $location = Location::where('id', $data['location_id'] ?? 0)->first();
             $delType = "{$request->delivery_type}_price";
@@ -281,6 +264,7 @@ class OrderController extends Controller
             'delivery_method' => 'nullable|string|in:shipping,pickup',
             'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
             'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
+            'coupon_code' => 'nullable|exists:coupons,code'
         ]);
 
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
@@ -299,6 +283,12 @@ class OrderController extends Controller
         
         $return['total'] = $total;
 
+        if ($request->coupon_code) {
+            $return['discount'] = $this->computeValue($request->coupon_code, $subTotal);
+            $return['total'] = $total - $return['discount'];
+        }
+
+        // Paystack transaction charge
         $charges = $return['total'] * 0.015;
         if ($return['total'] > 2500) {
             $charges = $charges + 100;
@@ -310,8 +300,10 @@ class OrderController extends Controller
         $return['transaction_charge'] = $charges;
         $return['total'] = $return['total'] + $charges;
 
+
         return $return;
     }
+
 
     public function confirmPayment(Request $request)
     {
