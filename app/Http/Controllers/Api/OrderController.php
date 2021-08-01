@@ -40,7 +40,7 @@ class OrderController extends Controller
             'shipping_address' => 'required_if:delivery_method,shipping|string',
             'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
             'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
-            'city' => 'required_if:delivery_method,shipping|string',
+            //'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
             'payment_reference' => 'required_if:payment_method,card|string',
             'coupon_code' => 'nullable|exists:coupons,code'
