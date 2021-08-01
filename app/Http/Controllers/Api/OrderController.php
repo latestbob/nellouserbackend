@@ -67,7 +67,12 @@ class OrderController extends Controller
 
         if (!empty($order)) {
 
-            if ($order->payment_confirmed == 1) return response(['status' => false, 'message' => [["You already checked out and made payment for those cart items"]]]);
+            if ($order->payment_confirmed == 1) {
+                return response([
+                    'status' => false, 
+                    'message' => [["You already checked out and made payment for those cart items"]]
+                ], 400);
+            }
             else {
 
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
@@ -95,19 +100,35 @@ class OrderController extends Controller
 
                 if ($data['payment_method'] == 'point') {
 
-                    if (!isset($data['customer_id'])) return response(['status' => false, 'message' => [['You must be logged in to pay with points']]]);
+                    if (!isset($data['customer_id'])) 
+                    return response([
+                        'status' => false, 
+                        'message' => [['You must be logged in to pay with points']]
+                    ], 400);
 
                     $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
-                    if (empty($point)) return response(['status' => false, 'message' => [['You have not earned any points yet']]]);
+                    if (empty($point)) 
+                    return response([
+                        'status' => false, 
+                        'message' => [['You have not earned any points yet']]
+                    ], 400);
 
                     $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
-                    if (empty($rules)) return response(['status' => false, 'message' => [['Point rules have not been set yet, contact system administrator']]]);
+                    if (empty($rules)) 
+                    return response([
+                        'status' => false, 
+                        'message' => [['Point rules have not been set yet, contact system administrator']]
+                    ], 400);
 
                     $pointValue = ($rules['point_value'] * $point['point']);
 
-                    if ($pointValue < $data['amount']) return response(['status' => false, 'message' => [["You don't have enough points to purchase the items in your cart"]]]);
+                    if ($pointValue < $data['amount']) 
+                    return response([
+                        'status' => false, 
+                        'message' => [["You don't have enough points to purchase the items in your cart"]]
+                    ], 400);
 
                     $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
                     $point->save();
@@ -198,19 +219,29 @@ class OrderController extends Controller
 
         if ($data['payment_method'] == 'point') {
 
-            if (!isset($data['customer_id'])) return response(['status' => false, 'message' => [['You must be logged in to pay with points']]]);
+            if (!isset($data['customer_id'])) 
+            return response(['status' => false, 'message' => [['You must be logged in to pay with points']]], 400);
 
             $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
-            if (empty($point)) return response(['status' => false, 'message' => [['You have not earned any points yet']]]);
+            if (empty($point)) 
+            return response(['status' => false, 'message' => [['You have not earned any points yet']]], 400);
 
             $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
-            if (empty($rules)) return response(['status' => false, 'message' => [['Point rules have not been set yet, contact system administrator']]]);
+            if (empty($rules)) 
+            return response([
+                'status' => false, 
+                'message' => [['Point rules have not been set yet, contact system administrator']]
+            ], 400);
 
             $pointValue = ($rules['point_value'] * $point['point']);
 
-            if ($pointValue < $data['amount']) return response(['status' => false, 'message' => [["You don't have enough points to purchase the items in your cart"]]]);
+            if ($pointValue < $data['amount']) 
+            return response([
+                'status' => false, 
+                'message' => [["You don't have enough points to purchase the items in your cart"]]
+            ], 400);
 
             $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
             $point->save();
@@ -313,7 +344,7 @@ class OrderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response(['status' => false, 'message' => $validator->errors()]);
+            return response(['status' => false, 'message' => $validator->errors()], 422);
         }
 
         $order = Order::where($validator->validated())->first();
