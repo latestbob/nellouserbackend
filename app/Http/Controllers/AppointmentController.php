@@ -61,25 +61,29 @@ class AppointmentController extends Controller
             'type' => 'nullable|string',
             'date' => 'required|date|after_or_equal:today',
             //'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
-            'time' => ['required|date_format:H:i', function($attr, $value, $fail){
-                $frags = explode(':', $value);
-                $now = Carbon::now()->addMinutes(30);
-                $time = Carbon::now();
-                $time->setHour($frags[0])
-                    ->setMinute($frags[1])
-                    ->setSecond($frags[2]);
+            'time' => [
+                'required',
+                'date_format:H:i',
+                function ($attr, $value, $fail) {
+                    $frags = explode(':', $value);
+                    $now = Carbon::now()->addMinutes(30);
+                    $time = Carbon::now();
+                    $time->setHour($frags[0])
+                        ->setMinute($frags[1])
+                        ->setSecond($frags[2]);
 
-                if ($now->gte($time)) {
-                    $fail("Time must be at least 30 minutes after the current time.");
+                    if ($now->gte($time)) {
+                        $fail("Time must be at least 30 minutes after the current time.");
+                    }
                 }
-            }],
+            ],
             'medical_center' => [
                 Rule::requiredIf(empty($request->doctor_id)),
                 'exists:health_centers,uuid'
             ],
             'doctor_id' => [
                 Rule::requiredIf(empty($request->medical_center)),
-                Rule::exists('users', 'id')->where(function($query){
+                Rule::exists('users', 'id')->where(function ($query) {
                     $query->where('user_type', 'doctor');
                 })
             ]
@@ -97,8 +101,10 @@ class AppointmentController extends Controller
             $data['center_uuid'] = $request->medical_center;
         }
 
-        $check = Appointment::with(['doctor'])->where(['doctor_id' => $request->doctor_id,
-            'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
+        $check = Appointment::with(['doctor'])->where([
+            'doctor_id' => $request->doctor_id,
+            'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']
+        ])->first();
 
         /*$check = Appointment::with(['center'])->where(['center_uuid' => $request->medical_center,
             'date' => $data['date'], 'time' => $data['time'], ['status', '!=', 'cancelled']])->first();
@@ -144,7 +150,6 @@ class AppointmentController extends Controller
             return response([
                 'msg' => 'Error while booking appointment.'
             ]);
-
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
@@ -192,7 +197,6 @@ class AppointmentController extends Controller
             return response([
                 'msg' => 'Error while fetching pending appointment.'
             ]);
-
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
@@ -243,11 +247,15 @@ class AppointmentController extends Controller
         $data = $validator->validated();
 
         if (isset($data['time'])) $data['time'] = \DateTime::createFromFormat(
-            "Y-m-d H:i", $data['time'])->format("H:i");
+            "Y-m-d H:i",
+            $data['time']
+        )->format("H:i");
 
-        $check = Appointment::with(['center'])->where(['center_uuid' => $appointment->center_uuid,
+        $check = Appointment::with(['center'])->where([
+            'center_uuid' => $appointment->center_uuid,
             'date' => $data['date'], 'time' => $data['time'], ['id', '!=', $appointment->id],
-            ['status', '!=', 'cancelled']])->first();
+            ['status', '!=', 'cancelled']
+        ])->first();
 
         if (!empty($check)) {
             return response([
@@ -284,7 +292,6 @@ class AppointmentController extends Controller
                 'status' => true,
                 'message' => 'Appointment updated successfully'
             ]);
-
         } catch (RequestException $e) {
             echo Psr7\str($e->getRequest());
             if ($e->hasResponse()) {
@@ -297,7 +304,6 @@ class AppointmentController extends Controller
                 'status' => false,
                 'message' => 'Error while updating appointment.'
             ]);
-
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
@@ -361,7 +367,6 @@ class AppointmentController extends Controller
             return response([
                 'msg' => 'Error while updating appointment.'
             ]);
-
         } catch (ClientException $e) {
             echo Psr7\str($e->getRequest());
             return response([
@@ -390,5 +395,4 @@ class AppointmentController extends Controller
         $appointment = $this->find($request->uuid);
         return $appointment;
     }
-    
 }
