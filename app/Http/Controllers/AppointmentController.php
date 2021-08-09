@@ -64,11 +64,13 @@ class AppointmentController extends Controller
             'time' => [
                 'required',
                 'date_format:H:i:s',
-                function ($attr, $value, $fail) {
+                function ($attr, $value, $fail) use($request) {
+                    $frags1 = explode('-', $request->date);
                     $frags = explode(':', $value);
                     $now = Carbon::now()->addMinutes(30);
                     $time = Carbon::now();
-                    $time->setHour($frags[0])
+                    $time->setDate($frags1[0], $frags1[1], $frags1[2])
+                        ->setHour($frags[0])
                         ->setMinute($frags[1])
                         ->setSecond($frags[2]);
 
