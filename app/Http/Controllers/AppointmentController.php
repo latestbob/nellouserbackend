@@ -63,7 +63,7 @@ class AppointmentController extends Controller
             //'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
             'time' => [
                 'required',
-                'date_format:H:i',
+                'date_format:H:i:s',
                 function ($attr, $value, $fail) {
                     $frags = explode(':', $value);
                     $now = Carbon::now()->addMinutes(30);
