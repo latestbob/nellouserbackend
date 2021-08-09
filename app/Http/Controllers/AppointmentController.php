@@ -56,8 +56,8 @@ class AppointmentController extends Controller
 
         $data = $request->validate([
             'reason' => 'required|string',
-            'description' => 'required|string',
-            'type' => 'required|string',
+            'description' => 'nullable|string',
+            'type' => 'nullable|string',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
             'medical_center' => [
