@@ -245,7 +245,7 @@ class AuthController extends Controller
      */
     public function registerCustomer(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $userData = $request->validate([
             'firstname' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:users,email',
@@ -258,14 +258,6 @@ class AuthController extends Controller
             'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
         ]);
 
-
-        if ($validator->fails()) {
-            return response($validator->errors(), 400);
-        }
-
-        //$vendor = Vendor::find($request->facilityID ?: 1);
-
-        $userData = $validator->validated();
 
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
