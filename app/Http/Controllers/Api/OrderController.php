@@ -43,7 +43,8 @@ class OrderController extends Controller
             //'city' => 'required_if:delivery_method,shipping|string',
             'payment_method' => 'required|string|in:card,point',
             'payment_reference' => 'required_if:payment_method,card|string',
-            'coupon_code' => 'nullable|exists:coupons,code'
+            'coupon_code' => 'nullable|exists:coupons,code',
+            'add_prescription_charge' => 'nullable|in:yes,no'
         ]);
 
         $user = Auth::user();
@@ -55,7 +56,7 @@ class OrderController extends Controller
 
         if (isset($data['shipping_address'])) {
             $data['address1'] = $data['shipping_address'];
-            unset($data['shipping_address']);    
+            unset($data['shipping_address']);
         }
 
         if (empty($data['location_id'])) {
@@ -78,6 +79,11 @@ class OrderController extends Controller
                 $cart = Cart::where('cart_uuid', $data['cart_uuid']);
                 $data['amount'] = $cart->sum('price');
 
+                if($request->add_prescription_charge === 'yes') {
+                    
+                    $data['amount'] = $data['amount'] + 1000;
+                }
+
                 if ($request->coupon_code) {
                     $discount = $this->computeValue($request->coupon_code, $data['amount']);
                     $data['amount'] = $data['amount'] - $discount;
@@ -89,12 +95,12 @@ class OrderController extends Controller
                     $data['amount'] +=  $location->{$delType};
                 }
 
-                foreach ($cart->get() as $item) {
-                    if ($item->drug->require_prescription == true && empty($item->prescription)) {
-                        $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
-                        break;
-                    }
-                }
+                // foreach ($cart->get() as $item) {
+                //     if ($item->drug->require_prescription == true && empty($item->prescription)) {
+                //         $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+                //         break;
+                //     }
+                // }
 
                 $data['amount'] = ceil($data['amount']);
 
@@ -295,7 +301,8 @@ class OrderController extends Controller
             'delivery_method' => 'nullable|string|in:shipping,pickup',
             'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
             'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
-            'coupon_code' => 'nullable|exists:coupons,code'
+            'coupon_code' => 'nullable|exists:coupons,code',
+            'add_prescription_charge' => 'nullable|in:yes,no'
         ]);
 
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
@@ -312,12 +319,18 @@ class OrderController extends Controller
             $return['delivery'] = $deliveryCost;
         }
         
+        
+        if($request->add_prescription_charge === 'yes') {
+            $return['total'] = $return['total'] + 1000;
+            $return['prescription_charge'] = 1000;
+        }
         $return['total'] = $total;
 
         if ($request->coupon_code) {
             $return['discount'] = $this->computeValue($request->coupon_code, $subTotal);
             $return['total'] = $total - $return['discount'];
         }
+
 
         // Paystack transaction charge
         $charges = $return['total'] * 0.015;
