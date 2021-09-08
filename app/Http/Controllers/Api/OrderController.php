@@ -341,8 +341,8 @@ class OrderController extends Controller
             $charges = 2000;
         }
 
-        $return['transaction_charge'] = $charges;
-        $return['total'] = $return['total'] + $charges;
+        $return['transaction_charge'] = ceil($charges);
+        $return['total'] = $return['total'] + ceil($charges);
 
 
         return $return;
