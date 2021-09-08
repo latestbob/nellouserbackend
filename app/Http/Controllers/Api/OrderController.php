@@ -320,15 +320,15 @@ class OrderController extends Controller
         }
         
         
-        if($request->add_prescription_charge === 'yes') {
+        $return['total'] = $total;
+        if ($request->add_prescription_charge === 'yes') {
             $return['total'] = $return['total'] + 1000;
             $return['prescription_charge'] = 1000;
         }
-        $return['total'] = $total;
 
         if ($request->coupon_code) {
             $return['discount'] = $this->computeValue($request->coupon_code, $subTotal);
-            $return['total'] = $total - $return['discount'];
+            $return['total'] = $return['total'] - $return['discount'];
         }
 
 
