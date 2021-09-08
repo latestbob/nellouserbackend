@@ -136,6 +136,9 @@ Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::get('/prescriptions', 'Api\ProfileController@getPrescriptions');
     Route::post('/add-prescription', 'Api\ProfileController@addPrescription');
     Route::get('/points', 'Api\ProfileController@getPoints');
+
+
+    Route::get('orders', 'Api\ProfileController@fetchOrders');
 });
 
 Route::post('/password/change', 'Api\ProfileController@changePassword')->middleware('jwt.auth');

@@ -153,6 +153,16 @@ class ProfileController extends Controller
         return response(['error' => 'Image not found'], 400);
     }
 
+
+    public function fetchOrders()
+    {
+        $user = Auth::user();
+
+        return Order::where('customer_id', $user->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate();
+    }
+
     /**
      * Health history
      *
