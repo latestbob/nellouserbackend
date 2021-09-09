@@ -158,7 +158,8 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        return Order::where('customer_id', $user->id)
+        return Order::with(['items','location'])
+            ->where('customer_id', $user->id)
             ->orderBy('created_at', 'DESC')
             ->paginate();
     }

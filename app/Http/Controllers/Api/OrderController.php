@@ -289,7 +289,7 @@ class OrderController extends Controller
         return [
             'status' => true,
             'message' => $respMsg,
-            'order' => $order,
+            'order' => $order->load(['items', 'location', 'pickup_location']),
             'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
         ];
     }
