@@ -53,10 +53,23 @@ class PackageController extends Controller
                 'package_id' => $request->package_id,
                 'transaction_id' => $tranx->id,
                 'start_date' => Carbon::today(),
-                'expiration_date' => Carbon::today()->addMonth(),        
+                'expiration_date' => Carbon::today()->addMonth(),
             ]);
 
-            return $sub;
+            // Paystack transaction charge
+            $charges = $plan->price * 0.015;
+            if ($plan->price > 2500) {
+                $charges = $charges + 100;
+            }
+            if ($charges > 2000) {
+                $charges = 2000;
+            }
+
+            return [
+                'subscription' => $sub,
+                'sub_amount' => $plan->price,
+                'total' => $charges
+            ];
         }
 
         return response(['errors' => [
