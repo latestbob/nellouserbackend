@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DrugRating;
+use App\Models\DrugRating;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
 use App\Models\Cart;
@@ -472,7 +472,11 @@ class DrugController extends Controller
             ]);
         }
 
-        $item = Cart::where(['cart_uuid' => $request->uuid, 'drug_id' => $request->id, 'vendor_id' => $request->user()->vendor_id])->first();
+        $item = Cart::where([
+            'cart_uuid' => $request->uuid, 
+            'drug_id' => $request->id, 
+            'vendor_id' => $request->user()->vendor_id
+            ])->first();
 
         if (empty($item)) {
 

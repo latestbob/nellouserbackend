@@ -470,6 +470,9 @@ class AuthController extends Controller
     {
         $token = $request->bearerToken();
         $user = JWTAuth::toUser($token);
+        if ($user) {
+            $user->load(['fitnessSubscription', 'doctorSubscription']);
+        }
         return ['user' => $user];
     }
 
