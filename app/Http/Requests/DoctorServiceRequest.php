@@ -30,13 +30,13 @@ class DoctorServiceRequest extends FormRequest
             'weight_in_lbs' => 'required|numeric',
             'diagnosis' => 'required|array',
             'diagnosis.status' => 'required|in:yes,no',
-            'diagnosis.detail' => 'nullable|string',
+            'diagnosis.detail' => 'requiredIf:diagnosis.status,yes|string',
             'medication' => 'required|array',
             'medication.status' => 'required|in:yes,no',
-            'medication.detail' => 'nullable|string',
+            'medication.detail' => 'requiredIf:medication.status,yes|string',
             'allergies' => 'required|array',
             'allergies.status' => 'required|in:yes,no',
-            'allergies.detail' => 'nullable|string',
+            'allergies.detail' => 'requiredIf:allergies.status,yes|string',
         ];
     }
 }
