@@ -49,7 +49,22 @@ class DrugController extends Controller
             ->when($request->rating, function($query, $rating){
                 $query->where('rating', '>=', $rating);
             })
-            ->orderBy('name')
+            ->when($request->sort_by, function ($query, $sortBy){
+                switch($sortBy) {
+                    case 'price_min':
+                        $query->orderBy('price');
+                        break;
+                    case 'price_max':
+                        $query->orderBy('price', 'DESC');
+                            break;
+                    case 'rating':
+                        $query->orderBy('rating');
+                        break;
+                    default:
+                        $query->orderBy('name');
+                        break;
+                }
+            })
             ->paginate(16);
 
         return $drugs;
