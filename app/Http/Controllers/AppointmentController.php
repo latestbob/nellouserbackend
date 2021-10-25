@@ -72,7 +72,7 @@ class AppointmentController extends Controller
                     $time->setDate($frags1[0], $frags1[1], $frags1[2])
                         ->setHour($frags[0])
                         ->setMinute($frags[1])
-                        ->setSecond($frags[2]);
+                        ->setSecond(0);
 
                     if ($now->gte($time)) {
                         $fail("Time must be at least 30 minutes after the current time.");
