@@ -16,7 +16,7 @@ class PartnerSeeder extends Seeder
         Partner::create([
             'name' => 'Tremendoc',
             'email' => 'admin@tremendoc.com',
-            'api_key' => Str::lower(Str::random(16))
+            'api_key' => Str::lower(Str::random(64))
         ]);
     }
 }
