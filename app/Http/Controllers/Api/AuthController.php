@@ -262,6 +262,7 @@ class AuthController extends Controller
         $userData['vendor_id'] = 1;
         $userData['user_type'] = 'customer';
         $userData['uuid'] = Str::uuid()->toString();
+        $userData['health_id'] = $this->generateHealthId();
         $userData['password'] = Hash::make($userData['password']);
 
         if (!empty($userData['dob'])) {
@@ -589,4 +590,12 @@ class AuthController extends Controller
     }
 
 
+    private function generateHealthId() : string
+    {
+        do {
+            $id = random_int(10000000, 99999999);
+            $id = "{$id}";
+        } while(User::where('health_id', $id)->exists());
+        return $id;
+    }
 }
