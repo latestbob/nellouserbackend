@@ -134,6 +134,19 @@ class User extends Authenticatable implements JWTSubject
         return Subscription::where('user_id', $this->getAttribute('id'))->exists();
     }
 
+
+    public function getPackageAttribute()
+    {
+        $sub = Subscription::where('user_id', $this->getAttribute('id'))
+            ->select(['package_id'])->first();
+        if ($sub) {
+            $package = Package::with(['benefits'])
+                ->find($sub->package_id);
+
+            return $package;
+        }
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

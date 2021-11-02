@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\PartnerMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -263,4 +264,11 @@ Route::prefix('service')->middleware('jwt.auth')->namespace('Api')->group(functi
     Route::get('/', 'SubscriptionController@index');
     Route::post('fitness', 'SubscriptionController@fitnessSubscribe');
     Route::post('doctor', 'SubscriptionController@doctorSubscribe');
+});
+
+
+Route::prefix('partner')->middleware(PartnerMiddleware::class)->namespace('Partner')->group(function(){
+    Route::prefix('users')->group(function(){
+        Route::get(':health_id/check', 'UserController@check');
+    });
 });

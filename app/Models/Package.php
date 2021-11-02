@@ -19,4 +19,6 @@ class Package extends Model
     {
         return $this->belongsToMany('App\Models\Benefit', 'package_benefit');
     }
+
+    
 }

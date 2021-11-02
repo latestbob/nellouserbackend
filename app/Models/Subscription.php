@@ -14,4 +14,6 @@ class Subscription extends Model
         'transaction_id',
         'reference'
     ];
+
+    
 }
