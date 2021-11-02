@@ -16,7 +16,7 @@ class UserHealthIdSeeder extends Seeder
             ->get();
         
         foreach($users as $user) {
-            $user->health_id = $this->generateHealthId()
+            $user->health_id = $this->generateHealthId();
             $user->save();
         }
     }
