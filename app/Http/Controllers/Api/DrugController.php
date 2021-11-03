@@ -296,6 +296,7 @@ class DrugController extends Controller
         return compact('status', 'msg', 'orderItems', 'size', 'userType');
     }
 
+
     public function drugOrderItemAction(Request $request)
     {
 
@@ -475,7 +476,7 @@ class DrugController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'uuid' => 'required|uuid|exists:carts,cart_uuid',
+            'uuid' => 'required|exists:carts,cart_uuid',
             'id' => 'required|integer',
             'file' => 'required|file|mimes:jpeg,jpg,png,pdf',
         ]);
