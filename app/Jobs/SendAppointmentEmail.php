@@ -34,7 +34,7 @@ class SendAppointmentEmail implements ShouldQueue
     public function handle()
     {
         $this->appointment->load(['user', 'center']);
-        $html = view('admin-appointment', [
+        $html = view('mail.admin-appointment', [
             'appointment' => $this->appointment
         ]);
 

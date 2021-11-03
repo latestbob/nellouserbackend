@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 
 class EclinicSeeder extends Seeder
 {
+   
     /**
      * Run the database seeds.
      *
@@ -14,4 +15,5 @@ class EclinicSeeder extends Seeder
     {
         ImportEclinicPatientJob::dispatchNow();
     }
+
 }

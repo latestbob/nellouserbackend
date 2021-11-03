@@ -64,7 +64,7 @@ class OrderController extends Controller
         }
 
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
-        $data['order_ref'] = strtoupper(Str::uuid()->toString());
+        $data['order_ref'] = strtoupper(Str::random(10));
 
         if (!empty($order)) {
 
