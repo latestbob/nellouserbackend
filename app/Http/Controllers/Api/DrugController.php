@@ -46,17 +46,17 @@ class DrugController extends Controller
             ->when($request->prescription, function ($query, $pres) {
                 $query->where('require_prescription', strtolower($pres) === 'yes' ? 1 : 0);
             })
-            ->when($request->rating, function($query, $rating){
+            ->when($request->rating, function ($query, $rating) {
                 $query->where('rating', '>=', $rating);
             })
-            ->when($request->sort_by, function ($query, $sortBy){
-                switch($sortBy) {
+            ->when($request->sort_by, function ($query, $sortBy) {
+                switch ($sortBy) {
                     case 'price_min':
                         $query->orderBy('price');
                         break;
                     case 'price_max':
                         $query->orderBy('price', 'DESC');
-                            break;
+                        break;
                     case 'rating':
                         $query->orderBy('rating');
                         break;
@@ -243,7 +243,8 @@ class DrugController extends Controller
                 //'vendor_id' => $request->user()->vendor_id
             ]);
 
-        if ($user->user_type == 'agent') {
+        if ($user->user_type == 'rider') {
+            // if ($user->user_type == 'agent') {
             $orderItems->where('status', 'approved');
         }
 
@@ -490,10 +491,10 @@ class DrugController extends Controller
         }
 
         $item = Cart::where([
-            'cart_uuid' => $request->uuid, 
-            'drug_id' => $request->id, 
+            'cart_uuid' => $request->uuid,
+            'drug_id' => $request->id,
             'vendor_id' => $request->user()->vendor_id
-            ])->first();
+        ])->first();
 
         if (empty($item)) {
 
@@ -534,7 +535,7 @@ class DrugController extends Controller
         $count = DrugRating::where('drug_id', $request->drug_id)->count();
         $sum = DrugRating::where('drug_id', $request->drug_id)->sum('rating');
         PharmacyDrug::where('id', $request->drug_id)->update([
-            'rating' => (int) ($sum/$count)
+            'rating' => (int) ($sum / $count)
         ]);
 
         return ['msg' => 'Rating saved'];
