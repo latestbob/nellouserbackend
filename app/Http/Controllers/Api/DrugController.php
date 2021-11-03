@@ -234,7 +234,7 @@ class DrugController extends Controller
         $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id,require_prescription'])
             ->whereHas('order', function ($query) use ($user) {
                 if ($user->user_type == 'agent') {
-                    $query->where('location_id', $user->pharmacy->location_id);
+                    // $query->where('location_id', $user->pharmacy->location_id);
                 }
                 //$query->where('location_id', $user->location_id);
             })
