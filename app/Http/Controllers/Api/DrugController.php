@@ -101,7 +101,7 @@ class DrugController extends Controller
         $orders = Order::whereHas('items', function ($query) use ($user) {
             // $query->where('carts.vendor_id', $user->vendor_id)
             $query->where('carts.vendor_id', $user->pharmacy_id)
-                ->where('status', 'approved')
+                ->where('carts.status', 'approved')
                 ->where('is_ready', 0);
         })
             ->withCount(['items'])->when($locationID, function ($query, $loc) {
