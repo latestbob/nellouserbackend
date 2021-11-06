@@ -131,7 +131,7 @@ class DrugController extends Controller
         })
             ->withCount(['items'])->when($locationID, function ($query, $loc) {
                 $query->where('location_id', $loc)
-                    ->where('status', 'approved');
+                    ->where('carts.status', 'approved');
             })
             ->where('payment_confirmed', 1)
             ->paginate($request->limit ?? 15);

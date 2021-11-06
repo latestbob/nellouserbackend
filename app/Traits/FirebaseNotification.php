@@ -30,7 +30,7 @@ trait FirebaseNotification
         }
 
         $headers = [
-            'Authorization: key=' . env('FIREBASE_SERVER_KEY'),
+            'Authorization: key=' . config('services.firebase_server_key'),
             'Content-Type: application/json',
         ];
 
