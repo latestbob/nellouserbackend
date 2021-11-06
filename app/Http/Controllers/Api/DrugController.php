@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\DrugRating;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
+use App\Jobs\FCMJob;
 use App\Models\Cart;
 use App\Models\DoctorsPrescription;
 use App\Models\DrugCategory;
@@ -14,11 +15,9 @@ use App\Models\PharmacyDrug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\FirebaseNotification;
 
 class DrugController extends Controller
 {
-    use FirebaseNotification;
 
     public function index(Request $request)
     {
@@ -238,7 +237,8 @@ class DrugController extends Controller
         $orderItems = Cart::with(['drug:id,name,brand,price,description,image,drug_id,require_prescription'])
             ->whereHas('order', function ($query) use ($user) {
                 if ($user->user_type == 'agent') {
-                    $query->where('location_id', $user->pharmacy->location_id);
+                    $query->where('location_id', $user->pharmacy->location_id)
+                        ->where('status', 'approved');
                 }
                 //$query->where('location_id', $user->location_id);
             })
@@ -247,9 +247,9 @@ class DrugController extends Controller
                 //'vendor_id' => $request->user()->vendor_id
             ]);
 
-        if ($user->user_type == 'agent') {
-            $orderItems->where('status', 'approved');
-        }
+        // if ($user->user_type == 'agent') {
+        //     $orderItems->where('status', 'approved');
+        // }
 
         $orderItems = $orderItems->orderByDesc('id')->get();
         /*if ($user->user_type == 'agent') {
@@ -354,11 +354,10 @@ class DrugController extends Controller
 
             if (!empty($agents)) {
 
-                $this->sendNotification(
+                FCMJob::dispatch(
                     $agents,
                     "New Order",
                     "Hello there! there's been a newly approved order for your location with Order REF: {$item->order->order_ref}",
-                    'high',
                     ['orderId' => $item->order->id, 'items' => $items]
                 );
             }
@@ -417,6 +416,7 @@ class DrugController extends Controller
         $items = [];
         $pickup_addresses = [];
 
+        $item->load('order.items');
         foreach ($item->order->items as $it) {
             if ($it->is_ready != true) {
                 $isAllReady = false;
@@ -440,18 +440,18 @@ class DrugController extends Controller
 
             if ($item->order->delivery_method == 'shipping') {
 
-                $riders = [];
-                foreach ($item->order->location->riders as $rider) {
-                    $riders[] = $rider->device_token;
-                }
+                $riders = $item->order->location->riders()
+                    ->whereNotNull('device_token')->pluck('device_token')->toArray();
+                // foreach ($item->order->location->riders as $rider) {
+                //     $riders[] = $rider->device_token;
+                // }
 
                 if (!empty($riders)) {
 
-                    $this->sendNotification(
+                    FCMJob::dispatch(
                         $riders,
                         "New Order",
                         "Hello there! an order has been processed and is ready for pick up",
-                        'high',
                         [
                             'orderId' => $item->order->id,
                             'items' => $items,
@@ -461,6 +461,7 @@ class DrugController extends Controller
                             'pickup_address' => array_values($pickup_addresses)
                         ]
                     );
+
                 } else {
 
                     return response([
