@@ -127,11 +127,11 @@ class DrugController extends Controller
         }
 
         $orders = Order::whereHas('items', function ($query) use ($user) {
-            $query->where('carts.vendor_id', $user->vendor_id);
+            $query->where('carts.vendor_id', $user->vendor_id)
+                ->where('carts.status', 'approved');
         })
             ->withCount(['items'])->when($locationID, function ($query, $loc) {
-                $query->where('location_id', $loc)
-                    ->where('carts.status', 'approved');
+                $query->where('location_id', $loc);
             })
             ->where('payment_confirmed', 1)
             ->paginate($request->limit ?? 15);
