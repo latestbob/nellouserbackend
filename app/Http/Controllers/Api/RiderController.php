@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\FCMJob;
 use App\Models\Order;
 use App\Models\RiderTripLog;
-use App\Traits\FirebaseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RiderController extends Controller
 {
-    use FirebaseNotification;
 
     public function acceptOrder(Request $request) {
 
@@ -53,10 +52,14 @@ class RiderController extends Controller
             $riders[] = $rider->device_token;
         }
 
-        if (!empty($riders)) $this->sendNotification($riders,
-            "Order Accepted", "A rider has accepted the order", 'high', [
+        if (!empty($riders))
+        FCMJob::dispatch(
+            $riders,
+            "Order Accepted", "A rider has accepted the order", [
                 'orderId' => $request->id
-            ]);
+            ]
+        );
+
 
         return [
             'status' => true,

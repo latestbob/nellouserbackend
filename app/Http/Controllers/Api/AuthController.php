@@ -162,12 +162,12 @@ class AuthController extends Controller
             ], 400);
         }
 
-        if (empty($user->device_token)) {
-            $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
-            $user->device_token = wordwrap($hash, 4, ":", true);
-        }
+        // if (empty($user->device_token)) {
+        //     $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
+        //     $user->device_token = wordwrap($hash, 4, ":", true);
+        // }
 
-        $user->save();
+        //$user->save();
 
         $user->location = $user->pharmacy->location;
 
@@ -219,12 +219,12 @@ class AuthController extends Controller
             ], 400);
         }
 
-        if (empty($user->device_token)) {
-            $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
-            $user->device_token = wordwrap($hash, 4, ":", true);
-        }
+        // if (empty($user->device_token)) {
+        //     $hash = Hash::make("{$user->id}-{$user->uuid}" . env('APP_KEY'));
+        //     $user->device_token = wordwrap($hash, 4, ":", true);
+        // }
 
-        $user->save();
+        //$user->save();
 
         return [
             'token' => $token,
