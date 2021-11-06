@@ -100,15 +100,16 @@ class DrugController extends Controller
 
         $orders = Order::whereHas('items', function ($query) use ($user) {
             // $query->where('carts.vendor_id', $user->vendor_id)
-            $query->where('carts.vendor_id', $user->pharmacy_id)
+            $query //->where('carts.vendor_id', $user->pharmacy_id)
                 ->where('carts.status', 'approved')
-                ->where('is_ready', 0);
+                ->where('carts.is_ready', 0);
         })
-            ->withCount(['items'])->when($locationID, function ($query, $loc) {
+            ->withCount(['items'])
+            ->when($locationID, function ($query, $loc) {
                 $query->where('location_id', $loc);
             })
             ->where('payment_confirmed', 1)
-            ->paginate($request->limit ?? 15);
+            ->paginate($size);
 
         return new OrderCollection($orders);
     }
@@ -130,7 +131,8 @@ class DrugController extends Controller
             $query->where('carts.vendor_id', $user->vendor_id)
                 ->where('carts.status', 'approved');
         })
-            ->withCount(['items'])->when($locationID, function ($query, $loc) {
+            ->withCount(['items'])
+            ->when($locationID, function ($query, $loc) {
                 $query->where('location_id', $loc);
             })
             ->where('payment_confirmed', 1)
@@ -138,88 +140,88 @@ class DrugController extends Controller
 
         return new OrderCollection($orders);
 
-        $orders = Order::query()->join('carts', 'orders.cart_uuid', '=', 'carts.cart_uuid', 'INNER');
+        // $orders = Order::query()->join('carts', 'orders.cart_uuid', '=', 'carts.cart_uuid', 'INNER');
 
-        $orders->when($locationID, function ($query, $locationID) {
-            $query->where(['orders.location_id' => $locationID, 'orders.payment_confirmed' => 1]);
-        });
+        // $orders->when($locationID, function ($query, $locationID) {
+        //     $query->where(['orders.location_id' => $locationID, 'orders.payment_confirmed' => 1]);
+        // });
 
-        if (!empty($search = $request->search)) {
+        // if (!empty($search = $request->search)) {
 
-            $orders = $orders->whereRaw(
-                "(orders.firstname like ? or orders.lastname like ? or
-                orders.phone like ? or orders.email like ? or
-                orders.company like ? or orders.city = ? or
-                orders.order_ref = ? or orders.cart_uuid = ?)",
-                [
-                    "%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%",
-                    "%{$search}%", $search, $search, $search
-                ]
-            );
-        }
+        //     $orders = $orders->whereRaw(
+        //         "(orders.firstname like ? or orders.lastname like ? or
+        //         orders.phone like ? or orders.email like ? or
+        //         orders.company like ? or orders.city = ? or
+        //         orders.order_ref = ? or orders.cart_uuid = ?)",
+        //         [
+        //             "%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%",
+        //             "%{$search}%", $search, $search, $search
+        //         ]
+        //     );
+        // }
 
-        if (!empty($payment = $request->payment) && ($payment == 'paid' || $payment == 'unpaid')) {
-            $orders = $orders->where('orders.payment_confirmed', '=', ($payment == 'paid' ? 1 : 0));
-        }
+        // if (!empty($payment = $request->payment) && ($payment == 'paid' || $payment == 'unpaid')) {
+        //     $orders = $orders->where('orders.payment_confirmed', '=', ($payment == 'paid' ? 1 : 0));
+        // }
 
-        $dateEnd = null;
+        // $dateEnd = null;
 
-        if (!empty($dateStart = $request->dateStart)) {
+        // if (!empty($dateStart = $request->dateStart)) {
 
-            $dateEnd = $request->dateEnd ?? date('Y-m-d');
+        //     $dateEnd = $request->dateEnd ?? date('Y-m-d');
 
-            $orders = $orders->whereRaw(
-                "(orders.created_at between ? and ?)",
-                ["{$dateStart} 00:00:00", "{$dateEnd} 23:59:59"]
-            );
-        }
+        //     $orders = $orders->whereRaw(
+        //         "(orders.created_at between ? and ?)",
+        //         ["{$dateStart} 00:00:00", "{$dateEnd} 23:59:59"]
+        //     );
+        // }
 
-        $location = null;
+        // $location = null;
 
-        if (empty($locationID) && !empty($location = $request->location)) {
+        // if (empty($locationID) && !empty($location = $request->location)) {
 
-            $orders = $orders->where('orders.location_id', $location);
-        }
+        //     $orders = $orders->where('orders.location_id', $location);
+        // }
 
-        $orders = $orders->where('carts.vendor_id', $request->user()->vendor_id);
+        // $orders = $orders->where('carts.vendor_id', $request->user()->vendor_id);
 
-        $orders = $orders->groupBy('carts.cart_uuid')->orderByDesc('orders.id');
+        // $orders = $orders->groupBy('carts.cart_uuid')->orderByDesc('orders.id');
 
-        $orders = $orders->paginate($size);
+        // $orders = $orders->paginate($size);
 
-        $total = [
+        // $total = [
 
-            'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
-                'carts',
-                'orders.cart_uuid',
-                '=',
-                'carts.cart_uuid',
-                'INNER'
-            )->where([
-                'carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 1
-            ])->when($locationID, function ($query, $locationID) {
-                $query->where('orders.location_id', $locationID);
-            })->distinct()->count('orders.id') : null,
+        //     'paid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+        //         'carts',
+        //         'orders.cart_uuid',
+        //         '=',
+        //         'carts.cart_uuid',
+        //         'INNER'
+        //     )->where([
+        //         'carts.vendor_id' => $request->user()->vendor_id,
+        //         'orders.payment_confirmed' => 1
+        //     ])->when($locationID, function ($query, $locationID) {
+        //         $query->where('orders.location_id', $locationID);
+        //     })->distinct()->count('orders.id') : null,
 
-            'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
-                'carts',
-                'orders.cart_uuid',
-                '=',
-                'carts.cart_uuid',
-                'INNER'
-            )->where([
-                'carts.vendor_id' => $request->user()->vendor_id,
-                'orders.payment_confirmed' => 0
-            ])->when($locationID, function ($query, $locationID) {
-                $query->where('orders.location_id', $locationID);
-            })->distinct()->count('orders.id') : null
+        //     'unpaid' => ($userType == 'admin' || $userType == 'agent') ? Order::query()->join(
+        //         'carts',
+        //         'orders.cart_uuid',
+        //         '=',
+        //         'carts.cart_uuid',
+        //         'INNER'
+        //     )->where([
+        //         'carts.vendor_id' => $request->user()->vendor_id,
+        //         'orders.payment_confirmed' => 0
+        //     ])->when($locationID, function ($query, $locationID) {
+        //         $query->where('orders.location_id', $locationID);
+        //     })->distinct()->count('orders.id') : null
 
-        ];
+        // ];
 
-        $locations = $locationID ? Location::where('id', $locationID)->get() : Location::all();
+        // $locations = $locationID ? Location::where('id', $locationID)->get() : Location::all();
 
-        return compact('orders', 'size', 'total', 'search', 'payment', 'dateStart', 'dateEnd', 'locations', 'location', 'userType');
+        // return compact('orders', 'size', 'total', 'search', 'payment', 'dateStart', 'dateEnd', 'locations', 'location', 'userType');
     }
 
     public function drugOrderItems(Request $request)
