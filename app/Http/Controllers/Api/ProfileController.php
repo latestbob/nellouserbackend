@@ -160,6 +160,7 @@ class ProfileController extends Controller
 
         return Order::with(['items','location'])
             ->where('customer_id', $user->id)
+            ->orWhere('email', $user->email)
             ->orderBy('created_at', 'DESC')
             ->paginate();
     }
