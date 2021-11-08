@@ -49,6 +49,7 @@ class OrderController extends Controller
 
         $user = Auth::user();
 
+        $data['customer_id'] = $user->id;
         $data['email'] = $request->email ?? $user->email;
         $data['phone'] = $request->phone ?? $user->phone;
         $data['firstname'] = $request->firstname ?? $user->firstname;
