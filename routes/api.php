@@ -173,6 +173,7 @@ Route::prefix('/order')->middleware('jwt.auth')->group(function() {
     Route::post('/drug/confirm-payment', 'Api\OrderController@confirmPayment');
     Route::post('/merge', 'Api\OrderController@mergeOrder');
     Route::post('/cancel', 'Api\OrderController@cancelOrder');
+    Route::get('{order}/view', 'Api\OrderController@viewOrder');
 });
 
 Route::post('/file-upload', 'FileController@fileUpload');

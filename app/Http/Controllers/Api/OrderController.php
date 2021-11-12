@@ -473,4 +473,18 @@ class OrderController extends Controller
             'message' => 'Order cancelled successfully'
         ];
     }
+
+
+    public function viewOrder(Order $order)
+    {
+        $user = Auth::user();
+        if ($order->email != $order->email && $order->customer_id != $user->id) {
+            return response(['error' => 'Unauthorized'], 401);
+        }
+
+        $order->load(['items.drug', 'location', 'pickup_location']);
+
+        return $order;
+    }
+
 }
