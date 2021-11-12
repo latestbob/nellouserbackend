@@ -158,7 +158,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        return Order::with(['items','location'])
+        return Order::with(['items.drug','location'])
             ->where('customer_id', $user->id)
             ->orWhere('email', $user->email)
             ->orderBy('created_at', 'DESC')
