@@ -270,6 +270,7 @@ Route::prefix('service')->middleware('jwt.auth')->namespace('Api')->group(functi
 
 Route::prefix('partner')->middleware(PartnerMiddleware::class)->namespace('Partner')->group(function(){
     Route::prefix('users')->group(function(){
+        Route::post('create', 'UserController@create');
         Route::get('{health_id}/check', 'UserController@check');
     });
 });
