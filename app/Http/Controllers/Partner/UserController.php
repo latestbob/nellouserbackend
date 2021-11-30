@@ -21,10 +21,13 @@ class UserController extends Controller
     public function check(Request $request) 
     {
         $user = User::where('health_id', $request->health_id)->first();
+
         if ($user) {
             $user->append('package');
+            return $user;
         }
-        return $user;
+
+        return response(['error' => 'User not found'], 404);
     }
 
     public function create(Request $request)
