@@ -8,10 +8,13 @@ use App\Notifications\VerificationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Traits\IDGen;
 
 
 class UserController extends Controller
 {
+    use IDGen;
+
     public function index()
     {
 

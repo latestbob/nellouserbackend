@@ -22,11 +22,12 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
+use App\Traits\IDGen;
 
 class AuthController extends Controller
 {
 
-    use GuzzleClient;
+    use GuzzleClient, IDGen;
 
     public function getToken(Request $request)
     {
@@ -587,15 +588,5 @@ class AuthController extends Controller
         }
 
         return response(['errors' => ['current_password' => ['Current password is in correct.']]], 422);
-    }
-
-
-    private function generateHealthId() : string
-    {
-        do {
-            $id = random_int(10000000, 99999999);
-            $id = "{$id}";
-        } while(User::where('health_id', $id)->exists());
-        return $id;
     }
 }
