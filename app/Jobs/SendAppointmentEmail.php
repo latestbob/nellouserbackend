@@ -21,9 +21,9 @@ class SendAppointmentEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Appointment $appointment)
+    public function __construct()
     {
-        $this->appointment = $appointment;
+       // $this->appointment = $appointment;
     }
 
     /**
@@ -33,10 +33,13 @@ class SendAppointmentEmail implements ShouldQueue
      */
     public function handle()
     {
+        // $this->appointment->load(['user', 'center']);
+        // $html = view('mail.admin-appointment', [
+        //     'appointment' => $this->appointment
+        // ]);
+
         $this->appointment->load(['user', 'center']);
-        $html = view('mail.admin-appointment', [
-            'appointment' => $this->appointment
-        ]);
+        $html = view('mail.admin-appointment');
 
         Mail::send([], [], function($message) use ($html) {
             $message->to('hello@asknello.com');

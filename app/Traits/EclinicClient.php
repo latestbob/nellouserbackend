@@ -50,7 +50,8 @@ trait EclinicClient
     {
         $client = new Client([
             'base_uri' => $this->ECLINIC_API,
-            'timeout'  => '2.0'
+            'timeout'  => '2.0',
+           
         ]);
         $options = [
             'query' => $data,

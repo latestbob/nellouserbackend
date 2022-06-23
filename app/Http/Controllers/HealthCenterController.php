@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use App\Traits\GuzzleClient;
+use DB;
 
 class HealthCenterController extends Controller
 {
@@ -57,5 +58,18 @@ class HealthCenterController extends Controller
         return response([
             'msg' => 'Error while fetching pending appointment.'
         ], 400);
+    }
+
+    //get medical center
+
+    public function fetchMedicalCenter(Request $request){
+        $center = HealthCenter::where(['is_active' => true])
+        //            ->whereNotNull('hospital')
+                  ->when($request->specialization, function($query, $spec){
+                        $query->where('center_type', 'LIKE', "%{$spec}%");
+                    })->paginate(30);
+
+                    return $center;
+        
     }
 }

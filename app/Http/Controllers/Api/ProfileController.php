@@ -334,7 +334,7 @@ class ProfileController extends Controller
 
     public function appointments(Request $request)
     {
-        return Appointment::with(['center', 'doctor'])->where('user_uuid', $request->user()->uuid)
+        return Appointment::where('user_uuid', $request->user()->uuid)
             ->orderByDesc('id')
             ->paginate(10);
     }

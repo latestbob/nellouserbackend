@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 
 
+//Adding Farmercare staffs 
+
+Route::get('/famacare/staff','FamacareController@index');
+
 Route::prefix('/auth')->group(function () {
 
     Route::get('/', 'Api\AuthController@getToken')->name('api.auth');
@@ -157,6 +161,10 @@ Route::get('/doctors/specializations', 'Api\DoctorController@fetchSpecialization
 Route::get('/health-centers', 'HealthCenterController@index')->middleware('jwt.auth');
 Route::get('/vendors', 'Api\VendorController@getAllVendors');
 
+//for Medical Center 
+
+Route::get('/medicalcenter', 'HealthCenterController@fetchMedicalCenter');
+
 Route::prefix('/health-tip')->middleware('jwt.auth')->group(function() {
     Route::get('/today', 'HealthTipController@todayTip');
     Route::get('/all', 'HealthTipController@index');
@@ -201,6 +209,7 @@ Route::prefix('/cart')->group(function() {
     Route::post('/add-prescription', 'Api\CartController@addPrescription')->name('add_prescription_to_cart_item');
 });
 
+
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::get('/', 'AppointmentController@index');
     Route::post('/book', 'AppointmentController@bookAppointment');
@@ -208,6 +217,18 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'AppointmentController@update');
     Route::post('/cancel', 'AppointmentController@cancel');
     Route::get('/pending', 'AppointmentController@pending');
+    Route::post('/hospital/book','AppointmentController@bookHospitalAppointment');
+    //verify paystack payment
+
+    Route::get('/verify/{reference}','AppointmentController@verifyappointmentpayment');
+
+    //Add Appointment to the Appointment Database
+
+    Route::post('/completebook','AppointmentController@completebooking');
+
+    // Add Hospital Appointment to Database
+
+    Route::post('/hospital/completebook','AppointmentController@hospitalappointmentbooking');
 });
 
 Route::get('/users/{user:uuid}/appointments', 'AppointmentController@fetchUserAppointments');

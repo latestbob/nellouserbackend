@@ -11,13 +11,18 @@ return [
     | to accept any value.
     |
     */
+
     'paths' => ['api/*'],
-    'supportsCredentials' => false,
+    'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
+
+    
+       
+    
 
 ];

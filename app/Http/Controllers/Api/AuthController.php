@@ -273,7 +273,8 @@ class AuthController extends Controller
         $userData['token'] = Str::random(15);
         $user = User::create($userData);
 
-        $user->notify(new VerificationNotification());
+        $user->notify(new VerificationNotification()); 
+        //uncomment this
 
         $credentials = $request->only(['email', 'password']);
 
@@ -351,9 +352,10 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response([
-                'msg' => $validator->errors()
-            ], 400);
+            return [
+                'status' => false,
+                'msg' => "User email not Registered"
+            ];
         }
 
         $user = User::where('email', '=', $request->email)->first();
@@ -362,6 +364,7 @@ class AuthController extends Controller
 
         return [
             'email' => $user->email,
+            'uuid' => $user->uuid,
             'status' => true,
             'message' => "A password reset code has been sent to your mail box at {$user->email}",
         ];
@@ -376,9 +379,10 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response([
-                'errors' => $validator->errors()
-            ], 422);
+            return [
+                'status' => "invalid",
+                'message' => "Invalid Credentials or Reset Code"
+            ];
         }
 
         $pass = PasswordReset::where(['account_type' => 'user', 'token' => $request->code])->first();
@@ -392,11 +396,11 @@ class AuthController extends Controller
         }
 
         if (time() > (strtotime($pass->created_at) + (60 * 60))) {
-            return response([
-                'errors' => [
-                    'code' => ['Sorry that code has expired']
-                ]
-            ], 422);
+            return [
+                'status' => "expired",
+                    'message' => "Sorry that code has expired"
+                
+            ];
         }
 
         $user = User::where('email', $request->email)->first();
@@ -578,7 +582,7 @@ class AuthController extends Controller
         $user = $request->user();
         $data = $request->validate([
             'current_password' => 'required|string',
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:6'
         ]);
 
         if (Hash::check($data['current_password'], $user->password)) {
@@ -587,6 +591,11 @@ class AuthController extends Controller
             return ['status' => true, 'message' => 'Password changed successfully'];
         }
 
-        return response(['errors' => ['current_password' => ['Current password is in correct.']]], 422);
+       
+            return [
+                'status' => false,
+                'error' => "Current Password Not Registered",
+            ];
+        
     }
 }
