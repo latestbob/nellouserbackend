@@ -62,6 +62,8 @@ Route::prefix('/auth')->group(function () {
 
 });
 
+Route::get('/drugname/{id}','Api\DrugController@getdrugname');
+
 Route::get('/drugs-order', 'Api\DrugController@drugOrders')->name('drugs-order')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
 Route::get('/drugs-order/pending', 'Api\DrugController@fetchPendingOrders')->name('drugs-order-pending')->middleware(['jwt.auth', 'auth.admin.agent.doctor']);
 
@@ -209,7 +211,7 @@ Route::prefix('/cart')->group(function() {
     Route::post('/add-prescription', 'Api\CartController@addPrescription')->name('add_prescription_to_cart_item');
 });
 
-
+Route::get('/appointment/{ref}','AppointmentController@confirmref');
 Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::get('/', 'AppointmentController@index');
     Route::post('/book', 'AppointmentController@bookAppointment');
@@ -218,6 +220,7 @@ Route::prefix('/appointments')->middleware('jwt.auth')->group(function() {
     Route::post('/cancel', 'AppointmentController@cancel');
     Route::get('/pending', 'AppointmentController@pending');
     Route::post('/hospital/book','AppointmentController@bookHospitalAppointment');
+    
     //verify paystack payment
 
     Route::get('/verify/{reference}','AppointmentController@verifyappointmentpayment');

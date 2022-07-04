@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Mail\AppointmentCustomer;
 use App\Mail\AppointmentDoctor;
+use App\Models\TransactionLog;
 use Mail;
 class AppointmentController extends Controller
 {
@@ -246,6 +247,13 @@ class AppointmentController extends Controller
         
        ];
        
+       TransactionLog::create([
+        'gateway_reference' => $request->ref_no,
+        'system_reference' => $request->ref_no,
+        'reason' => 'Doctor Appointment',
+        'amount' => $request->amount,
+        'email' => $request->user_email,
+    ]);
     
 
     Mail::to($request->user_email)->send(new AppointmentCustomer($customerdetails));
@@ -416,6 +424,14 @@ class AppointmentController extends Controller
         $appointment->center_name=$request->center_name;
 
         $appointment->save();
+
+        TransactionLog::create([
+            'gateway_reference' => $request->ref_no,
+            'system_reference' => $request->ref_no,
+            'reason' => 'Medical Center Appointment',
+            'amount' => $request->amount,
+            'email' => $request->useremail,
+        ]);
 
         return [
 
@@ -675,5 +691,20 @@ class AppointmentController extends Controller
         }
         $appointment = $this->find($request->uuid);
         return $appointment;
+    }
+
+
+    public function confirmref($ref){
+        $appointment = Appointment::where('ref_no',$ref)->exists();
+
+        if(!$appointment){
+            return 'Invalid Reference';
+        }
+
+        else{
+            $appointment = Appointment::where('ref_no',$ref)->first();
+
+            return $appointment;
+        }
     }
 }

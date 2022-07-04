@@ -28,6 +28,8 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
+
+        // Validate Request and assign to data
         $data = $request->validate([
             'firstname' => 'nullable|string',
             'lastname' => 'nullable|string',
@@ -47,6 +49,9 @@ class OrderController extends Controller
             'add_prescription_charge' => 'nullable|in:yes,no'
         ]);
 
+
+        //get Login User Info
+        
         $user = Auth::user();
 
         $data['customer_id'] = $user->id;
@@ -55,18 +60,26 @@ class OrderController extends Controller
         $data['firstname'] = $request->firstname ?? $user->firstname;
         $data['lastname'] = $request->lastname ?? $user->lastname;
 
+
+        // Set Shipping Address
         if (isset($data['shipping_address'])) {
             $data['address1'] = $data['shipping_address'];
             unset($data['shipping_address']);
         }
 
+
+        // Set Pickup Location ID
         if (empty($data['location_id'])) {
             $data['location_id'] = $data['pickup_location_id'];
         }
 
         $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+
+        // set Order Reference
         $data['order_ref'] = strtoupper(Str::random(10));
 
+
+        // if Order Exists before
         if (!empty($order)) {
 
             if ($order->payment_confirmed == 1) {
@@ -104,51 +117,53 @@ class OrderController extends Controller
 
                 $data['amount'] = ceil($data['amount']);
 
-                if ($data['payment_method'] == 'point') {
+                // Pay with points We don't need point now
 
-                    if (!isset($data['customer_id']))
-                        return response([
-                            'status' => false,
-                            'message' => [['You must be logged in to pay with points']]
-                        ], 400);
+                // if ($data['payment_method'] == 'point') {
 
-                    $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
+                //     if (!isset($data['customer_id']))
+                //         return response([
+                //             'status' => false,
+                //             'message' => [['You must be logged in to pay with points']]
+                //         ], 400);
 
-                    if (empty($point))
-                        return response([
-                            'status' => false,
-                            'message' => [['You have not earned any points yet']]
-                        ], 400);
+                //     $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
-                    $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
+                //     if (empty($point))
+                //         return response([
+                //             'status' => false,
+                //             'message' => [['You have not earned any points yet']]
+                //         ], 400);
 
-                    if (empty($rules))
-                        return response([
-                            'status' => false,
-                            'message' => [['Point rules have not been set yet, contact system administrator']]
-                        ], 400);
+                //     $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
-                    $pointValue = ($rules['point_value'] * $point['point']);
+                //     if (empty($rules))
+                //         return response([
+                //             'status' => false,
+                //             'message' => [['Point rules have not been set yet, contact system administrator']]
+                //         ], 400);
 
-                    if ($pointValue < $data['amount'])
-                        return response([
-                            'status' => false,
-                            'message' => [["You don't have enough points to purchase the items in your cart"]]
-                        ], 400);
+                //     $pointValue = ($rules['point_value'] * $point['point']);
 
-                    $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
-                    $point->save();
+                //     if ($pointValue < $data['amount'])
+                //         return response([
+                //             'status' => false,
+                //             'message' => [["You don't have enough points to purchase the items in your cart"]]
+                //         ], 400);
 
-                    $data['payment_confirmed'] = 1;
-                }
+                //     $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
+                //     $point->save();
+
+                //     $data['payment_confirmed'] = 1;
+                // }
 
                 $order->update($data);
 
-                SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
+                //SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
 
                 if (($data['payment_confirmed'] ?? 0) == 1) {
 
-                    SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+                   // SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
                 }
 
                 return [
@@ -162,54 +177,25 @@ class OrderController extends Controller
             }
         }
 
-        /*if ($data['checkout_type'] == 'register') {
-
-            $check = User::where(['email' => $request->email])->first();
-
-            if (!empty($check)) {
-                return response(['status' => false, 'message' => [["The email has already been taken."]]]);
-            }
-
-            $check = User::where(['phone' => $request->phone])->first();
-
-            if (!empty($check)) {
-                return response([
-                    'status' => false,
-                    'message' => [["The phone has already been taken."]]
-                ]);
-            }
-
-            $user = User::create([
-                'firstname' => $request->firstname,
-                'lastname' => $request->lastname,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'vendor_id' => $request->facilityID,
-                'user_type' => 'customer',
-                'uuid' => Str::uuid()->toString(),
-                'token' => Str::random(15),
-                'password' => bcrypt($request->password)
-            ]);
-
-            if ($user) {
-                $data['customer_id'] = $user->id;
-                $user->notify(new VerificationNotification());
-            }
-        }*/
-
+        
+        // where Order hasn't exists
         $cart = Cart::where('cart_uuid', $data['cart_uuid']);
         $data['amount'] = $cart->sum('price');
 
+
+        // setting coupon_code if exists
         if ($request->coupon_code) {
             $discount = $this->computeValue($request->coupon_code, $data['amount']);
             $data['amount'] = $data['amount'] - $discount;
         }
 
+            //set delivery methods
         if ($request->delivery_method == 'shipping') {
             $location = Location::where('id', $data['location_id'] ?? 0)->first();
             $delType = "{$request->delivery_type}_price";
             $data['amount'] +=  $location->{$delType};
         }
+
 
         foreach ($cart->get() as $item) {
             if ($item->drug->require_prescription == true && empty($item->prescription)) {
@@ -222,38 +208,39 @@ class OrderController extends Controller
 
         $respMsg = "";
 
-        if ($data['payment_method'] == 'point') {
+        // if ($data['payment_method'] == 'point') {
 
-            if (!isset($data['customer_id']))
-                return response(['status' => false, 'message' => [['You must be logged in to pay with points']]], 400);
+        //     if (!isset($data['customer_id']))
+        //         return response(['status' => false, 'message' => [['You must be logged in to pay with points']]], 400);
 
-            $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
+        //     $point = CustomerPoint::where('customer_id', $data['customer_id'])->first();
 
-            if (empty($point))
-                return response(['status' => false, 'message' => [['You have not earned any points yet']]], 400);
+        //     if (empty($point))
+        //         return response(['status' => false, 'message' => [['You have not earned any points yet']]], 400);
 
-            $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
+        //     $rules = CustomerPointRule::orderByDesc('id')->limit(1)->first();
 
-            if (empty($rules))
-                return response([
-                    'status' => false,
-                    'message' => [['Point rules have not been set yet, contact system administrator']]
-                ], 400);
+        //     if (empty($rules))
+        //         return response([
+        //             'status' => false,
+        //             'message' => [['Point rules have not been set yet, contact system administrator']]
+        //         ], 400);
 
-            $pointValue = ($rules['point_value'] * $point['point']);
+        //     $pointValue = ($rules['point_value'] * $point['point']);
 
-            if ($pointValue < $data['amount'])
-                return response([
-                    'status' => false,
-                    'message' => [["You don't have enough points to purchase the items in your cart"]]
-                ], 400);
+        //     if ($pointValue < $data['amount'])
+        //         return response([
+        //             'status' => false,
+        //             'message' => [["You don't have enough points to purchase the items in your cart"]]
+        //         ], 400);
 
-            $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
-            $point->save();
+        //     $point->point = ceil((($pointValue - $data['amount']) / $rules['point_value']));
+        //     $point->save();
 
-            $data['payment_confirmed'] = 1;
-            $respMsg = 'Thank you. Your checkout was successful and payment has been made using your points.';
-        } elseif ($data['payment_method'] == 'card') {
+        //     $data['payment_confirmed'] = 1;
+        //     $respMsg = 'Thank you. Your checkout was successful and payment has been made using your points.';
+        // } 
+        if ($data['payment_method'] == 'card') {
             $check = $this->verify($data['payment_reference'], $data['amount']);
             if ($check['status']) {
                 TransactionLog::create([

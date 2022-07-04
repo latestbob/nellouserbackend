@@ -544,4 +544,12 @@ class DrugController extends Controller
 
         return ['msg' => 'Rating saved'];
     }
+
+
+    public function getdrugname($id){
+        $drugs = PharmacyDrug::where('id', $id)->first();
+
+        return $drugs->name;
+    }
+
 }
