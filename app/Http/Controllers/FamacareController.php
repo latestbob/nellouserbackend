@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 class FamacareController extends Controller
@@ -23,7 +24,7 @@ $response = Http::withoutVerifying()->withHeaders([
     'Content-Type' => 'application/json',
     'Accept' => 'application/json',
     
-])->get('https://api2.famacare.eclathealthcare.com/patient?page=1');
+])->get('https://api2.famacare.eclathealthcare.com/patient?page=143');
 
 
 $final = $response["_embedded"]["Patient"];
@@ -42,7 +43,9 @@ foreach($final as $key => $userss)
     $user->firstname = $userss["forename"];
     $user->lastname = $userss["surname"];
     $user->email = $userss["email"];
-    $user->dob = $userss["dob"];
+    $user->dob = Carbon::parse($userss["dob"])->toDateString();
+
+    // Carbon::parse($userss["dob"])->toDateString();
 
     $user->gender = $userss["gender"];
     $user->phone = $userss["phone"];

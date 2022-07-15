@@ -131,6 +131,30 @@ class ProfileController extends Controller
      *
      * @bodyParam picture file required image file
      */
+
+
+     //Update Addreess 
+
+     public function updateaddress(Request $request){
+
+        $user = $request->user();
+
+        $user->update([
+            'state'=>$request->state,
+            'city' =>$request->lga,
+            'address' => $request->address
+        ]);
+
+        return [
+            'noerror' => true,
+            'message' => "There Was No Error",
+           
+        ];
+
+       
+
+        
+     }
     public function uploadPicture(Request $request)
     {
 

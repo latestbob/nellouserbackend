@@ -50,6 +50,8 @@ class OrderController extends Controller
         ]);
 
 
+        
+
         //get Login User Info
         
         $user = Auth::user();
@@ -329,7 +331,7 @@ class OrderController extends Controller
         $return['transaction_charge'] = round($charges, 2);
         $return['total'] = $return['total'] + round($charges, 2);
 
-
+        
         return $return;
     }
 

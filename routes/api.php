@@ -124,6 +124,7 @@ Route::post('token/update', 'Api\AuthController@updateToken')->middleware('jwt.a
 
 Route::prefix('/profile')->middleware('jwt.auth')->group(function() {
     Route::post('/update', 'Api\ProfileController@updateCustomer');
+    Route::post('/update/address','Api\ProfileController@updateaddress');
     Route::post('/picture', 'Api\ProfileController@uploadPicture');
 
     Route::get('/encounters', 'Api\ProfileController@encounters');
@@ -298,3 +299,6 @@ Route::prefix('partner')->middleware(PartnerMiddleware::class)->namespace('Partn
         Route::get('{health_id}/check', 'UserController@check');
     });
 });
+
+
+Route::get('/sendfake', 'FakeController@send');

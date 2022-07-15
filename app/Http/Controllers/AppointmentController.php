@@ -62,7 +62,7 @@ class AppointmentController extends Controller
             'reason' => 'required|string',
             'description' => 'nullable|string',
             'type' => 'nullable|string',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required',
             //'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
             'time' => [
                 'required',
@@ -77,9 +77,9 @@ class AppointmentController extends Controller
                         ->setMinute($frags[1])
                         ->setSecond(0);
 
-                    if ($now->gte($time)) {
-                        $fail("Time must be at least 30 minutes after the current time.");
-                    }
+                    // if ($now->gte($time)) {
+                    //     $fail("Time must be at least 30 minutes after the current time.");
+                    // }
                 }
             ],
             'medical_center' => [
@@ -297,7 +297,7 @@ class AppointmentController extends Controller
             'reason' => 'required|string',
             'description' => 'nullable|string',
             'type' => 'nullable|string',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => 'required',
             //'time' => 'required|date_format:Y-m-d H:i|after:' . date('Y-m-d H:i', strtotime("+30 minutes")),
             'time' => [
                 'required',
@@ -312,9 +312,9 @@ class AppointmentController extends Controller
                         ->setMinute($frags[1])
                         ->setSecond(0);
 
-                    if ($now->gte($time)) {
-                        $fail("Time must be at least 30 minutes after the current time.");
-                    }
+                    // if ($now->gte($time)) {
+                    //     $fail("Time must be at least 30 minutes after the current time.");
+                    // }
                 }
             ],
             // 'medical_center' => [
