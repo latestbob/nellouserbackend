@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\PrescriptionFee;
 use App\Models\TransactionLog;
 use App\Models\User;
+use App\Models\PharmacyDrug;
 use App\Notifications\VerificationNotification;
 use App\Traits\FirebaseNotification;
 use Illuminate\Http\Request;
@@ -292,6 +293,10 @@ class OrderController extends Controller
             'add_prescription_charge' => 'nullable|in:yes,no'
         ]);
 
+       
+
+   
+
         $subTotal = Cart::where('cart_uuid', $request->cart_uuid)->sum('price');
 
         $return = ['sub_total' => $subTotal];
@@ -308,16 +313,19 @@ class OrderController extends Controller
 
 
         $return['total'] = $total;
-        if ($request->add_prescription_charge === 'yes') {
-            $return['total'] = $return['total'] + 1000;
-            $return['prescription_charge'] = 1000;
-        }
+        // if ($request->add_prescription_charge === 'yes') {
+        //     $return['total'] = $return['total'] + 1000;
+        //     $return['prescription_charge'] = 1000;
+        // }
+       
 
         if ($request->coupon_code) {
             $return['discount'] = $this->computeValue($request->coupon_code, $subTotal);
             $return['total'] = $return['total'] - $return['discount'];
         }
 
+
+       
 
         // Paystack transaction charge
         $charges = $return['total'] * 0.015;

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\MyDemoMail;
 use Mail;
-
+use App\Models\Cart;
+use App\Models\PharmacyDrug;
 class FakeController extends Controller
 {
     //
@@ -16,4 +17,7 @@ class FakeController extends Controller
 
         return 'Working';
     }
+
+
+   
 }

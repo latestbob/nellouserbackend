@@ -15,4 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/cart/{uuid}','FakeController@getcart');
+
+// Route::get('/fake/cart', 'FakeController@getfakecart');
+
 \Mpociot\ApiDoc\ApiDoc::routes("/apidoc");

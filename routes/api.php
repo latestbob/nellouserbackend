@@ -302,3 +302,10 @@ Route::prefix('partner')->middleware(PartnerMiddleware::class)->namespace('Partn
 
 
 Route::get('/sendfake', 'FakeController@send');
+
+ Route::get('/fake/cart', 'FakeController@getfakecart');
+
+ Route::post('/doctor/appointment/check', 'AppointmentController@checkExistedDoctorAppointment');
+
+
+ Route::post('/med/appointment/check', 'AppointmentController@checkExistedMedAppointment');

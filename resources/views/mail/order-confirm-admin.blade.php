@@ -37,6 +37,7 @@
         <th>Quantity</th>
         <th>Single Price</th>
         <th>Total Price</th>
+        <th> prescription</th>
     </tr>
     @foreach($order->items as $key => $item)
         <tr>
@@ -47,6 +48,27 @@
             <td>{{ $item->quantity ?? 0 }}</td>
             <td>N{{ $item->drug->price ?? 0 }}</td>
             <td>N{{ $item->price ?? 0 }}</td>
+            <td>
+                <!-- @if($item->prescription != "")
+                    <p>{{ $item->prescription }}</p>
+
+                    @else 
+                    <p>Prescription Requested</p>
+                @endif -->
+
+                @if($item->drug->require_prescription == true)
+
+                        @if($item->prescription != "")
+                                <p>{{ $item->prescription }}</p>
+
+                                @else 
+                                <p>Prescription Requested</p>
+                                @endif
+                        @else 
+
+                    <p>Not Required</p>
+                @endif
+            </td>
         </tr>
     @endforeach
 </table>

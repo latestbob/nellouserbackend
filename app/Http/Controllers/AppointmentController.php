@@ -706,5 +706,33 @@ class AppointmentController extends Controller
 
             return $appointment;
         }
+
+       
+    }
+
+    public function checkExistedDoctorAppointment(Request $request){
+
+        
+        $appointment = Appointment::where('type','doctor_appointment')->where('doctor_id', $request->doctor_id)->where('date', $request->date)->where('time', $request->time)->exists();
+
+        if($appointment){
+            return response()->json('true');
+        }
+        else {
+            return response()->json('false');
+        }
+    }
+
+
+    public function checkExistedMedAppointment(Request $request){
+        $appointmentss = Appointment::where('center_name',$request->name)->where('date', $request->date)->where('time', $request->time)->exists();
+
+        if($appointmentss){
+            return response()->json('true');
+        }
+        else {
+            return response()->json('false');
+        }
+
     }
 }
