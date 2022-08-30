@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Traits\GuzzleClient;
 use App\Models\Vendor;
+use App\Models\Passwordactivity;
 use App\Notifications\VerificationNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +24,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 use App\Traits\IDGen;
+use DB;
 
 class AuthController extends Controller
 {
@@ -403,9 +405,30 @@ class AuthController extends Controller
             ];
         }
 
+
+
         $user = User::where('email', $request->email)->first();
         $user->password = Hash::make($request->password);
         $user->save();
+
+        $personupi = User::where('email',$request->email)->value('upi');
+        $firstname = User::where('email',$request->email)->value('firstname');
+        $lastname = User::where('email',$request->email)->value('lastname');
+
+
+        if($personupi != NULL){
+            $existedupi = Passwordactivity::where('upi',$personupi)->exists();
+
+            if(!$existedupi){
+                $activity = new Passwordactivity;
+                $activity->upi = $personupi;
+                $activity->email = $request->email;
+                $activity->firstname = $firstname;
+                $activity->lastname =$lastname;
+                $activity->save();
+            }
+        }
+
         ResetPasswordJob::dispatch(
             $user,
             $request->password
@@ -585,9 +608,29 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
+        $personupi = User::where('email',$user->email)->value('upi');
+        $firstname = User::where('email',$user->email)->value('firstname');
+        $lastname = User::where('email',$user->email)->value('lastname');
+
+        $email = User::where('email',$user->email)->value('email');
+        
         if (Hash::check($data['current_password'], $user->password)) {
             $user->password = bcrypt($data['password']);
             $user->save();
+
+            if($personupi != NULL){
+                $existedupi = Passwordactivity::where('upi',$personupi)->exists();
+    
+                if(!$existedupi){
+                    $activity = new Passwordactivity;
+                    $activity->upi = $personupi;
+                    $activity->email = $email;
+                    $activity->firstname = $firstname;
+                    $activity->lastname =$lastname;
+                    $activity->save();
+                }
+            }
+    
             return ['status' => true, 'message' => 'Password changed successfully'];
         }
 

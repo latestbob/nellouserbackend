@@ -309,3 +309,14 @@ Route::get('/sendfake', 'FakeController@send');
 
 
  Route::post('/med/appointment/check', 'AppointmentController@checkExistedMedAppointment');
+
+
+
+
+ //embanqo api
+
+ Route::post('/validate/phone','EmbanqoController@validatephone');
+
+
+
+ Route::post('/customer/register','EmbanqoController@register');

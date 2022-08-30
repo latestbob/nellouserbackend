@@ -195,7 +195,7 @@ class AppointmentController extends Controller
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => "GET",
           CURLOPT_HTTPHEADER => array(
-            "Authorization: Bearer sk_test_f839b008f7b5bc681940d015129a8556fbfb41eb",
+            "Authorization: Bearer sk_live_b3f03e706c2e60463ac48bcb56be90d3a3599264",
             "Cache-Control: no-cache",
           ),
         ));

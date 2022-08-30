@@ -328,19 +328,19 @@ class OrderController extends Controller
        
 
         // Paystack transaction charge
-        $charges = $return['total'] * 0.015;
-        if ($return['total'] > 2500) {
-            $charges = $charges + 100;
-        }
-        if ($charges > 2000) {
-            $charges = 2000;
-        }
+        // $charges = $return['total'] * 0.015;
+        // if ($return['total'] > 2500) {
+        //     $charges = $charges + 100;
+        // }
+        // if ($charges > 2000) {
+        //     $charges = 2000;
+        // }
 
-        $return['transaction_charge'] = round($charges, 2);
-        $return['total'] = $return['total'] + round($charges, 2);
+        // $return['transaction_charge'] = round($charges, 2);
+        // $return['total'] = $return['total'] + round($charges, 2);
 
         
-        return $return;
+         return $return;
     }
 
 
