@@ -50,22 +50,43 @@ class ProfileController extends Controller
      */
     public function updateCustomer(Request $request)
     {
+
+        $passed = Validator::make($request->all(), [
+            'dob' => 'required|date|date_format:d-m-Y|before_or_equal:today',
+        ]);
+        
+        if ($passed->fails()) {
+            return response([
+                'msg' => $passed->errors(),
+                'message' => "Invalid date of birth"
+            ], 400);
+        } 
+        // else {
+            
+        // }
+
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|string|max:50',
-            'lastname'  => 'required|string|max:50',
+            'firstname' => 'required|alpha|max:50',
+            'lastname'  => 'required|alpha|max:50',
             'middlename' => 'nullable|string',
-            'email' => 'required|string|email|max:255',
-            'phone' => 'required|digits_between:11,16',
-            'dob' => 'required|date_format:d-m-Y|before_or_equal:today',
+            'email' => 'required|string|email:rfc,dns|max:255',
+            'phone' => 'required|digits:11',
+            'dob' => 'required|date|date_format:d-m-Y|before_or_equal:today',
             'address' => 'nullable|string',
             'state' => 'nullable|string',
             'city'  => 'nullable|string',
             'religion' => 'nullable|string',
-            'gender' => 'required|string|in:Male,Female',
+            'gender' => 'required|alpha|in:Male,Female',
             'height' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'sponsor' => 'nullable|string'
         ]);
+
+        // if($request->gender != "Male" || $request->gender != "Female"){
+        //     return response([
+        //         'msg' => "Invalid Gender, input a valid gender"
+        //     ], 400);
+        // }
 
         if ($validator->fails()) {
             return response([
@@ -148,6 +169,7 @@ class ProfileController extends Controller
         return [
             'noerror' => true,
             'message' => "There Was No Error",
+            
            
         ];
 
@@ -178,9 +200,18 @@ class ProfileController extends Controller
     }
 
 
-    public function fetchOrders()
+    public function fetchOrders(Request $request)
     {
+        // $request->headers->set('Accept', 'application/json');
+        // $request->headers->set('Content-Type', 'application/json');
+
         $user = Auth::user();
+
+        // if(!$user){
+        //     return response([
+        //         'msg' => "Unauthorized token"
+        //     ], 401);
+        // }
 
         return Order::with(['items.drug','location'])
             ->where('customer_id', $user->id)
@@ -196,15 +227,26 @@ class ProfileController extends Controller
      */
     public function fetchHealthHistory(Request $request)
     {
+
+        $appointment  = Appointment::where('user_uuid',$request->user()->uuid)->get();
+        $order = Order::where('email',$request->user()->email)->get();
         $data = User::with([
             'encounters',
             'investigations',
             'medications',
             'payments',
             //'invoices',
-            'procedures'
+            'procedures',
+            
         ])->find($request->user()->id);
-        return $data;
+        return [
+            "appointment" =>$appointment,
+            "order" =>$order,
+
+            "user" => $request->user(),
+            
+        ];
+
     }
 
     public function fetchMedicalReports(Request $request)

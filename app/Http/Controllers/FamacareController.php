@@ -24,7 +24,7 @@ $response = Http::withoutVerifying()->withHeaders([
     'Content-Type' => 'application/json',
     'Accept' => 'application/json',
     
-])->get('https://api2.famacare.eclathealthcare.com/patient?page=143');
+])->get('https://api2.famacare.eclathealthcare.com/patient?page=1');
 
 
 $final = $response["_embedded"]["Patient"];
@@ -33,36 +33,39 @@ $final = $response["_embedded"]["Patient"];
 //     return  $finals;
 // }
 
+$users = [];
 foreach($final as $key => $userss)
 {
-	//dump($value);
+	//dump($userss["email"]);
 
-    $user = new User;
+    // $user = new User;
 
-        $user->upi = $userss["upi"];
-    $user->firstname = $userss["forename"];
-    $user->lastname = $userss["surname"];
-    $user->email = $userss["email"];
-    $user->dob = Carbon::parse($userss["dob"])->toDateString();
+    //     $user->upi = $userss["upi"];
+    // $user->firstname = $userss["forename"];
+    // $user->lastname = $userss["surname"];
+    // $user->email = $userss["email"];
+    // $user->dob = Carbon::parse($userss["dob"])->toDateString();
 
-    // Carbon::parse($userss["dob"])->toDateString();
+    // // Carbon::parse($userss["dob"])->toDateString();
 
-    $user->gender = $userss["gender"];
-    $user->phone = $userss["phone"];
+    // $user->gender = $userss["gender"];
+    // $user->phone = $userss["phone"];
 
-    $user->password = Hash::make($userss["upi"]);
-    $user->active = 1;
-    $user->user_type = "customer";
+    // $user->password = Hash::make($userss["upi"]);
+    // $user->active = 1;
+    // $user->user_type = "customer";
 
-    $user->vendor_id = 1;
+    // $user->vendor_id = 1;
    
-    $user->uuid = Str::uuid()->toString();
-    //$userData['health_id'] = $this->generateHealthId();
+    // $user->uuid = Str::uuid()->toString();
+    // //$userData['health_id'] = $this->generateHealthId();
 
-    $user->save();
+    // $user->save();
+
+    array_push($users, $userss["email"]);
 }
 
-return "Working";
+return $users;
 //return $response["Patient"];
 // $eclatusers = $response["_embedded"]["Patient"];
 

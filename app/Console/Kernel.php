@@ -15,6 +15,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+
+        Commands\DailyReminder::class,
+        Commands\HourReminder::class
     ];
 
     /**
@@ -28,9 +31,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->call(function(){
-            ImportEclinicPatientJob::dispatch();
-        })->everyFiveMinutes();
+       
+        $schedule->command('daily:reminder')->dailyAt('8:00');
+
+        $schedule->command('hour:reminder')->hourly();
         
     }
 

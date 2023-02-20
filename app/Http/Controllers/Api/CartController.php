@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
+
+
 class CartController extends Controller
 {
 
@@ -179,7 +181,7 @@ class CartController extends Controller
         $validator = Validator::make($request->all(), [
             'cart_uuid' => 'required|string|exists:carts',
             'drug_id' => 'required|integer',
-            'file' => 'required|file|mimes:jpeg,jpg,png,pdf',
+            'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2000',
         ]);
 
         if ($validator->fails()) {
@@ -216,4 +218,29 @@ class CartController extends Controller
             'message' => [["No prescription file uploaded"]]
         ], 422);
     }
+
+
+    //Delivered Order Email
+
+    // public function deliveredordermail(Request $request){
+        
+
+    //     // $validator = Validator::make($request->all(), [
+    //     //     'deliver' => 'required',
+            
+    //     // ]);
+
+    //     // if ($validator->fails()) {
+    //     //     return response([
+    //     //         'status' => false,
+    //     //         'message' => $validator->errors()
+    //     //     ]);
+    //     // }
+
+    //     // Mail::to("edidiongbobson@gmail.com")->send(new OrderDelivered($deliver));
+
+
+    //     return "working";
+
+    // }
 }

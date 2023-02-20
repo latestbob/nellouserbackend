@@ -38,15 +38,27 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Illuminate\Http\Response
-     */
+    // /**
+    //  * Render an exception into an HTTP response.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \Throwable  $exception
+    //  * @return \Illuminate\Http\Response
+    //  */
     public function render($request, Throwable $exception)
     {
+        if ($request->is('api/*') || $request->wantsJson())
+    {
+        $json = [
+            
+            'error' => [
+                
+                'message' => "Unauthorized Token",
+            ],
+        ];
+        return response()->json($json, 401);
+    }
+
         return parent::render($request, $exception);
     }
 }

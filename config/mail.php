@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailtrap.io'),
+    'host' => env('MAIL_HOST', 'smtp.googlemail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,9 +42,10 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 2525),
+    'port' => env('MAIL_PORT', 465),
 
-    /*
+
+  /*
     |--------------------------------------------------------------------------
     | Global "From" Address
     |--------------------------------------------------------------------------
@@ -56,8 +57,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'AskNello'),
+        'address' => env('MAIL_FROM_ADDRESS', 'asknello0@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Asknello'),
     ],
 
     /*
@@ -71,7 +72,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
 
     /*
     |--------------------------------------------------------------------------
@@ -88,7 +89,8 @@ return [
 
     'password' => env('MAIL_PASSWORD'),
 
-    /*
+
+   /*
     |--------------------------------------------------------------------------
     | Sendmail System Path
     |--------------------------------------------------------------------------
@@ -134,3 +136,5 @@ return [
     'log_channel' => env('MAIL_LOG_CHANNEL'),
 
 ];
+
+

@@ -19,7 +19,15 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Mail\AppointmentCustomer;
+use App\Mail\AdminOnlineAppointment;
+use App\Mail\AdminPhysicalAppointment;
 use App\Mail\AppointmentDoctor;
+use App\Mail\OWCMail;
+use App\Mail\OWCADMIN;
+use App\Mail\OWCDOCTOR;
+use App\Mail\AppointmentMedical;
+use App\Mail\Medreminder;
+use App\Mail\Docreminder;
 use App\Models\TransactionLog;
 use Mail;
 class AppointmentController extends Controller
@@ -195,7 +203,7 @@ class AppointmentController extends Controller
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => "GET",
           CURLOPT_HTTPHEADER => array(
-            "Authorization: Bearer sk_live_b3f03e706c2e60463ac48bcb56be90d3a3599264",
+            "Authorization: Bearer sk_live_3e7df128855a0e79a3fbbc97f4250066524cfd4e",
             "Cache-Control: no-cache",
           ),
         ));
@@ -259,6 +267,8 @@ class AppointmentController extends Controller
     Mail::to($request->user_email)->send(new AppointmentCustomer($customerdetails));
        
     Mail::to($request->doctor_email)->send(new AppointmentDoctor($customerdetails));
+
+    Mail::to("support@asknello.com")->send(new AdminOnlineAppointment($customerdetails));
        
 
         //$user->notify(new AppointmentBookedNotification($appointment));
@@ -424,6 +434,24 @@ class AppointmentController extends Controller
         $appointment->center_name=$request->center_name;
 
         $appointment->save();
+
+        //$centertype = HealthCenter::where('uuid',$request->center_uuid)->value('center_type');
+        //$username = User::where('uuid',$request->user_uuid)->value('firstname');
+
+        $medical = [
+            'centername' => $request->center_name,
+            'time' => $request->time,
+            'date' => $request->date,
+           
+            "link"=> "https://admin.asknello.com/visitation/".$request->ref_no,
+            
+         
+        ];
+
+        Mail::to($request->useremail)->send(new AppointmentMedical($medical));
+        Mail::to("support@asknello.com")->send(new AdminPhysicalAppointment($medical));
+
+
 
         TransactionLog::create([
             'gateway_reference' => $request->ref_no,
@@ -733,6 +761,190 @@ class AppointmentController extends Controller
         else {
             return response()->json('false');
         }
+
+    }
+
+
+
+    //OWC mail
+
+    public function OWC(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'title' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'ref' => 'required',
+            'user_firstname' => 'required',
+            'caretype' => 'required'
+
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'failed',
+                'message' => $validator->errors()
+            ]);
+        }
+
+        if(!$request->type){
+
+            //if no request type
+
+            $owc = [
+                "title" => $request->title,
+                "date" => $request->date,
+                "time" => $request->time,
+                "ref" => $request->ref,
+                "user_firstname" =>$request->user_firstname,
+                "caretype" => $request->caretype,
+                "type"=>"Visitation",
+                "doctor" => "none",
+                "link" => "none",
+    
+            ];
+    
+            $owcadmin = [
+                "title" => $request->title,
+                "date" => $request->date,
+                "time" => $request->time,
+                "ref" => $request->ref,
+                "user_firstname" =>$request->user_firstname,
+                "caretype" => $request->caretype,
+                "type"=>"Visitation",
+                "doctor" => "none",
+                "link" => "none",
+    
+            ];
+    
+            Mail::to($request->email)->send(new OWCMail($owc));
+            //Mail::to('appointments@onewellness.clinic')->send(new OWCADMIN($owcadmin));
+            Mail::to('appointments@onewellness.clinic')->send(new OWCADMIN($owcadmin));
+            Mail::to('info@onewellness.clinic')->send(new OWCADMIN($owcadmin));
+            return "working";
+
+        }
+
+        elseif($request->type){
+
+        //     $appointment->type = $request->type;
+        // $appointment->doctor = $request->doctor;
+        // $appointment->link = $request->link;
+
+            $owc = [
+                "title" => $request->title,
+                "date" => $request->date,
+                "time" => $request->time,
+                "ref" => $request->ref,
+                "user_firstname" =>$request->user_firstname,
+                "caretype" => $request->caretype,
+                "type" =>$request->type,
+                "doctor" => $request->doctor,
+                "link" => $request->link,
+    
+            ];
+    
+            $owcadmin = [
+                "title" => $request->title,
+                "date" => $request->date,
+                "time" => $request->time,
+                "ref" => $request->ref,
+                "user_firstname" =>$request->user_firstname,
+                "caretype" => $request->caretype,
+                "type" =>$request->type,
+                "doctor" => $request->doctor,
+                "link" => $request->link,
+    
+            ];
+
+            //doctor email = $doctor_email $request->doctor_email
+    
+            Mail::to($request->email)->send(new OWCMail($owc));
+            Mail::to('appointments@onewellness.clinic')->send(new OWCADMIN($owcadmin));
+            Mail::to('info@onewellness.clinic')->send(new OWCADMIN($owcadmin));
+            Mail::to($request->doctor_email)->send(new OWCDOCTOR($owcadmin));
+         
+            return "working";
+
+        }
+
+       
+
+
+    }
+
+
+    //cronjob reminder for appointment controller
+
+    public function cronjobreminder(Request $request){
+
+        // $time = Carbon::now()->addHour()->format('H:i:s');
+
+        // return $time;
+
+        
+      $appointments = Appointment::with(['user', 'center', 'doctor'])->where("date",Carbon::now()->format("Y-m-d"))->get();
+
+      
+    
+
+    // return  $appointments;
+
+         foreach($appointments as $appointment){
+
+            if(Carbon::parse($appointment->time)->format("H") == Carbon::now()->addHour()->format('H')){
+                //return $appointment->time;
+
+                if($appointment->doctor){
+            
+                    $docreminder = [
+                        "username" => $appointment->user->firstname,
+                        "specialist" => $appointment->doctor->title.". ".$appointment->doctor->firstname,
+                        "date" => Carbon::parse($appointment->date)->format('F dS, Y'),
+                        "time" => Carbon::parse($appointment->time)->format('h:ia'),
+                        "link" => $appointment->link,
+                    ];
+    
+                    Mail::to("edidiongbobson@gmail.com")->send(new Docreminder($docreminder));
+    
+                }
+
+                ///center 
+
+                elseif($appointment->center){
+                
+    
+                    $medreminder = [
+                        "firstname" => $appointment->user->firstname,
+                        "centername" => $appointment->center->name,
+                        "date" => Carbon::parse($appointment->date)->format('F dS, Y'),
+                        "time" => Carbon::parse($appointment->time)->format('h:ia'),
+                        //"link" => $appointment->link,
+                        "link"=> "https://admin.asknello.com/visitation/".$appointment->ref_no,
+                    ];
+        
+                    Mail::to($appointment->user->email)->send(new Medreminder($medreminder));
+                }
+        
+
+                return "sent";
+            }
+
+           
+            
+    
+           
+            //elseif($appointment)
+    
+            //return "sent";
+    
+
+         }
+
+        
+
+        
+       
 
     }
 }

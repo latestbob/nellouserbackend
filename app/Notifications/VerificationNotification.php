@@ -44,7 +44,7 @@ class VerificationNotification extends BaseNotification implements ShouldQueue
             ->greeting("Hi $user->firstname")
             ->line('Please verify your email address by visiting the link below.')
             //->line("Your verification code is $this->code")
-            ->action('Verify', url("https://asknello.com/verification/$user->token"))
+            ->action('Verify', url("https://mw.asknello.com/api/auth/verify/$user->token"))
             ->line('Thank you for choosing Nello!');
     }
 

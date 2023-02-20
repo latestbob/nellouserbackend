@@ -33,7 +33,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('/reset-password', 'Api\AuthController@resetPassword');
     Route::post('/register', 'Api\AuthController@registerCustomer');
     Route::get('/user', 'Api\AuthController@getUser')->middleware('jwt.auth');
-    Route::post('/verify', 'Api\AuthController@verifyToken');
+    Route::get('/verify/{token}', 'Api\AuthController@verifyToken');
     Route::post('/verify/email', 'Api\AuthController@verifyEmail');
     Route::post('/verify/phone', 'Api\AuthController@verifyPhone');
 
@@ -320,3 +320,34 @@ Route::get('/sendfake', 'FakeController@send');
 
 
  Route::post('/customer/register','EmbanqoController@register');
+
+
+ // Routes to send email to user and doctor after using chatbot
+
+ Route::post('/chabotemail','EmbanqoController@sendconfirmation');
+
+
+ //OWC customer mail
+
+ Route::post('/owcmail','AppointmentController@OWC');
+
+
+ //chatbot facility mail
+
+ Route::post('facility/mail','EmbanqoController@facilitymail');
+
+ // Drug order delivered email api
+
+
+ 
+ //Route::post("deliveredorderemail","Api\CartController@deliveredordermail");
+
+ Route::get("/deliveredordered","EmailController@deliveredOrderMail");
+
+ Route::post("/confirmme","EmailController@confirmme");
+
+
+
+ //this below is for cronjob daily reminder command
+
+ Route::post("/cronjobreminder","AppointmentController@cronjobreminder");

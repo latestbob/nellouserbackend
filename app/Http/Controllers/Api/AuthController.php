@@ -26,6 +26,7 @@ use Illuminate\Validation\Rule;
 use App\Traits\IDGen;
 use DB;
 
+
 class AuthController extends Controller
 {
 
@@ -248,6 +249,27 @@ class AuthController extends Controller
      */
     public function registerCustomer(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'required|alpha|max:50',
+            'lastname' => 'required|alpha|max:50',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users,email',
+            'phone' => 'required|digits:11|unique:users,phone',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'same:password',
+            'gender' => 'required|string|in:Male,Female',
+            'weight' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
+            'dob' => 'required|date_format:d-m-Y|before_or_equal:today'
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'failed',
+                'message' => $validator->errors()
+            ]);
+        }
+
         $userData = $request->validate([
             'firstname' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
@@ -323,41 +345,56 @@ class AuthController extends Controller
         ], 400);
     }
 
-    public function verifyToken(Request $request)
+    public function verifyToken(Request $request,$token)
     {
-        $validator = Validator::make($request->all(), [
-            'token' => 'required|string|exists:users,token'
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'token' => 'required|string|exists:users,token'
+        // ]);
 
-        if ($validator->fails()) {
+        $existed = User::where('token',$token)->exists();
+
+        if (!$existed) {
             return response([
                 'status' => false,
                 'message' => $validator->errors()
             ]);
         }
 
-        $user = User::where('token', $request->token)->first();
+        $user = User::where('token', $token)->first();
+        
+        //return $user;
         $user->active = true;
         $user->save();
 
-        return [
-            'status' => true,
-            'message' => 'Email verified successfully'
-        ];
+        // return [
+        //     'status' => true,
+        //     'message' => 'Your account has been activated Successfully'
+        // ];
+
+       return view('verified');
     }
 
     public function forgotPassword(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|exists:users,email'
+            'email' => 'required|string|email:rfc,dns|max:255|exists:users,email'
         ]);
 
+        // if ($validator->fails()) {
+        //     return [
+        //         'status' => false,
+        //         'msg' => "User email not Registered"
+        //     ];
+        // }
+
         if ($validator->fails()) {
-            return [
+            return response([
                 'status' => false,
-                'msg' => "User email not Registered"
-            ];
+                'message' => $validator->errors(),
+                'msg' => "User email not Registered",
+              
+            ], 400);
         }
 
         $user = User::where('email', '=', $request->email)->first();
@@ -380,11 +417,20 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed'
         ]);
 
+        // if ($validator->fails()) {
+        //     return [
+        //         'status' => "invalid",
+        //         'message' => "Invalid Credentials or Reset Code"
+        //     ];
+        // }
+
         if ($validator->fails()) {
-            return [
+            return response([
                 'status' => "invalid",
-                'message' => "Invalid Credentials or Reset Code"
-            ];
+                'msg' => $validator->errors(),
+                'message' => "Invalid Credentials or Reset Code",
+
+            ], 400);
         }
 
         $pass = PasswordReset::where(['account_type' => 'user', 'token' => $request->code])->first();

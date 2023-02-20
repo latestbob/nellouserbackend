@@ -175,7 +175,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:13px;font-family:'Montserrat',sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;color:white;">Hi  {{ $customerdetails['username'] }} </span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;color:white;">Hi Support,   {{ $customerdetails['username'] }} </span></p>
   </div>
 
       </td>
@@ -191,7 +191,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
  
 
   <div class="v-line-height" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">You have successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ $customerdetails['date'] }} </strong>by <strong>{{ $customerdetails['time'] }}</strong> .
+    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">has successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ $customerdetails['date'] }} </strong>by <strong>{{ $customerdetails['time'] }}</strong> .
     
     
    
@@ -218,7 +218,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
    
     <a href="{{ url($customerdetails['link']) }}" target="_blank" class="v-button v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ff9017; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
-      <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 16.8px;color:white;">Click to Join at due time</span></span>
+      <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 16.8px;color:white;">Here is the appointment link</span></span>
     </a>
 
     

@@ -207,6 +207,20 @@ class OrderController extends Controller
             }
         }
 
+
+        foreach ($cart->get() as $item) {
+            // if ($item->drug->require_prescription == true && empty($item->prescription)) {
+            //     $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+            //     break;
+            // }
+
+            $item->drug->decrement("quantity");
+        }
+
+
+
+
+
         $data['amount'] = ceil($data['amount']);
 
         $respMsg = "";
@@ -327,17 +341,17 @@ class OrderController extends Controller
 
        
 
-        // Paystack transaction charge
-        // $charges = $return['total'] * 0.015;
-        // if ($return['total'] > 2500) {
-        //     $charges = $charges + 100;
-        // }
-        // if ($charges > 2000) {
-        //     $charges = 2000;
-        // }
+        //Paystack transaction charge
+        $charges = $return['total'] * 0.015;
+        if ($return['total'] > 2500) {
+            $charges = $charges + 100;
+        }
+        if ($charges > 2000) {
+            $charges = 2000;
+        }
 
-        // $return['transaction_charge'] = round($charges, 2);
-        // $return['total'] = $return['total'] + round($charges, 2);
+        $return['transaction_charge'] = round($charges, 2);
+        $return['total'] = $return['total'] + round($charges, 2);
 
         
          return $return;
@@ -475,7 +489,7 @@ class OrderController extends Controller
     public function viewOrder(Order $order)
     {
         $user = Auth::user();
-        if ($order->email != $order->email && $order->customer_id != $user->id) {
+        if ($order->email != $user->email && $order->customer_id != $user->id) {
             return response(['error' => 'Unauthorized'], 401);
         }
 

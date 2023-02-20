@@ -15,6 +15,7 @@ use App\Models\PharmacyDrug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\OrderDelivered;
 
 class DrugController extends Controller
 {
@@ -551,5 +552,10 @@ class DrugController extends Controller
 
         return $drugs->name;
     }
+
+
+    //Drug email order delivered 
+
+  
 
 }

@@ -160,7 +160,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
         
   <h1 class="v-line-height v-font-size" style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Open Sans',sans-serif; font-size: 30px;">
     <div>
-<div><strong style="color:white;">Appointment Booked</strong></div>
+<div><strong style="color:white;">Appointment Reminder</strong></div>
 </div>
   </h1>
 
@@ -175,7 +175,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:13px;font-family:'Montserrat',sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;color:white;">Hi  {{ $customerdetails['username'] }} </span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;color:white;">Hi  {{ $docreminder['username'] }} </span></p>
   </div>
 
       </td>
@@ -191,11 +191,17 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
  
 
   <div class="v-line-height" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">You have successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ $customerdetails['date'] }} </strong>by <strong>{{ $customerdetails['time'] }}</strong> .
+    <p style="font-size: 14px; line-height: 170%;color:white;"><span style="font-size: 12px; line-height: 20.4px;color:white;">This is to remind you of scheduled  online consultation on <strong>AskNello</strong> with <strong>{{ $docreminder['specialist'] }} </strong>  on   <strong>{{ $docreminder['date'] }} </strong>by <strong>{{ $docreminder['time'] }}</strong> .
     
     
    
-      </span></p>
+      </span>
+  
+  <br>
+<br>
+To reschedule kindly contact support on <br>
+<strong>support@asknello.com , 09070041292</strong>
+</p>
   </div>
 
 
@@ -217,7 +223,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     
 
    
-    <a href="{{ url($customerdetails['link']) }}" target="_blank" class="v-button v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ff9017; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+    <a href="{{ url($docreminder['link']) }}" target="_blank" class="v-button v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ff9017; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
       <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 16.8px;color:white;">Click to Join at due time</span></span>
     </a>
 

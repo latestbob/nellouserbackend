@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -121,7 +119,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="https://res.cloudinary.com/edifice-solutions/image/upload/v1665056651/ladynello_uyzc9g.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 41%;max-width: 150.8px;border-radius: 100%;" width="150.8" class="v-src-width v-src-max-width"/>
+      <img align="center" border="0" src="https://owcappointment.com/static/media/mainlogo.97dcb8ed6a9966819480.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 41%;max-width: 237.8px;" width="237.8" class="v-src-width v-src-max-width"/>
       
     </td>
   </tr>
@@ -143,14 +141,14 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 
 
-<div class="u-row-container" style="padding: 0px;background-color: #1997cf;color: white;">
+<div class="u-row-container" style="padding: 0px;background-color: #e9e9f3">
   <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: #e9e9f3;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
       
 <!--[if (mso)|(IE)]><td align="center" width="600" style="background-color: #e9e9f3;width: 600px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
 <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-  <div style="background-color: #1997cf;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;color:white;">
+  <div style="background-color: #e9e9f3;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
   <!--[if (!mso)&(!IE)]><!--><div style="height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
   
 <table id="u_content_heading_1" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -160,7 +158,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
         
   <h1 class="v-line-height v-font-size" style="margin: 0px; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Open Sans',sans-serif; font-size: 30px;">
     <div>
-<div><strong style="color:white;">Appointment Booked</strong></div>
+<div><strong>New Appointment Booked</strong></div>
 </div>
   </h1>
 
@@ -175,7 +173,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:13px;font-family:'Montserrat',sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;color:white;">Hi  {{ $customerdetails['username'] }} </span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;">Hi <strong>{{ $owcadmin['doctor'] }} </strong>,  {{ $owcadmin['title'] }}. {{ $owcadmin['user_firstname'] }} </span></p>
   </div>
 
       </td>
@@ -187,18 +185,17 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tbody>
     <tr>
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 50px 40px;font-family:'Montserrat',sans-serif;" align="left">
-   
- 
+  
+      
+
+
 
   <div class="v-line-height" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">You have successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ $customerdetails['date'] }} </strong>by <strong>{{ $customerdetails['time'] }}</strong> .
+    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;">Has just successfully scheduled an online appointment with you on <strong>{{ $owcadmin['date'] }} </strong>by <strong>{{ $owcadmin['time'] }}</strong> 
     
-    
-   
-      </span></p>
+   </span></p>
   </div>
-
-
+  
 
       </td>
     </tr>
@@ -213,16 +210,15 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
 <div align="center">
   <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://admin.asknello.com" style="height:37px; v-text-anchor:middle; width:203px;" arcsize="67.5%"  stroke="f" fillcolor="#d07750"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Montserrat',sans-serif;"><![endif]-->  
-    
-    
-
    
-    <a href="{{ url($customerdetails['link']) }}" target="_blank" class="v-button v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #ff9017; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
-      <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 16.8px;color:white;">Click to Join at due time</span></span>
+   
+
+    <a href="{{ url($owcadmin['link']) }}" target="_blank" class="v-button v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #d07750; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+      <span class="v-line-height" style="display:block;padding:10px 20px;line-height:120%;"><span style="font-size: 14px; line-height: 16.8px;">Consultation Link</span></span>
     </a>
 
-    
-    
+
+
   <!--[if mso]></center></v:roundrect><![endif]-->
 </div>
 
@@ -235,10 +231,17 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tbody>
     <tr>
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 60px 20px;font-family:'Montserrat',sans-serif;" align="left">
-    
+   
+      
 
+      
+  <div class="v-line-height" style="line-height: 140%; text-align: center; word-wrap: break-word;">
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px; font-family: 'Open Sans', sans-serif;"><strong>Click on the above link to join the meeting at due time.</strong></span></p>
+  </div>
 
+ 
 
+  
 
       </td>
     </tr>
@@ -275,7 +278,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="http://asknello.com/assets/images/logo.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 20%;max-width: 116px;" width="116" class="v-src-width v-src-max-width"/>
+      <img align="center" border="0" src="https://owcappointment.com/static/media/mainlogo.97dcb8ed6a9966819480.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 20%;max-width: 116px;" width="116" class="v-src-width v-src-max-width"/>
       
     </td>
   </tr>
@@ -292,9 +295,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 80px;font-family:'Montserrat',sans-serif;" align="left">
         
   <div class="v-line-height" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-   
-<p style="font-size: 14px; line-height: 160%;"><span style="font-size: 12px; line-height: 19.2px;">Email - <a rel="noopener" href="mailto:support@asknello.com" target="_blank">support@asknello.com</a></span></p>
-<p style="font-size: 14px; line-height: 160%;"><span style="font-size: 12px; line-height: 19.2px; font-family: Cabin, sans-serif;">+234 90700 41292</span></p>
+    <p style="font-size: 14px; line-height: 160%;">Number One Building,<br />1 Akin Adesola Street, Victoria Island.</p>
+<p style="font-size: 14px; line-height: 160%;"><span style="font-size: 12px; line-height: 19.2px;">Email - <a rel="noopener" href="mailto:info@onewellness.clinic" target="_blank">info@onewellness.clinic</a></span></p>
+<p style="font-size: 14px; line-height: 160%;"><span style="font-size: 12px; line-height: 19.2px; font-family: Cabin, sans-serif;">+234 901 040 1111 , +234 901 040 1112</span></p>
 <p style="font-size: 14px; line-height: 160%;"> </p>
 <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 10px; line-height: 16px;">Powered by Nello</span></p>
   </div>
@@ -324,4 +327,3 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 </body>
 
 </html>
-
