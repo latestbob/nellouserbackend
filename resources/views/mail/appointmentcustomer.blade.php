@@ -191,7 +191,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
  
 
   <div class="v-line-height" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">You have successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ $customerdetails['date'] }} </strong>by <strong>{{ $customerdetails['time'] }}</strong> .
+    <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 12px; line-height: 20.4px;color:white;">You have successfully scheduled an online consultation on <strong>AskNello</strong> with <strong>{{ $customerdetails['doctor'] }} </strong>  a (<strong>{{ $customerdetails['doctoraos'] }}.</strong>) on    <strong>{{ \Carbon\Carbon::parse($customerdetails['date'])->format('F dS, Y') }} </strong>by <strong>{{ \Carbon\Carbon::parse($customerdetails['time'])->format('h:ia') }}</strong> .
     
     
    

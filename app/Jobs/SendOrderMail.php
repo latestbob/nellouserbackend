@@ -56,7 +56,7 @@ class SendOrderMail implements ShouldQueue
             'mail.order-confirm-admin' : 'mail.order-payment-received-admin', ['order' => $this->order])->render();
 
         Mail::send([], [], function ($message) use ($html) {
-            $message->to("orders@famacare.com");
+            $message->to("Centre0@famacare.com");
             $message->setBody($html, 'text/html');
             $message->subject($this->mailType === self::ORDER_CONFIRMED ?
                 'Order Notification' : 'Order Payment Notification');

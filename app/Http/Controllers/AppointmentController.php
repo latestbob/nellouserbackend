@@ -29,6 +29,8 @@ use App\Mail\AppointmentMedical;
 use App\Mail\Medreminder;
 use App\Mail\Docreminder;
 use App\Models\TransactionLog;
+use App\Mail\SwitchUser;
+use App\Mail\SwitchDoctor;
 use Mail;
 class AppointmentController extends Controller
 {
@@ -947,4 +949,131 @@ class AppointmentController extends Controller
        
 
     }
+
+    public function appointmentswichmails(Request $request){
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'user_email' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'old_doctor_title' => 'required',
+            'old_doctor_firstname' => 'required',
+            'new_doctor_title' => 'required',
+            'new_doctor_firstname' => 'required',
+            'new_doctor_email' => 'required',
+            'specialization' => 'required',
+            'link' => 'required'
+          
+
+        ]);
+
+        
+
+        
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'failed',
+                'message' => $validator->errors()
+            ]);
+        }
+
+
+        $switchuser = [
+            'username' => $request->username,
+
+       
+            'user_email' => $request->user_email,
+            'date' => $request->date,
+            'time' => $request->time,
+            'old_doctor_title' => $request->old_doctor_title,
+            'old_doctor_firstname' => $request->old_doctor_firstname,
+            'new_doctor_title' => $request->new_doctor_title,
+            'new_doctor_firstname' => $request->new_doctor_firstname,
+            'new_doctor_email' => $request->new_doctor_email,
+            'specialization' => $request->specialization,
+            'link' => $request->link,
+
+        ];
+
+        Mail::to($request->user_email)->send(new SwitchUser($switchuser));
+        Mail::to($request->new_doctor_email)->send(new SwitchDoctor($switchuser));
+        Mail::to("nurses@famacare.com")->send(new SwitchDoctor($switchuser));
+
+        return response()->json([
+            'status' => "success"
+        ]);
+
+        
+
+
+
+
+
+
+    }
+
+
+    //genrate outlook ics file
+
+    public function generateicsfile($start, $time, $care){
+         // Convert start and end to DateTime objects or use them directly in your logic
+
+
+         $dateString = $start;
+         $timeString = $time;
+         
+         // Combine date and time
+         $startCombinedString = $dateString . ' ' . $timeString;
+         
+         // Create DateTime object for start datetime
+         $startDateTime = new DateTime($startCombinedString);
+         
+         // Add 30 minutes for end datetime
+         $endDateTime = clone $startDateTime; // Clone to avoid modifying the start datetime
+         $endDateTime->modify('+30 minutes');
+         
+         // Format as ISO 8601
+         $startDateTimed = $startDateTime->format('Ymd\THis');
+         $endDateTimed = $endDateTime->format('Ymd\THis');
+         
+        
+
+
+   
+
+    $calendarContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nDTSTART:{$startDateTimed}\r\nDTEND:{$endDateTimed}\r\nSUMMARY:OWC Appointment\r\nDESCRIPTION:Your appointment details here\r\nLOCATION:1 Akin Adesola Street, Victoria Island, Lagos Nigeria\r\nEND:VEVENT\r\nEND:VCALENDAR";
+
+    // Set headers for the response
+    $headers = [
+        'Content-Type' => 'text/calendar; charset=utf-8',
+        'Content-Disposition' => 'attachment; filename=appointment.ics',
+    ];
+
+    return response($calendarContent, 200, $headers);
+    }
+
+
+
+
+
+    public function downloadics($start,$end,$care){
+       // Convert start and end to DateTime objects or use them directly in your logic
+
+       $startDateTime = $start;
+       $endDateTime = $end;
+   
+       $calendarContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nDTSTART:{$startDateTime}\r\nDTEND:{$endDateTime}\r\nSUMMARY:OWC Appointment\r\nDESCRIPTION:You have successfully scheduled an appointment with a {$care}\r\nLOCATION:1 Akin Adesola Street, Victoria Island, Lagos Nigeria\r\nEND:VEVENT\r\nEND:VCALENDAR";
+   
+       // Set headers for the response
+       $headers = [
+           'Content-Type' => 'text/calendar; charset=utf-8',
+           'Content-Disposition' => 'attachment; filename=appointment.ics',
+       ];
+   
+       return response($calendarContent, 200, $headers);
+   
+    }
+
+
 }

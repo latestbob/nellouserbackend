@@ -10,6 +10,8 @@ use App\Mail\Medreminder;
 use App\Mail\Docreminder;
 use Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class DailyReminder extends Command
 {
     /**

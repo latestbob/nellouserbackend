@@ -93,6 +93,7 @@
         let action = params.get('action');
         let temp_id = params.get('temp_id');
         let cost = params.get('cost');
+        let phone = params.get('phone');
 
         console.log(email);
         console.log(platform);
@@ -127,7 +128,9 @@ function payWithPaystack(e) {
         "action":action,
         "temp_id":temp_id,
         "cost":cost,
-        "method":"chat"
+        "method":"chat",
+        "user_email":email,
+        "phone":phone,
         
 
     },

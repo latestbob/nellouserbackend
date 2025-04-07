@@ -346,8 +346,41 @@ Route::get('/sendfake', 'FakeController@send');
 
  Route::post("/confirmme","EmailController@confirmme");
 
+ 
+
 
 
  //this below is for cronjob daily reminder command
 
  Route::post("/cronjobreminder","AppointmentController@cronjobreminder");
+
+
+ //sales report create api
+
+ Route::post("/salestest","SalesReportController@test");
+
+ //get all sales report
+
+ Route::get("/salesreportget","SalesReportController@getall");
+
+ Route::delete("/salesreport","SalesReportController@delete");
+
+
+
+ /// Customer Feedback
+
+
+ Route::post("/customerfeedback","Api\FeedBackController@customerfeedback");
+
+ Route::delete('/feedbackdelete', "Api\FeedBackController@deletefeedback");
+
+ ///appointment switch emails notification
+
+ Route::post("/appointmentswitchemails","AppointmentController@appointmentswichmails");
+
+ //Unauthenticated checkout
+
+ Route::post("/unauth/checkout","Api\OrderController@unauthcheckout");
+
+
+ Route::post("/withoutpayment","Api\OrderController@withpaymentorder");

@@ -10,6 +10,7 @@ use App\Mail\Medreminder;
 use App\Mail\Docreminder;
 use Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class HourReminder extends Command
 {
@@ -105,7 +106,7 @@ class HourReminder extends Command
         
 
         
-       
+         Log::debug("hourly reminder sent");
 
     }
 }

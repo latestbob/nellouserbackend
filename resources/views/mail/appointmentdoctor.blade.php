@@ -11,9 +11,9 @@ See details of the schedule appointment below
 
 <br>
 
-Date :  {{ $customerdetails['date'] }} <br>
+Date :  {{ \Carbon\Carbon::parse($customerdetails['date'])->format('F dS, Y') }} <br>
 
-Time : {{ $customerdetails['time'] }}<br>
+Time : {{ \Carbon\Carbon::parse($customerdetails['time'])->format('h:ia') }}<br>
 
 Patient Name : {{ $customerdetails['username'] }}<br>
 

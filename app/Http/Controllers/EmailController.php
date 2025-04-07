@@ -22,6 +22,7 @@ class EmailController extends Controller
     public function confirmme(Request $request){
             $validator = Validator::make($request->all(), [
             'deliver' => 'required',
+            'email' => 'required',
             
         ]);
 
@@ -38,7 +39,7 @@ class EmailController extends Controller
 
 
 
-         Mail::to("edidiongbobson@gmail.com")->send(new OrderDelivered($request->deliver));
+         Mail::to($request->email)->send(new OrderDelivered($request->deliver));
 
 
         //return "working";

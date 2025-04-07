@@ -72,7 +72,7 @@ class EmbanqoController extends Controller
 
         Mail::to($request->usermail)->send(new AppointmentCustomer($customerdetails));
        
-    Mail::to($request->doctormail)->send(new AppointmentDoctor($customerdetails));
+   Mail::to($request->doctormail)->send(new AppointmentDoctor($customerdetails));
 
     Mail::to("support@asknello.com")->send(new AppointmentCustomer($customerdetails));
 

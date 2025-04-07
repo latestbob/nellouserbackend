@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Traits\Paystack;
 use App\Traits\CouponCode;
+use App\SalesReport;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -47,7 +52,8 @@ class OrderController extends Controller
             'payment_method' => 'required|string|in:card,point',
             'payment_reference' => 'required_if:payment_method,card|string',
             'coupon_code' => 'nullable|exists:coupons,code',
-            'add_prescription_charge' => 'nullable|in:yes,no'
+            'add_prescription_charge' => 'nullable|in:yes,no',
+            'customer_id' => 'nullable',
         ]);
 
 
@@ -57,7 +63,7 @@ class OrderController extends Controller
         
         $user = Auth::user();
 
-        $data['customer_id'] = $user->id;
+        $data['customer_id'] = $request->customer_id ?? $user->id;
         $data['email'] = $request->email ?? $user->email;
         $data['phone'] = $request->phone ?? $user->phone;
         $data['firstname'] = $request->firstname ?? $user->firstname;
@@ -218,6 +224,9 @@ class OrderController extends Controller
         }
 
 
+     
+
+
 
 
 
@@ -280,6 +289,21 @@ class OrderController extends Controller
         }
 
         $order = Order::create($data);
+
+
+
+        $responsed = Http::withoutVerifying()->post('https://mw.asknello.com/api/salestest',[
+            "customer" => $request->firstname,
+            "cart_uuid" => $request->cart_uuid,
+           // "data" => $customerdetails,
+        ]);
+
+
+
+
+
+
+       
 
         SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
 
@@ -497,5 +521,326 @@ class OrderController extends Controller
 
         return $order;
     }
+
+
+    //sales report create api
+
+
+
+    //unauthenticated checkout
+
+    public function unauthcheckout(Request $request)
+    {
+
+        // Validate Request and assign to data
+        $data = $request->validate([
+            'firstname' => 'nullable|string',
+            'lastname' => 'nullable|string',
+            'company' => 'nullable|string',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|digits_between:11,16',
+            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
+            'delivery_method' => 'required|string|in:shipping,pickup',
+            'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
+            'shipping_address' => 'required_if:delivery_method,shipping|string',
+            'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
+            'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
+            //'city' => 'required_if:delivery_method,shipping|string',
+            'payment_method' => 'required|string|in:card,point',
+            'payment_reference' => 'required_if:payment_method,card|string',
+            'coupon_code' => 'nullable|exists:coupons,code',
+            'add_prescription_charge' => 'nullable|in:yes,no',
+            'customer_id' => 'nullable',
+        ]);
+
+
+        
+
+        //get Login User Info
+        
+        //$user = Auth::user();
+
+        $data['customer_id'] = $request->customer_id;
+        $data['email'] = $request->email;
+        // $data['phone'] = $request->phone ?? $user->phone;
+        $data['firstname'] = $request->firstname;
+        // $data['lastname'] = $request->lastname ?? $user->lastname;
+
+
+        // Set Shipping Address
+        if (isset($data['shipping_address'])) {
+            $data['address1'] = $data['shipping_address'];
+            unset($data['shipping_address']);
+        }
+
+
+        // Set Pickup Location ID
+        if (empty($data['location_id'])) {
+            $data['location_id'] = $data['pickup_location_id'];
+        }
+
+        $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+
+        // set Order Reference
+        $data['order_ref'] = strtoupper(Str::random(10));
+
+
+        
+       
+
+        
+        // where Order hasn't exists
+        $cart = Cart::where('cart_uuid', $data['cart_uuid']);
+        $data['amount'] = $cart->sum('price');
+
+
+        // setting coupon_code if exists
+        if ($request->coupon_code) {
+            $discount = $this->computeValue($request->coupon_code, $data['amount']);
+            $data['amount'] = $data['amount'] - $discount;
+        }
+
+            //set delivery methods
+        if ($request->delivery_method == 'shipping') {
+            $location = Location::where('id', $data['location_id'] ?? 0)->first();
+            $delType = "{$request->delivery_type}_price";
+            $data['amount'] +=  $location->{$delType};
+        }
+
+
+        foreach ($cart->get() as $item) {
+            if ($item->drug->require_prescription == true && empty($item->prescription)) {
+                $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+                break;
+            }
+        }
+
+
+        foreach ($cart->get() as $item) {
+            // if ($item->drug->require_prescription == true && empty($item->prescription)) {
+            //     $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+            //     break;
+            // }
+
+            $item->drug->decrement("quantity");
+        }
+
+
+     
+
+
+
+
+
+        $data['amount'] = ceil($data['amount']);
+
+        $respMsg = "";
+
+       
+        if ($data['payment_method'] == 'card') {
+            $check = $this->verify($data['payment_reference'], $data['amount']);
+            if ($check['status']) {
+                TransactionLog::create([
+                    'gateway_reference' => $data['payment_reference'],
+                    'system_reference' => $data['order_ref'],
+                    'reason' => 'Order payment',
+                    'amount' => $data['amount'],
+                    'email' => $data['email']
+                ]);
+                $data['payment_confirmed'] = 1;
+                $respMsg = 'Thank you. Your checkout was successful and payment confirmed.';
+            } else {
+                return response([
+                    'errors' => [
+                        'payment_reference' => [$check['message']]
+                    ]
+                ], 422);
+                $respMsg = "Checkout successful. Payment error: {$check['message']}";
+            }
+        }
+
+        $order = Order::create($data);
+
+
+
+        // $responsed = Http::withoutVerifying()->post('https://mw.asknello.com/api/salestest',[
+        //     "customer" => $request->firstname,
+        //     "cart_uuid" => $request->cart_uuid,
+        //    // "data" => $customerdetails,
+        // ]);
+
+
+
+
+
+
+       
+
+        SendOrderMail::dispatch($order, SendOrderMail::ORDER_CONFIRMED);
+
+        if (($data['payment_confirmed'] ?? 0) == 1) {
+
+            SendOrderMail::dispatch($order, SendOrderMail::ORDER_PAYMENT_RECEIVED);
+        }
+
+        return [
+            'status' => true,
+            'message' => $respMsg,
+            'order' => $order->load(['items', 'location', 'pickup_location']),
+            'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
+        ];
+
+        
+    }
+
+
+
+        ///without payment
+
+
+        public function withpaymentorder(Request $request){
+
+             // Validate Request and assign to data
+        $data = $request->validate([
+            'firstname' => 'nullable|string',
+            'lastname' => 'nullable|string',
+            'company' => 'nullable|string',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|digits_between:11,16',
+            'cart_uuid' => 'required|string|exists:carts,cart_uuid',
+            'delivery_method' => 'required|string|in:shipping,pickup',
+            'delivery_type' => 'required_if:delivery_method,shipping|string|in:standard,same_day,next_day',
+            'shipping_address' => 'required_if:delivery_method,shipping|string',
+            'location_id' => 'required_if:delivery_method,shipping|numeric|exists:locations,id',
+            'pickup_location_id' => 'required_if:delivery_method,pickup|numeric|exists:pharmacies,id',
+            //'city' => 'required_if:delivery_method,shipping|string',
+            'payment_method' => 'required|string|in:card,point',
+            'payment_reference' => 'required_if:payment_method,card|string',
+            'coupon_code' => 'nullable|exists:coupons,code',
+            'add_prescription_charge' => 'nullable|in:yes,no',
+            'customer_id' => 'nullable',
+        ]);
+
+
+        $data['customer_id'] = $request->customer_id;
+        $data['email'] = $request->email;
+        // $data['phone'] = $request->phone ?? $user->phone;
+        $data['firstname'] = $request->firstname;
+        // $data['lastname'] = $request->lastname ?? $user->lastname;
+
+
+        // Set Shipping Address
+        if (isset($data['shipping_address'])) {
+            $data['address1'] = $data['shipping_address'];
+            unset($data['shipping_address']);
+        }
+
+
+        // Set Pickup Location ID
+        if (empty($data['location_id'])) {
+            $data['location_id'] = $data['pickup_location_id'];
+        }
+
+        $order = Order::where(['cart_uuid' => $request->cart_uuid])->first();
+
+        // set Order Reference
+        $data['order_ref'] = strtoupper(Str::random(10));
+
+
+        
+       
+
+        
+        // where Order hasn't exists
+        $cart = Cart::where('cart_uuid', $data['cart_uuid']);
+        $data['amount'] = $cart->sum('price');
+
+
+        // setting coupon_code if exists
+        if ($request->coupon_code) {
+            $discount = $this->computeValue($request->coupon_code, $data['amount']);
+            $data['amount'] = $data['amount'] - $discount;
+        }
+
+            //set delivery methods
+        if ($request->delivery_method == 'shipping') {
+            $location = Location::where('id', $data['location_id'] ?? 0)->first();
+            $delType = "{$request->delivery_type}_price";
+            $data['amount'] +=  $location->{$delType};
+        }
+
+
+        foreach ($cart->get() as $item) {
+            if ($item->drug->require_prescription == true && empty($item->prescription)) {
+                $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+                break;
+            }
+        }
+
+
+        foreach ($cart->get() as $item) {
+            // if ($item->drug->require_prescription == true && empty($item->prescription)) {
+            //     $data['amount'] += (PrescriptionFee::where('fee', '>', 0)->select('fee')->first() ?: (object)['fee' => 0])->fee;
+            //     break;
+            // }
+
+            $item->drug->decrement("quantity");
+        }
+
+
+     
+
+
+
+
+
+        $data['amount'] = ceil($data['amount']);
+
+        $respMsg = "";
+
+       
+        if ($data['payment_method'] == 'card') {
+            $check = $this->verify($data['payment_reference'], $data['amount']);
+            if ($check['status']) {
+                TransactionLog::create([
+                    'gateway_reference' => $data['payment_reference'],
+                    'system_reference' => $data['order_ref'],
+                    'reason' => 'Order payment',
+                    'amount' => $data['amount'],
+                    'email' => $data['email']
+                ]);
+                $data['payment_confirmed'] = 1;
+                $respMsg = 'Thank you. Your checkout was successful and payment confirmed.';
+            } else {
+                return response([
+                    'errors' => [
+                        'payment_reference' => [$check['message']]
+                    ]
+                ], 422);
+                $respMsg = "Checkout successful. Payment error: {$check['message']}";
+            }
+        }
+
+        $order = Order::create($data);
+
+
+        return [
+            'status' => true,
+            'message' => $respMsg,
+            'order' => $order->load(['items', 'location', 'pickup_location']),
+            'payment_confirmed' => ($data['payment_confirmed'] ?? 0)
+        ];
+
+
+
+
+
+        }
+
+
+    
+
+
+  
 
 }
